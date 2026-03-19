@@ -37,7 +37,7 @@ export default function WhyChooseUs() {
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            className="p-10 rounded-3xl bg-gradient-to-br from-green-500 to-green-400 text-white shadow-xl"
+            className="p-10 rounded-3xl bg-linear-to-br from-green-500 to-green-400 text-white shadow-xl"
           >
             <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-white/20 mb-6">
               <Users size={28} />

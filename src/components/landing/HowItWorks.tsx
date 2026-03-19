@@ -29,7 +29,7 @@ export default function HowItWorks() {
     <section className="w-full py-24 bg-linear-to-b from-white to-green-50 px-6 relative overflow-hidden">
       
       {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-green-200/30 blur-3xl rounded-full"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-125 bg-green-200/30 blur-3xl rounded-full"></div>
 
       <div className="max-w-7xl mx-auto text-center relative z-10">
         
