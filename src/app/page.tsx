@@ -1,65 +1,98 @@
+"use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <section className="w-full min-h-[90vh] flex items-center justify-center bg-green-50 px-6">
+      <div className="max-w-7xl w-full grid md:grid-cols-2 gap-10 items-center">
+        {/* LEFT CONTENT */}
+        <div className="space-y-6">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight"
+          >
+            Find Your Perfect <span className="text-green-600">Roommate</span>{" "}
+            Based on <span className="text-green-600">Lifestyle</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="text-gray-600 text-lg"
+          >
+            No more random roommates. Match with people who share your habits,
+            vibe, and daily routine.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9 }}
+            className="flex gap-4 flex-wrap"
+          >
+            <button className="px-6 py-3 rounded-2xl bg-green-600 text-white font-medium shadow-md hover:bg-green-700 transition">
+              Find Roommate
+            </button>
+
+            <button className="px-6 py-3 rounded-2xl border border-green-600 text-green-600 font-medium hover:bg-green-50 transition">
+              Post a Room
+            </button>
+          </motion.div>
+
+          {/* Small trust text */}
+          <p className="text-sm text-gray-400">
+            Trusted by students & professionals across India 🇮🇳
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        {/* RIGHT VISUAL CARD */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="bg-white rounded-3xl shadow-xl p-6 border border-gray-100"
+        >
+          <div className="space-y-4">
+            {/* Profile Card 1 */}
+            <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl">
+              <div>
+                <h3 className="font-semibold text-gray-800">Rahul, 23</h3>
+                <p className="text-sm text-gray-500">
+                  Night Owl • Gym • Non-Smoker
+                </p>
+              </div>
+              <span className="text-green-600 font-bold">92% Match</span>
+            </div>
+
+            {/* Profile Card 2 */}
+            <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl">
+              <div>
+                <h3 className="font-semibold text-gray-800">Aman, 25</h3>
+                <p className="text-sm text-gray-500">
+                  Early Bird • Clean • Veg
+                </p>
+              </div>
+              <span className="text-green-600 font-bold">85% Match</span>
+            </div>
+
+            {/* Profile Card 3 */}
+            <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl">
+              <div>
+                <h3 className="font-semibold text-gray-800">Sneha, 22</h3>
+                <p className="text-sm text-gray-500">
+                  Quiet • Student • Non-Drinker
+                </p>
+              </div>
+              <span className="text-green-600 font-bold">88% Match</span>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
