@@ -6,13 +6,13 @@ export default function FinalCTA() {
   return (
     <section className="w-full py-28 px-6 relative overflow-hidden">
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-linear-to-br from-green-500 via-green-400 to-emerald-400"></div>
+      <div className="absolute inset-0 bg-green-400 "></div>
 
       {/* Glow Effects */}
       <div className="absolute -top-25 -left-25 w-75 h-75 bg-white/20 blur-3xl rounded-full"></div>
       <div className="absolute -bottom-25 -right-25 w-75 h-75 bg-white/20 blur-3xl rounded-full"></div>
 
-      <div className="relative z-10 max-w-4xl mx-auto text-center text-white">
+      <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
@@ -28,7 +28,7 @@ export default function FinalCTA() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="mt-6 text-lg text-white/90"
+          className="mt-6 text-lg"
         >
           Whether you're looking for a place or listing one — Roomio helps you
           connect with the right people, faster.
@@ -47,13 +47,13 @@ export default function FinalCTA() {
           </button>
 
           {/* Secondary CTA */}
-          <button className="px-8 py-4 rounded-2xl border border-white text-white font-semibold hover:bg-white/10 transition">
+          <button className="px-8 py-4 rounded-2xl border border-white  font-semibold hover:bg-white/10 transition">
             List Your Space
           </button>
         </motion.div>
 
         {/* Small Trust Text */}
-        <p className="mt-6 text-sm text-white/80">
+        <p className="mt-6 text-sm">
           No brokerage • Verified users • Quick matching
         </p>
       </div>

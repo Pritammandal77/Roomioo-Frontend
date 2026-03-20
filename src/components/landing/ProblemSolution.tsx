@@ -5,7 +5,7 @@ import { XCircle, CheckCircle } from "lucide-react";
 
 export default function ProblemSolution() {
   return (
-    <section className="w-full py-28 px-6 bg-linear-to-b from-white to-green-50">
+    <section className="w-full py-28 px-6 bg-linear-to-b from-white to-green-100">
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
         <div className="text-center">
@@ -24,7 +24,7 @@ export default function ProblemSolution() {
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            className="group p-8 rounded-3xl bg-white border border-red-100 shadow-sm hover:shadow-xl transition"
+            className="group p-8 rounded-3xl bg-red-100 border border-red-100 shadow-sm hover:shadow-xl transition"
           >
             <h3 className="text-2xl font-semibold text-red-500 mb-6">
               ❌ Without Roomio
@@ -49,7 +49,7 @@ export default function ProblemSolution() {
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            className="group p-8 rounded-3xl bg-linear-to-br from-green-500 to-green-400 text-white shadow-xl hover:shadow-2xl transition"
+            className="group p-8 rounded-3xl bg-green-200 text-black shadow-xl hover:shadow-2xl transition"
           >
             <h3 className="text-2xl font-semibold mb-6">✅ With Roomio</h3>
 
@@ -61,7 +61,7 @@ export default function ProblemSolution() {
                 "Quick and easy discovery process",
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <CheckCircle className="text-white mt-1" size={20} />
+                  <CheckCircle className="mt-1" size={20} />
                   {item}
                 </li>
               ))}

@@ -57,7 +57,6 @@ export default function WhyChooseUs() {
             <Feature icon={IndianRupee} title="Zero Brokerage" />
             <Feature icon={ShieldCheck} title="Verified Profiles" />
             <Feature icon={MessageCircle} title="Direct Chat & Call" />
-            <Feature icon={Home} title="All-in-One Listings" />
           </div>
         </div>
 
