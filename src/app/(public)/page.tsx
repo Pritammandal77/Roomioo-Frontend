@@ -5,6 +5,7 @@ import Hero from "@/components/landing/Hero";
 import HowItWorks from "@/components/landing/HowItWorks";
 import ProblemSolution from "@/components/landing/ProblemSolution";
 import WhyChooseUs from "@/components/landing/WhyChooseUs";
+import Footer from "@/components/shared/Footer";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <FeaturedListings />
       <FinalCTA />
       <FAQ />
+      <Footer/>
     </main>
   );
 }

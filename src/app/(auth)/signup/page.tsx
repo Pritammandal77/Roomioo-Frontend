@@ -18,7 +18,7 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
     fullName: "",
-    age: "",
+    dob: "",
     mobileNumber: "",
     gender: "",
   });
@@ -55,6 +55,8 @@ export default function SignUp() {
     Object.entries(formData).forEach(([key, value]) => {
       data.append(key, value);
     });
+
+    data.append("authProvider", "email");
 
     if (file) data.append("profilePicture", file);
 
@@ -97,6 +99,7 @@ export default function SignUp() {
                   accept="image/png, image/jpeg"
                   onChange={handleFileChange}
                   className="hidden"
+                  required={true}
                 />
               </label>
             </div>
@@ -109,6 +112,7 @@ export default function SignUp() {
               name="fullName"
               placeholder="Full Name"
               onChange={handleChange}
+              required={true}
             />
             <Input
               icon={Mail}
@@ -116,6 +120,7 @@ export default function SignUp() {
               type="email"
               placeholder="Email"
               onChange={handleChange}
+              required={true}
             />
             <Input
               icon={Lock}
@@ -123,6 +128,7 @@ export default function SignUp() {
               type="password"
               placeholder="Password"
               onChange={handleChange}
+              required={true}
             />
             <Input
               icon={Lock}
@@ -130,21 +136,30 @@ export default function SignUp() {
               type="password"
               placeholder="Confirm Password"
               onChange={handleChange}
+              required={true}
             />
-            <div className="flex gap-5">
-              <Input
-                icon={Calendar}
-                name="age"
-                type="number"
-                placeholder="Age"
-                onChange={handleChange}
-              />
+            <div className="flex flex-col md:flex-row gap-5">
+              <div className="relative">
+                <Calendar
+                  className="absolute left-3 top-3 text-green-600"
+                  size={18}
+                />
+                <input
+                  type="date"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 outline-none text-gray-800"
+                  required={true}
+                />
+              </div>
               <Input
                 icon={PhoneCallIcon}
                 name="mobileNumber"
                 type="number"
                 placeholder="Mobile Number"
                 onChange={handleChange}
+                required={true}
               />
             </div>
 
@@ -158,6 +173,7 @@ export default function SignUp() {
                 name="gender"
                 onChange={handleChange}
                 className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none text-gray-700"
+                required={true}
               >
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
