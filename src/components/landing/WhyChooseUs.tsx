@@ -71,7 +71,7 @@ export default function WhyChooseUs() {
   );
 }
 
-/* RIGHT SIDE LIST ITEM */
+
 function Feature({ icon: Icon, title }: { icon: any; title: string }) {
   return (
     <motion.div
