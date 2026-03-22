@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
-import { registerUser } from "@/services/auth";
+import { logInUser, registerUser } from "@/services/auth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -20,19 +20,19 @@ export default function SignUp() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      data.append(key, value);
-    });
+    try {
+      const res = await logInUser(formData); // ✅ direct object
+      console.log(res);
+    } catch (error) {
+      alert("Something went wrong while logging In");
+    }
   };
 
   return (
     <section className="min-h-screen flex items-center justify-center pt-25 pb-10 bg-linear-to-br from-green-50 to-green-100 px-4">
       <div className="w-full max-w-md">
-
         {/* Card */}
         <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-
           <div className="text-center mb-8">
             <h2 className="text-3xl xl:text-4xl font-semibold text-gray-900">
               Login <span className="text-green-600">Now</span>

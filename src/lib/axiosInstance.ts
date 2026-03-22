@@ -13,12 +13,12 @@ axiosInstance.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/refresh-token")
+      !originalRequest.url.includes("/refresh-access-token")
     ) {
       originalRequest._retry = true;
 
       try {
-        await axiosInstance.post("/api/user/refresh-token");
+        await axiosInstance.post("/api/user/refresh-access-token");
         return axiosInstance(originalRequest);
       } catch (err) {
         console.log("Refresh failed → logout user");

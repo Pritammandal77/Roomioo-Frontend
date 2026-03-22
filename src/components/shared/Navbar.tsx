@@ -1,6 +1,6 @@
 "use client";
 
-import { getCurrentUser } from "@/services/auth";
+import { getCurrentUser, logOutUser } from "@/services/auth";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -20,6 +20,15 @@ export default function Navbar() {
 
     fetchLoggedInUser();
   }, []);
+
+  const handleLogOut = async () => {
+    try {
+      const res = await logOutUser();
+      console.log(res);
+    } catch (error) {
+      alert("something went wrong while log out");
+    }
+  };
 
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
@@ -60,6 +69,13 @@ export default function Navbar() {
           >
             Get Started
           </Link>
+
+          <button
+            className="px-5 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 transition shadow-sm"
+            onClick={handleLogOut}
+          >
+            Log Out
+          </button>
         </div>
 
         {/* MOBILE MENU BUTTON */}
