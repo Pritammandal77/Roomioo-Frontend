@@ -1,6 +1,6 @@
 "use client";
 
-import { getCurrentUser } from "@/services/auth.service";
+import { getCurrentUser } from "@/services/auth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 

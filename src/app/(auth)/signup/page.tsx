@@ -11,7 +11,7 @@ import {
   PhoneCallIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { registerUser } from "@/services/auth.service";
+import { registerUser } from "@/services/auth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
