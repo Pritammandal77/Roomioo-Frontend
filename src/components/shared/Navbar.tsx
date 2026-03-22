@@ -1,15 +1,28 @@
 "use client";
 
+import { getCurrentUser } from "@/services/auth.service";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    const fetchLoggedInUser = async () => {
+      try {
+        const res = await getCurrentUser();
+        console.log(res);
+      } catch (error) {
+        console.log("something went wrong while getting fetching the user");
+      }
+    };
+
+    fetchLoggedInUser();
+  }, []);
+
   return (
     <header className="w-full fixed top-0 left-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        
         {/* LOGO */}
         <Link href="/" className="text-2xl font-bold text-green-600">
           Roomio
@@ -17,10 +30,16 @@ export default function Navbar() {
 
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link href="/about" className="text-gray-600 hover:text-green-600 transition">
+          <Link
+            href="/about"
+            className="text-gray-600 hover:text-green-600 transition"
+          >
             About
           </Link>
-          <Link href="/contact" className="text-gray-600 hover:text-green-600 transition">
+          <Link
+            href="/contact"
+            className="text-gray-600 hover:text-green-600 transition"
+          >
             Contact
           </Link>
         </nav>

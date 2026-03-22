@@ -11,6 +11,7 @@ import {
   PhoneCallIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { registerUser } from "@/services/auth.service";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -43,7 +44,7 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -59,6 +60,13 @@ export default function SignUp() {
     data.append("authProvider", "email");
 
     if (file) data.append("profilePicture", file);
+
+    try {
+      const res = await registerUser(data);
+      console.log(res);
+    } catch (error) {
+      console.log("something went wrong");
+    }
 
     console.log("Form Data:", data);
   };
