@@ -1,6 +1,7 @@
 "use client";
 
 import { getCurrentUser } from "@/services/auth";
+import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -47,7 +48,7 @@ export default function Navbar() {
         {/* CTA BUTTONS */}
         <div className="hidden md:flex items-center gap-4">
           <Link
-            href="/login"
+            href="/signin"
             className="text-gray-600 hover:text-green-600 transition"
           >
             Login
@@ -66,7 +67,7 @@ export default function Navbar() {
           className="md:hidden text-gray-700"
           onClick={() => setIsOpen(!isOpen)}
         >
-          ☰
+          <MenuIcon />
         </button>
       </div>
 
@@ -79,7 +80,7 @@ export default function Navbar() {
           <Link href="/contact" className="block text-gray-600">
             Contact
           </Link>
-          <Link href="/login" className="block text-gray-600">
+          <Link href="/signin" className="block text-gray-600">
             Login
           </Link>
           <Link
