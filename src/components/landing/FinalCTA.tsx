@@ -42,12 +42,12 @@ export default function FinalCTA() {
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           {/* Primary CTA */}
-          <button className="px-8 py-4 rounded-2xl bg-white text-green-600 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition">
+          <button className="px-8 py-4 rounded-2xl bg-white text-green-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition">
             Find Your Housemate
           </button>
 
           {/* Secondary CTA */}
-          <button className="px-8 py-4 rounded-2xl border border-white  font-semibold hover:bg-white/10 transition">
+          <button className="px-8 py-4 rounded-2xl border border-green-200  font-semibold hover:bg-white/10 transition">
             List Your Space
           </button>
         </motion.div>

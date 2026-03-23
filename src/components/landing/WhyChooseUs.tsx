@@ -37,7 +37,7 @@ export default function WhyChooseUs() {
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            className="p-10 rounded-3xl bg-linear-to-br from-green-500 to-green-400 text-white shadow-xl"
+            className="p-10 rounded-3xl bg-linear-to-br from-green-500 to-green-400 text-black shadow-xl"
           >
             <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-white/20 mb-6">
               <Users size={28} />
@@ -45,7 +45,7 @@ export default function WhyChooseUs() {
 
             <h3 className="text-2xl font-bold">Smart Lifestyle Matching</h3>
 
-            <p className="mt-4 text-white/90">
+            <p className="mt-4 text-[#1e1e1e]">
               Don’t live with random people. Match with housemates based on
               habits, routine, cleanliness, and vibe — so you actually enjoy
               living together.
@@ -81,7 +81,7 @@ function Feature({ icon: Icon, title }: { icon: any; title: string }) {
       <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-green-100 text-green-600">
         <Icon size={20} />
       </div>
-      <p className="text-gray-700 font-medium">{title}</p>
+      <p className="text-gray-800 font-medium">{title}</p>
     </motion.div>
   );
 }
@@ -96,7 +96,7 @@ function MiniCard({ icon: Icon, title }: { icon: any; title: string }) {
       <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-green-100 text-green-600 mb-3">
         <Icon size={20} />
       </div>
-      <p className="text-gray-700 font-medium">{title}</p>
+      <p className="text-gray-800 font-medium">{title}</p>
     </motion.div>
   );
 }
