@@ -8,6 +8,7 @@ import { MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ProfileDropdown from "../ui/ProfileDropdown";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,17 +65,17 @@ export default function Navbar() {
         </nav>
 
         {userData ? (
-          <div>
-            <div className="relative w-10 h-10">
-              <Image
-                src={userData.profilePicture || ""} 
-                alt="Profile"
-                fill
-                className="rounded-full object-cover"
-              />
-              <p>{userData.fullName}</p>
-            </div>
-          </div>
+          // <div className="hidden md:flex">
+          //   <div className="relative w-10 h-10">
+          //     <Image
+          //       src={userData.profilePicture || ""}
+          //       alt="Profile"
+          //       fill
+          //       className="rounded-full object-cover cursor-pointer"
+          //     />
+          //   </div>
+          // </div>
+          <ProfileDropdown userData={userData} />
         ) : (
           <div className="hidden md:flex items-center gap-4">
             <Link
