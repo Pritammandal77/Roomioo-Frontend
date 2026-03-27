@@ -1,8 +1,15 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import { useAppSelector } from "@/lib/rtk/hooks";
 
 function Hero() {
+  const user = useAppSelector((state) => state.user.userData);
+
+  // if (user) {
+  //   console.log("user data at home page",user);
+  // }
+
   return (
     <section className="w-full min-h-screen flex items-center justify-center bg-green-50 px-6">
       <div className="max-w-7xl w-full grid md:grid-cols-2 gap-10 items-center">

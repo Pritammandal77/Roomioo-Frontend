@@ -1,18 +1,27 @@
 "use client";
 
+import { setUser } from "@/lib/rtk/features/userSlice";
+import { useAppDispatch } from "@/lib/rtk/hooks";
 import { getCurrentUser, logOutUser } from "@/services/auth";
+import { User } from "@/types/user";
 import { MenuIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [userData, setUserData] = useState<User | null>(null);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchLoggedInUser = async () => {
       try {
         const res = await getCurrentUser();
-        console.log(res);
+        console.log("user data", res.data);
+        dispatch(setUser(res.data));
+        setUserData(res.data);
       } catch (error) {
         console.log("something went wrong while getting fetching the user");
       }
@@ -54,29 +63,42 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* CTA BUTTONS */}
-        <div className="hidden md:flex items-center gap-4">
-          <Link
-            href="/signin"
-            className="text-gray-600 hover:text-green-600 transition"
-          >
-            Login
-          </Link>
+        {userData ? (
+          <div>
+            <div className="relative w-10 h-10">
+              <Image
+                src={userData.profilePicture || ""} 
+                alt="Profile"
+                fill
+                className="rounded-full object-cover"
+              />
+              <p>{userData.fullName}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="hidden md:flex items-center gap-4">
+            <Link
+              href="/signin"
+              className="text-gray-600 hover:text-green-600 transition"
+            >
+              Login
+            </Link>
 
-          <Link
-            href="/signup"
-            className="px-5 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700 transition shadow-sm"
-          >
-            Get Started
-          </Link>
+            <Link
+              href="/signup"
+              className="px-5 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700 transition shadow-sm"
+            >
+              Get Started
+            </Link>
 
-          <button
-            className="px-5 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 transition shadow-sm"
-            onClick={handleLogOut}
-          >
-            Log Out
-          </button>
-        </div>
+            <button
+              className="px-5 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 transition shadow-sm"
+              onClick={handleLogOut}
+            >
+              Log Out
+            </button>
+          </div>
+        )}
 
         {/* MOBILE MENU BUTTON */}
         <button
