@@ -4,8 +4,12 @@ import { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
 import { logInUser, registerUser } from "@/services/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -21,10 +25,12 @@ export default function SignUp() {
     e.preventDefault();
 
     try {
-      const res = await logInUser(formData); // ✅ direct object
+      const res = await logInUser(formData);
       console.log(res);
+      toast.success("login succcessfull");
+      router.push("/");
     } catch (error) {
-      alert("Something went wrong while logging In");
+      toast.error("Something went wrong");
     }
   };
 

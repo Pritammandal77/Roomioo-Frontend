@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import ReduxProvider from "@/lib/rtk/providers/ReduxProvider";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
         <ReduxProvider>
           <Navbar />
           {children}
+          <Toaster position="top-center" richColors />
         </ReduxProvider>
       </body>
     </html>

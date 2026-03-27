@@ -4,6 +4,9 @@ import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import { User } from "@/types/user";
+import { logOutUser } from "@/services/auth";
+import { useAppDispatch } from "@/lib/rtk/hooks";
+import { logout } from "@/lib/rtk/features/userSlice";
 
 interface Props {
   userData: User;
@@ -11,6 +14,16 @@ interface Props {
 
 export default function ProfileDropdown({ userData }: Props) {
   const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const handleLogOut = async () => {
+    try {
+      const res = await logOutUser();
+      dispatch(logout());
+    } catch (error) {
+      alert("something went wrong while log out");
+    }
+  };
 
   return (
     <div
@@ -58,7 +71,7 @@ export default function ProfileDropdown({ userData }: Props) {
 
           {/* Logout */}
           <button
-            onClick={() => console.log("logout")}
+            onClick={handleLogOut}
             className="w-full text-left px-4 py-2 text-red-500 hover:bg-red-50 transition"
           >
             Logout

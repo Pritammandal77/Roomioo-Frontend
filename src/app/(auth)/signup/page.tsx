@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { registerUser } from "@/services/auth";
+import { toast } from "sonner";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -64,11 +65,10 @@ export default function SignUp() {
     try {
       const res = await registerUser(data);
       console.log(res);
+      toast.success("Account created successfully");
     } catch (error) {
-      console.log("something went wrong");
+      toast.error("somthing went wrong");
     }
-
-    console.log("Form Data:", data);
   };
 
   return (

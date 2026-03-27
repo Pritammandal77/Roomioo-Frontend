@@ -1,7 +1,7 @@
 "use client";
 
 import { setUser } from "@/lib/rtk/features/userSlice";
-import { useAppDispatch } from "@/lib/rtk/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/rtk/hooks";
 import { getCurrentUser, logOutUser } from "@/services/auth";
 import { User } from "@/types/user";
 import { MenuIcon } from "lucide-react";
@@ -13,6 +13,8 @@ import ProfileDropdown from "../ui/ProfileDropdown";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [userData, setUserData] = useState<User | null>(null);
+
+  const user = useAppSelector((state) => state.user.userData);
 
   const dispatch = useAppDispatch();
 
@@ -64,18 +66,8 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {userData ? (
-          // <div className="hidden md:flex">
-          //   <div className="relative w-10 h-10">
-          //     <Image
-          //       src={userData.profilePicture || ""}
-          //       alt="Profile"
-          //       fill
-          //       className="rounded-full object-cover cursor-pointer"
-          //     />
-          //   </div>
-          // </div>
-          <ProfileDropdown userData={userData} />
+        {user ? (
+          <ProfileDropdown userData={user} />
         ) : (
           <div className="hidden md:flex items-center gap-4">
             <Link
@@ -87,17 +79,10 @@ export default function Navbar() {
 
             <Link
               href="/signup"
-              className="px-5 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700 transition shadow-sm"
+              className="px-4 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700 transition shadow-sm"
             >
               Get Started
             </Link>
-
-            <button
-              className="px-5 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 transition shadow-sm"
-              onClick={handleLogOut}
-            >
-              Log Out
-            </button>
           </div>
         )}
 
