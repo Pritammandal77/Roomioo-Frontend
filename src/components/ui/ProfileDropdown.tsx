@@ -7,6 +7,7 @@ import { User } from "@/types/user";
 import { logOutUser } from "@/services/auth";
 import { useAppDispatch } from "@/lib/rtk/hooks";
 import { logout } from "@/lib/rtk/features/userSlice";
+import { LogOutIcon } from "lucide-react";
 
 interface Props {
   userData: User;
@@ -72,8 +73,9 @@ export default function ProfileDropdown({ userData }: Props) {
           {/* Logout */}
           <button
             onClick={handleLogOut}
-            className="w-full text-left px-4 py-2 text-red-500 hover:bg-red-50 transition"
+            className="w-full text-left px-4 py-2 flex gap-3 items-center text-red-500 hover:bg-red-50 transition"
           >
+            <LogOutIcon size={15}/>
             Logout
           </button>
         </div>
