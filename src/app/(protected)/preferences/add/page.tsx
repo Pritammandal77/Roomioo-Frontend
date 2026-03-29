@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { addPreference } from "@/services/preference";
+import { getPreference, upsertPreference } from "@/services/preference";
 import { toast } from "sonner";
 
 export default function Page() {
   const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
 
   const [formData, setFormData] = useState({
     minBudget: "",
@@ -23,27 +26,89 @@ export default function Page() {
     workStyle: "",
   });
 
+  // ✅ safer state update
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: type === "checkbox" ? checked : value,
-    });
+    }));
   };
 
   const selectBtn = (field: string, value: string) => {
-    setFormData({ ...formData, [field]: value });
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // ✅ fetch existing preference
+  useEffect(() => {
+    const fetchPreference = async () => {
+      try {
+        const res = await getPreference();
+        const data = res.data;
+        console.log(res);
+        setIsEdit(true);
+
+        setFormData({
+          minBudget: String(data.budget.min), // fix (string)
+          maxBudget: String(data.budget.max),
+          occupation: data.occupation || "",
+          personality: data.personality || "",
+          smoking: data.lifestyle?.smoking || false,
+          drinking: data.lifestyle?.drinking || false,
+          sleepSchedule: data.lifestyle?.sleepSchedule || "",
+          cleanliness: data.lifestyle?.cleanliness || 3,
+          foodPreference: data.lifestyle?.foodPreference || "",
+          pets: data.lifestyle?.pets || false,
+          gender: data.gender || "",
+          workStyle: data.workStyle || "",
+        });
+      } catch {
+        setIsEdit(false); // no preference yet
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPreference();
+  }, []);
+
+  const validateForm = () => {
+    if (!formData.minBudget || !formData.maxBudget) return "Budget required";
+    if (!formData.occupation) return "Occupation required";
+    if (!formData.personality) return "Personality required";
+    if (!formData.sleepSchedule) return "Sleep schedule required";
+    if (!formData.foodPreference) return "Food preference required";
+    if (!formData.gender) return "Gender required";
+
+    if (
+      ["Working Professional", "Freelancer"].includes(formData.occupation) &&
+      !formData.workStyle
+    ) {
+      return "Work style required";
+    }
+
+    return null;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (+formData.minBudget > +formData.maxBudget) {
-      alert("Min budget cannot be greater than max budget");
+    const error = validateForm();
+    if (error) {
+      toast.error(error);
       return;
     }
 
-    const payload = {
+    if (+formData.minBudget > +formData.maxBudget) {
+      toast.error("Min budget cannot be greater than max budget");
+      return;
+    }
+
+    const payload: any = {
       minBudget: Number(formData.minBudget),
       maxBudget: Number(formData.maxBudget),
       occupation: formData.occupation,
@@ -55,32 +120,60 @@ export default function Page() {
       foodPreference: formData.foodPreference,
       pets: formData.pets,
       gender: formData.gender,
-      workStyle: formData.workStyle,
     };
 
+    // ✅ only add if valid
+    if (["WFO", "WFH", "Hybrid"].includes(formData.workStyle)) {
+      payload.workStyle = formData.workStyle;
+    }
+
     try {
-      const res = await addPreference(payload);
-      console.log(res);
-      toast.success("Preference added successfully");
+      await upsertPreference(payload);
+
+      toast.success(
+        isEdit
+          ? "Preferences updated successfully ✅"
+          : "Preferences saved successfully ✅",
+      );
+
       router.push("/profile");
     } catch (error: any) {
-      toast.error("Something went wrong");
+      toast.error(error?.response?.data?.message || "Something went wrong");
     }
   };
 
   const pill = (active: boolean) =>
     `px-4 py-2 rounded-full text-sm font-medium transition-all border ${
       active
-        ? "bg-green-600 text-white border-green-600 shadow-md"
+        ? "bg-green-600 text-white border-green-600 shadow-md scale-105"
         : "bg-white text-gray-600 border-gray-300 hover:bg-green-100"
     }`;
+
+  // ✅ loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Loading preferences...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-linear-to-br from-green-50 via-white to-green-100 flex justify-center">
       <div className="w-full max-w-4xl mt-20 mb-10 bg-white/80 backdrop-blur-xl shadow-xl rounded-3xl p-8">
+        {/* HEADER */}
         <div className="mb-10">
-          <h1 className="text-4xl font-bold ">
-            Setup Your <span className="text-green-600">Preferences</span> 🌿
+          <h1 className="text-4xl font-bold">
+            {isEdit ? (
+              <>
+                Edit Your <span className="text-green-600">Preferences</span> ✏️
+              </>
+            ) : (
+              <>
+                Setup Your <span className="text-green-600">Preferences</span>{" "}
+                🌿
+              </>
+            )}
           </h1>
 
           <p className="text-gray-500 mt-2 text-sm max-w-md leading-relaxed">
@@ -88,7 +181,6 @@ export default function Page() {
             roommate and living space.
           </p>
 
-          {/* subtle divider */}
           <div className="mt-4 h-1 w-20 bg-green-500 rounded-full"></div>
         </div>
 
@@ -101,9 +193,8 @@ export default function Page() {
               placeholder="Min Budget"
               value={formData.minBudget}
               onChange={handleChange}
-              className="w-full p-3 rounded-xl border border-gray-300 
-focus:ring-2 focus:ring-green-500 focus:outline-none 
-bg-white shadow-sm transition"
+              className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none bg-white shadow-sm transition"
+              required
             />
             <input
               type="number"
@@ -111,9 +202,8 @@ bg-white shadow-sm transition"
               placeholder="Max Budget"
               value={formData.maxBudget}
               onChange={handleChange}
-              className="w-full p-3 rounded-xl border border-gray-300 
-focus:ring-2 focus:ring-green-500 focus:outline-none 
-bg-white shadow-sm transition"
+              className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none bg-white shadow-sm transition"
+              required
             />
           </div>
 
@@ -133,6 +223,7 @@ bg-white shadow-sm transition"
             )}
           </Section>
 
+          {/* Work Style conditional */}
           {["Working Professional", "Freelancer"].includes(
             formData.occupation,
           ) && (
@@ -154,8 +245,8 @@ bg-white shadow-sm transition"
           <Section title="Personality">
             {["introvert", "extrovert", "ambivert"].map((p) => (
               <button
-                type="button"
                 key={p}
+                type="button"
                 onClick={() => selectBtn("personality", p)}
                 className={pill(formData.personality === p)}
               >
@@ -235,9 +326,7 @@ bg-white shadow-sm transition"
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-            className="w-full p-3 rounded-xl border border-gray-300 
-focus:ring-2 focus:ring-green-500 focus:outline-none 
-bg-white shadow-sm transition"
+            className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none bg-white shadow-sm transition"
           >
             <option value="">Select gender</option>
             <option value="male">Male</option>
@@ -245,22 +334,8 @@ bg-white shadow-sm transition"
             <option value="others">Others</option>
           </select>
 
-          {/* Work Style */}
-          <Section title="Work Style">
-            {["WFO", "WFH", "Hybrid"].map((w) => (
-              <button
-                key={w}
-                type="button"
-                onClick={() => selectBtn("workStyle", w)}
-                className={pill(formData.workStyle === w)}
-              >
-                {w}
-              </button>
-            ))}
-          </Section>
-
           <button className="w-full bg-green-600 hover:bg-green-700 transition text-white py-3 rounded-xl font-semibold shadow-md">
-            Save Preferences
+            {isEdit ? "Update Preferences" : "Save Preferences"}
           </button>
         </form>
       </div>
@@ -276,9 +351,3 @@ function Section({ title, children }: any) {
     </div>
   );
 }
-
-/* Tailwind utility (add globally if needed)
-.input {
-  @apply w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 focus:outline-none bg-white shadow-sm;
-}
-*/

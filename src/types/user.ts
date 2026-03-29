@@ -16,18 +16,3 @@ export interface User {
     updatedAt: string;
 }
 
-
-export interface PreferencePayload {
-  minBudget: number;
-  maxBudget: number;
-  occupation: string;
-  personality: string;
-  smoking: boolean;
-  drinking: boolean;
-  sleepSchedule: string;
-  cleanliness: number;
-  foodPreference: string;
-  pets: boolean;
-  gender: string;
-  workStyle: string;
-}

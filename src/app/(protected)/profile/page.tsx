@@ -1,7 +1,8 @@
 "use client";
 
 import { useAppSelector } from "@/lib/rtk/hooks";
-import { getPreference, PreferenceData } from "@/services/preference";
+import { getPreference } from "@/services/preference";
+import { PreferenceData } from "@/types/preference";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -21,16 +22,24 @@ interface User {
 
 export default function Page() {
   const router = useRouter();
-  const [userPreference, setUserPreference] =
-    useState<PreferenceData | null>(null);
+  const [userPreference, setUserPreference] = useState<PreferenceData | null>(
+    null,
+  );
+
+  const [isPreferenceAdded, setIsPreferenceAdded] = useState(false);
+
   const user = useAppSelector((state): User | null => state.user.userData);
 
   useEffect(() => {
     const fetchPreference = async () => {
       try {
         const res = await getPreference();
-        console.log("preference", res.data);
         setUserPreference(res.data);
+
+        if (res.data != null) {
+          setIsPreferenceAdded(true);
+        }
+        
       } catch (error) {
         toast.error("something went wrong while fetching preference");
       }
@@ -77,15 +86,10 @@ export default function Page() {
                   onClick={() => router.push("/preferences/add")}
                   className="px-5 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition"
                 >
-                  Add Preferences
+                  {isPreferenceAdded ? <span>Edit</span> : <span>Add</span>}{" "}
+                  Preferences
                 </button>
 
-                <button
-                  onClick={() => router.push("/preferences/edit")}
-                  className="px-5 py-2 border border-green-600 text-green-700 rounded-lg font-medium hover:bg-green-50 transition"
-                >
-                  Edit Preferences
-                </button>
               </div>
             </div>
 
