@@ -121,7 +121,7 @@ export default function Page() {
           {/* PREFERENCES */}
           {userPreference && (
             <div className="bg-white rounded-2xl p-6 shadow hover:shadow-md transition h-full">
-              <h3 className="text-lg font-semibold text-gray-800 mb-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-6">
                 Preferences 🌿
               </h3>
 
@@ -187,7 +187,7 @@ export default function Page() {
 
 function MiniItem({ label, value }: any) {
   return (
-    <div className="flex justify-between text-gray-600">
+    <div className="flex justify-between text-gray-700">
       <span>{label}</span>
       <span className="font-medium capitalize text-gray-800">{value}</span>
     </div>
@@ -197,8 +197,8 @@ function MiniItem({ label, value }: any) {
 function Info({ label, value }: any) {
   return (
     <div>
-      <p className="text-gray-400 text-xs">{label}</p>
-      <p className="text-gray-700 font-medium">{value}</p>
+      <p className="text-gray-700 text-xs">{label}</p>
+      <p className="text-gray-800 font-medium">{value}</p>
     </div>
   );
 }
@@ -206,7 +206,7 @@ function Info({ label, value }: any) {
 function Card({ title, children }: any) {
   return (
     <div className="border border-gray-400 rounded-xl p-4 hover:shadow-sm transition bg-gray-50">
-      <p className="text-sm text-gray-600 mb-1">{title}</p>
+      <p className="text-sm text-gray-700 mb-1">{title}</p>
       {children}
     </div>
   );
