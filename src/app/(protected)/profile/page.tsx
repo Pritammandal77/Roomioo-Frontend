@@ -33,13 +33,13 @@ export default function Page() {
   useEffect(() => {
     const fetchPreference = async () => {
       try {
+        console.log("preference API called");
         const res = await getPreference();
         setUserPreference(res.data);
-
+        console.log("preferece data", res);
         if (res.data != null) {
           setIsPreferenceAdded(true);
         }
-        
       } catch (error) {
         toast.error("something went wrong while fetching preference");
       }
@@ -65,145 +65,148 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen pt-20 bg-white text-gray-900">
-      {/* Top Section */}
-      <div className="max-w-4xl mx-auto px-6 py-10">
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-          {/* Profile Image */}
-          <img
-            src={user.profilePicture}
-            alt="profile"
-            className="w-32 h-32 rounded-full object-cover border-4 border-green-500"
-          />
+    <div className="min-h-screen bg-linear-to-br from-green-100  to-emerald-100 pt-20">
+      {/* subtle background blobs */}
+      {/* <div className="absolute top-0 left-0 w-72 h-72 bg-green-200/40 blur-3xl rounded-full" />
+      <div className="absolute bottom-0 right-0 w-72 h-72 bg-emerald-200/40 blur-3xl rounded-full" /> */}
 
-          {/* User Info */}
-          <div className="flex-1 w-full">
-            <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
-              <h1 className="text-3xl font-semibold">{user.fullName}</h1>
-
-              <div className="flex gap-3">
-                <button
-                  onClick={() => router.push("/preferences/add")}
-                  className="px-5 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition"
-                >
-                  {isPreferenceAdded ? <span>Edit</span> : <span>Add</span>}{" "}
-                  Preferences
-                </button>
-
-              </div>
+      <div className="max-w-6xl h-auto xl:h-[80%]  mx-auto px-6 py-10 relative z-10 grid md:grid-cols-3 gap-8">
+        {/* 🔥 LEFT SIDEBAR (PROFILE CARD) */}
+        <div className="flex flex-col gap-5">
+          <div className="bg-white rounded-3xl shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition">
+            <div className="relative group">
+              <img
+                src={user.profilePicture}
+                className="w-28 h-28 rounded-full object-cover border-4 border-green-400"
+              />
+              <div className="absolute inset-0 rounded-full bg-green-400/20 blur-xl opacity-0 group-hover:opacity-100 transition" />
             </div>
 
-            {/* Stats Row (Instagram style feel) */}
-            <div className="flex gap-8 mt-6 text-sm">
-              <div>
-                <p className="font-semibold">Gender</p>
-                <p className="text-gray-500 capitalize">{user.gender}</p>
-              </div>
+            <h2 className="mt-4 text-xl font-semibold text-gray-800">
+              {user.fullName}
+            </h2>
 
-              <div>
-                <p className="font-semibold">Joined</p>
-                <p className="text-gray-500">{formatDate(user.createdAt)}</p>
-              </div>
+            <p className="text-sm text-gray-500">{user.email}</p>
 
-              <div>
-                <p className="font-semibold">Auth</p>
-                <p className="text-gray-500 capitalize">{user.authProvider}</p>
-              </div>
+            <button
+              onClick={() => router.push("/preferences")}
+              className="mt-5 w-full py-2 rounded-xl bg-linear-to-r from-green-500 to-emerald-400 text-white font-medium hover:scale-[1.02] transition shadow"
+            >
+              {isPreferenceAdded ? "Edit Preferences" : "Add Preferences"}
+            </button>
+
+            {/* mini info */}
+            <div className="mt-6 w-full space-y-3 text-sm">
+              <MiniItem label="Gender" value={user.gender} />
+              <MiniItem label="DOB" value={formatDate(user.dob)} />
+              <MiniItem label="Joined" value={formatDate(user.createdAt)} />
             </div>
+          </div>
 
-            {/* Bio Section */}
-            <div className="mt-6">
-              <p className="font-medium">Contact Info</p>
-              <p className="text-gray-600 text-sm mt-1">{user.email}</p>
-              <p className="text-gray-600 text-sm">{user.mobileNumber}</p>
-              <p className="text-gray-500 text-sm mt-2">
-                DOB: {formatDate(user.dob)}
-              </p>
+          <div className="bg-white rounded-2xl p-6 shadow hover:shadow-md transition">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Contact Information
+            </h3>
+
+            <div className="grid sm:grid-cols-2 gap-4 text-sm">
+              <Info label="Email" value={user.email} />
+              <Info label="Mobile" value={user.mobileNumber} />
             </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t mt-10" />
+        <div className="md:col-span-2 space-y-6 h-full">
+          {/* CONTACT CARD */}
 
-        {/* Preferences Section */}
-        {userPreference && (
-          <div className="mt-10">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-              Your Preferences 🌿
-            </h2>
+          {/* PREFERENCES */}
+          {userPreference && (
+            <div className="bg-white rounded-2xl p-6 shadow hover:shadow-md transition h-full">
+              <h3 className="text-lg font-semibold text-gray-800 mb-6">
+                Preferences 🌿
+              </h3>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Budget Card */}
-              <Card title="Budget">
-                <p className="text-green-600 font-semibold text-lg">
-                  ₹{userPreference.budget.min} - ₹{userPreference.budget.max}
-                </p>
-              </Card>
-
-              {/* Occupation */}
-              <Card title="Occupation">
-                <Tag text={userPreference.occupation} />
-              </Card>
-
-              {/* Personality */}
-              <Card title="Personality">
-                <Tag text={userPreference.personality} />
-              </Card>
-
-              {/* Work Style */}
-              {userPreference.workStyle && (
-                <Card title="Work Style">
-                  <Tag text={userPreference.workStyle} />
+              <div className="grid sm:grid-cols-2 gap-5">
+                <Card title="Budget">
+                  <p className="text-green-600 font-bold">
+                    ₹{userPreference.budget.min} - ₹{userPreference.budget.max}
+                  </p>
                 </Card>
-              )}
 
-              {/* Lifestyle */}
-              <Card title="Lifestyle">
-                <div className="flex flex-wrap gap-2">
-                  {userPreference.lifestyle.smoking && <Tag text="Smoking" />}
-                  {userPreference.lifestyle.drinking && <Tag text="Drinking" />}
-                  {userPreference.lifestyle.pets && <Tag text="Pets" />}
-                  <Tag text={userPreference.lifestyle.sleepSchedule} />
-                  <Tag text={userPreference.lifestyle.foodPreference} />
-                </div>
-              </Card>
+                <Card title="Occupation">
+                  <Tag text={userPreference.occupation} />
+                </Card>
 
-              {/* Cleanliness */}
-              <Card title="Cleanliness">
-                <div className="flex items-center gap-2">
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <div
-                      key={n}
-                      className={`w-4 h-4 rounded-full ${
-                        n <= userPreference.lifestyle.cleanliness
-                          ? "bg-green-500"
-                          : "bg-gray-200"
-                      }`}
-                    />
-                  ))}
-                  <span className="ml-2 text-sm text-gray-600">
-                    {userPreference.lifestyle.cleanliness}/5
-                  </span>
-                </div>
-              </Card>
+                <Card title="Personality">
+                  <Tag text={userPreference.personality} />
+                </Card>
 
-              {/* Gender Preference */}
-              <Card title="Preferred Gender">
-                <Tag text={userPreference.gender} />
-              </Card>
+                {userPreference.workStyle && (
+                  <Card title="Work Style">
+                    <Tag text={userPreference.workStyle} />
+                  </Card>
+                )}
+
+                <Card title="Lifestyle">
+                  <div className="flex flex-wrap gap-2">
+                    {userPreference.lifestyle.smoking && <Tag text="Smoking" />}
+                    {userPreference.lifestyle.drinking && (
+                      <Tag text="Drinking" />
+                    )}
+                    {userPreference.lifestyle.pets && <Tag text="Pets" />}
+                    <Tag text={userPreference.lifestyle.sleepSchedule} />
+                    <Tag text={userPreference.lifestyle.foodPreference} />
+                  </div>
+                </Card>
+
+                <Card title="Cleanliness">
+                  <div className="flex items-center gap-2">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <div
+                        key={n}
+                        className={`w-4 h-4 rounded-full ${
+                          n <= userPreference.lifestyle.cleanliness
+                            ? "bg-green-500"
+                            : "bg-gray-200"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </Card>
+
+                <Card title="Preferred Gender">
+                  <Tag text={userPreference.gender} />
+                </Card>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
+    </div>
+  );
+}
+
+function MiniItem({ label, value }: any) {
+  return (
+    <div className="flex justify-between text-gray-600">
+      <span>{label}</span>
+      <span className="font-medium capitalize text-gray-800">{value}</span>
+    </div>
+  );
+}
+
+function Info({ label, value }: any) {
+  return (
+    <div>
+      <p className="text-gray-400 text-xs">{label}</p>
+      <p className="text-gray-700 font-medium">{value}</p>
     </div>
   );
 }
 
 function Card({ title, children }: any) {
   return (
-    <div className="bg-white/70 backdrop-blur-lg border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
-      <p className="text-sm text-gray-500 mb-2">{title}</p>
+    <div className="border border-gray-400 rounded-xl p-4 hover:shadow-sm transition bg-gray-50">
+      <p className="text-sm text-gray-600 mb-1">{title}</p>
       {children}
     </div>
   );
@@ -211,7 +214,7 @@ function Card({ title, children }: any) {
 
 function Tag({ text }: { text: string }) {
   return (
-    <span className="px-3 py-1 text-sm rounded-full bg-green-100 text-green-700 capitalize">
+    <span className="px-3 py-1 text-xs rounded-full bg-green-200 text-green-800 capitalize">
       {text}
     </span>
   );

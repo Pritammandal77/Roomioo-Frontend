@@ -1,4 +1,3 @@
-
 export interface PreferencePayload {
   minBudget: number;
   maxBudget: number;
@@ -13,7 +12,6 @@ export interface PreferencePayload {
   gender: string;
   workStyle: string;
 }
-
 
 export interface PreferenceData {
   _id: string;
