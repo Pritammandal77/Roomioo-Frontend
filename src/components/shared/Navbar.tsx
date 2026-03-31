@@ -2,7 +2,7 @@
 
 import { setUser } from "@/lib/rtk/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/rtk/hooks";
-import { getCurrentUser, logOutUser } from "@/services/auth";
+import { getCurrentUser, logOutUser } from "@/services/auth.api";
 import { User } from "@/types/user";
 import { MenuIcon } from "lucide-react";
 import Image from "next/image";
@@ -53,10 +53,16 @@ export default function Navbar() {
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-8">
           <Link
-            href="/about"
+            href="/"
             className="text-gray-600 hover:text-green-600 transition"
           >
-            About
+            Home
+          </Link>
+          <Link
+            href="/rooms/new"
+            className="text-gray-600 hover:text-green-600 transition"
+          >
+            List room
           </Link>
           <Link
             href="/contact"

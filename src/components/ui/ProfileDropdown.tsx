@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import { User } from "@/types/user";
-import { logOutUser } from "@/services/auth";
+import { logOutUser } from "@/services/auth.api";
 import { useAppDispatch } from "@/lib/rtk/hooks";
 import { logout } from "@/lib/rtk/features/userSlice";
 import { LogOutIcon } from "lucide-react";

@@ -11,7 +11,7 @@ import {
   PhoneCallIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { registerUser } from "@/services/auth";
+import { registerUser } from "@/services/auth.api";
 import { toast } from "sonner";
 
 export default function SignUp() {

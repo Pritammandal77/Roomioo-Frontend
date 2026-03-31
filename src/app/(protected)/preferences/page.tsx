@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getPreference, upsertPreference } from "@/services/preference";
+import { getPreference, upsertPreference } from "@/services/preference.api";
 import { toast } from "sonner";
 
 export default function Page() {

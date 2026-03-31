@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
-import { logInUser, registerUser } from "@/services/auth";
+import { logInUser, registerUser } from "@/services/auth.api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 

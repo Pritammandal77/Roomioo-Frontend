@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/lib/rtk/hooks";
-import { getPreference } from "@/services/preference";
+import { getPreference } from "@/services/preference.api";
 import { PreferenceData } from "@/types/preference";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
