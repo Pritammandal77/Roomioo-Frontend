@@ -9,7 +9,6 @@ export default function Page() {
   const [locationMode, setLocationMode] = useState<"auto" | "manual" | null>(
     null,
   );
-  const [fullAddress, setFullAddress] = useState("");
 
   const [form, setForm] = useState<RoomForm>({
     rent: "",
@@ -28,6 +27,44 @@ export default function Page() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [locationSet, setLocationSet] = useState(false);
+
+  const [images, setImages] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    let selectedFiles = Array.from(files);
+
+    if (selectedFiles.length + images.length > 4) {
+      alert("You can upload maximum 4 images");
+      return;
+    }
+
+    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+    for (let file of selectedFiles) {
+      if (!validTypes.includes(file.type)) {
+        alert("Only JPG, JPEG, PNG allowed");
+        return;
+      }
+    }
+
+    const newImages = [...images, ...selectedFiles];
+    setImages(newImages);
+
+    const newPreviews = selectedFiles.map((file) => URL.createObjectURL(file));
+    setPreviewUrls((prev) => [...prev, ...newPreviews]);
+  };
+
+  const removeImage = (index: number) => {
+    const updatedImages = images.filter((_, i) => i !== index);
+    const updatedPreviews = previewUrls.filter((_, i) => i !== index);
+
+    setImages(updatedImages);
+    setPreviewUrls(updatedPreviews);
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -58,47 +95,11 @@ export default function Page() {
         const lng = position.coords.longitude;
 
         try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`,
-          );
-
-          const data = await res.json();
-          const address = data.address;
-
-          // ✅ CITY (better fallback chain)
-          const city =
-            address.city ||
-            address.town ||
-            address.village ||
-            address.municipality ||
-            address.county ||
-            address.state_district ||
-            "";
-
-          // ✅ AREA (DETAILED LOCATION)
-          const area =
-            address.neighbourhood ||
-            address.suburb ||
-            address.hamlet ||
-            address.residential ||
-            address.road ||
-            address.quarter ||
-            address.city_district ||
-            address.state_district ||
-            "";
-
-          // ✅ OPTIONAL: FULL DISPLAY NAME (SUPER IMPORTANT 🔥)
-          const fullAddress = data.display_name;
-
           setForm((prev) => ({
             ...prev,
             coordinates: [lng, lat],
-            city,
-            area,
           }));
 
-          setFullAddress(data.display_name);
-          console.log("📍 Full Address:", fullAddress); // debug
           setLocationSet(true);
         } catch (err) {
           console.error(err);
@@ -114,25 +115,40 @@ export default function Page() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!locationMode) {
-      alert("Please select location method");
+    if (images.length === 0) {
+      alert("At least 1 image is required");
       return;
     }
 
-    if (locationMode === "auto" && form.coordinates.length !== 2) {
-      alert("Please fetch your location");
-      return;
-    }
-
-    if (locationMode === "manual" && (!form.city || !form.area)) {
-      alert("Please enter city and area");
+    if (images.length > 4) {
+      alert("Max 4 images allowed");
       return;
     }
 
     try {
       setLoading(true);
-      const res = await listNewRoom(form);
-      console.log("uploaded room", res);
+
+      const formData = new FormData();
+
+      Object.entries(form).forEach(([key, value]) => {
+        if (key === "coordinates") {
+          formData.append("coordinates", JSON.stringify(value));
+        } else {
+          formData.append(key, String(value));
+        }
+      });
+
+      images.forEach((img) => {
+        formData.append("pictures", img);
+      });
+
+      const res = await axiosInstance.post(
+        "/api/rooms/list-new-room",
+        formData,
+        { withCredentials: true },
+      );
+
+      console.log(res);
       alert("Room listed successfully 🚀");
     } catch (err: any) {
       alert(err.response?.data?.message || "Error");
@@ -173,7 +189,6 @@ export default function Page() {
             value={form.city}
             onChange={handleChange}
             className="input"
-            disabled={locationMode === "auto"}
           />
 
           <input
@@ -182,7 +197,6 @@ export default function Page() {
             value={form.area}
             onChange={handleChange}
             className="input md:col-span-2"
-            disabled={locationMode === "auto"}
           />
         </div>
 
@@ -237,12 +251,6 @@ export default function Page() {
             >
               ✏️ Add Manually
             </button>
-
-            {locationMode === "auto" && fullAddress && (
-              <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-sm text-green-700">
-                📍 {fullAddress}
-              </div>
-            )}
           </div>
 
           {/* AUTO STATUS */}
@@ -292,6 +300,7 @@ export default function Page() {
             max={5}
             onChange={handleChange}
             className="input"
+            placeholder="Cleaniness level"
           />
 
           <select
@@ -324,28 +333,72 @@ export default function Page() {
           </select>
         </div>
 
-        {/* Toggles */}
-        <div className="flex flex-wrap gap-4">
-          {[
-            { name: "smoking", label: "Smoking" },
-            { name: "drinking", label: "Drinking" },
-            { name: "pets", label: "Pets" },
-          ].map((item) => (
-            <label
-              key={item.name}
-              className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full cursor-pointer hover:bg-green-100 transition"
-            >
-              <input
-                type="checkbox"
-                name={item.name}
-                onChange={handleChange}
-                className="accent-green-600"
-              />
-              <span className="text-sm font-medium text-gray-700">
-                {item.label}
-              </span>
-            </label>
-          ))}
+        <div className="flex flex-col gap-3 py-5">
+          <p> Is allowed ? mark the checkbox if allowed</p>
+
+          {/* Toggles */}
+          <div className="flex flex-wrap gap-4">
+            {[
+              { name: "smoking", label: "Smoking" },
+              { name: "drinking", label: "Drinking" },
+              { name: "pets", label: "Pets" },
+            ].map((item) => (
+              <label
+                key={item.name}
+                className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full cursor-pointer hover:bg-green-100 transition"
+              >
+                <input
+                  type="checkbox"
+                  name={item.name}
+                  onChange={handleChange}
+                  className="accent-green-600"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  {item.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Image Upload */}
+        <div className="space-y-3">
+          <p className="text-sm font-medium text-gray-600">
+            Upload Room Images (1–4)
+          </p>
+
+          <input
+            type="file"
+            accept="image/png, image/jpeg, image/jpg"
+            multiple
+            onChange={handleImageChange}
+            className="input"
+          />
+
+          {/* Preview */}
+          <div className="flex flex-wrap gap-3 mt-2">
+            {previewUrls.map((url, index) => (
+              <div
+                key={index}
+                className="relative w-24 h-24 rounded-xl overflow-hidden border"
+              >
+                <img
+                  src={url}
+                  alt="preview"
+                  className="w-full h-full object-cover"
+                />
+
+                {/* remove btn */}
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Submit */}
