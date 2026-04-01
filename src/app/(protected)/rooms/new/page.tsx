@@ -18,6 +18,7 @@ import {
   Cigarette,
   Wine,
   PawPrint,
+  Text,
 } from "lucide-react";
 
 export default function Page() {
@@ -27,6 +28,7 @@ export default function Page() {
 
   const [form, setForm] = useState<RoomForm>({
     rent: "",
+    description: "",
     city: "",
     area: "",
     coordinates: [],
@@ -38,6 +40,12 @@ export default function Page() {
     pets: false,
     preferredGender: "male",
     workStyle: "WFO",
+    roomType: "",
+    AC: false,
+    refrigerator: false,
+    parking: false,
+    furnishedLevel: "",
+    isPersonalRoomAvailable: false,
   });
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -82,7 +90,7 @@ export default function Page() {
   };
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
 
@@ -164,7 +172,7 @@ export default function Page() {
       );
 
       console.log(res);
-      alert("Room listed successfully 🚀");
+      alert("Room listed successfully");
     } catch (err: any) {
       alert(err.response?.data?.message || "Error");
     } finally {
@@ -221,7 +229,7 @@ export default function Page() {
               />
             </div>
 
-            <div className="md:col-span-2">
+            <div className="">
               <label className="label">
                 <MapPin size={16} className="icon" />
                 Area / Locality
@@ -233,44 +241,51 @@ export default function Page() {
                 className="input"
               />
             </div>
+
+            <div className="">
+              <label className="label">
+                <MapPin size={16} className="icon" />
+                Add Location
+              </label>
+              <div className="w-full pb-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLocationMode("auto");
+                    getLocation();
+                    setForm((prev) => ({ ...prev, city: "", area: "" }));
+                  }}
+                  className={`btn-toggle ${locationMode === "auto" && "active"} w-full`}
+                >
+                  Auto Detect
+                </button>
+              </div>
+
+              {locationMode === "auto" && locationSet && (
+                <p className="text-green-600 text-sm">✅ Location detected</p>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* ================= LOCATION ================= */}
         <div className="space-y-4">
-          <h2 className="section-title">
-            <MapPin size={18} className="section-icon" />
-            Location
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => {
-                setLocationMode("auto");
-                getLocation();
-                setForm((prev) => ({ ...prev, city: "", area: "" }));
-              }}
-              className={`btn-toggle ${locationMode === "auto" && "active"}`}
-            >
-              📍 Auto Detect
-            </button>
+          <h2 className="text-lg font-semibold text-gray-700">Description</h2>
 
-            <button
-              type="button"
-              onClick={() => {
-                setLocationMode("manual");
-                setLocationSet(false);
-                setForm((prev) => ({ ...prev, coordinates: [] }));
-              }}
-              className={`btn-toggle ${locationMode === "manual" && "active"}`}
-            >
-              ✏️ Manual Entry
-            </button>
+          <div>
+            <label className="label flex items-center gap-2">
+              <Text size={16} className="icon" />
+              Description
+            </label>
+
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              className="input min-h-30 resize-none"
+              placeholder="Write details about the room, amenities, rules, etc..."
+              required
+            />
           </div>
-
-          {locationMode === "auto" && locationSet && (
-            <p className="text-green-600 text-sm">✅ Location detected</p>
-          )}
         </div>
 
         {/* ================= PREFERENCES ================= */}
@@ -399,6 +414,72 @@ export default function Page() {
                 </label>
               );
             })}
+          </div>
+        </div>
+
+        {/* ================= AMENITIES ================= */}
+        <div className="space-y-4">
+          <h2 className="section-title">🏠 Amenities</h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Room Type */}
+            <div>
+              <label className="label">Room Type</label>
+              <select
+                name="roomType"
+                value={form.roomType}
+                onChange={handleChange}
+                className="input"
+              >
+                <option value="">Select</option>
+                <option value="1 BHK">1 BHK</option>
+                <option value="2 BHK">2 BHK</option>
+                <option value="3 BHK">3 BHK</option>
+                <option value="Single room">Single Room</option>
+                <option value="PG">PG</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            {/* Furnished Level */}
+            <div>
+              <label className="label">Furnishing</label>
+              <select
+                name="furnishedLevel"
+                value={form.furnishedLevel}
+                onChange={handleChange}
+                className="input"
+              >
+                <option value="">Select</option>
+                <option value="semi furnished">Semi Furnished</option>
+                <option value="full furnished">Fully Furnished</option>
+                <option value="non furnished">Non Furnished</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Boolean Amenities */}
+          <div className="flex flex-wrap gap-3 mt-2">
+            {[
+              { name: "AC", label: "AC" },
+              { name: "refrigerator", label: "Refrigerator" },
+              { name: "parking", label: "Parking" },
+              { name: "isPersonalRoomAvailable", label: "Personal Room" },
+            ].map((item) => (
+              <label
+                key={item.name}
+                className="toggle-pill flex items-center gap-2"
+              >
+                <input
+                  type="checkbox"
+                  name={item.name}
+                  checked={form[item.name as keyof typeof form] as boolean}
+                  onChange={handleChange}
+                  className="accent-green-600"
+                />
+                <span>{item.label}</span>
+              </label>
+            ))}
           </div>
         </div>
 
