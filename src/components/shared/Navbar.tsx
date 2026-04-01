@@ -65,6 +65,12 @@ export default function Navbar() {
             List room
           </Link>
           <Link
+            href="/rooms/all-rooms"
+            className="text-gray-600 hover:text-green-600 transition"
+          >
+            all room
+          </Link>
+          <Link
             href="/contact"
             className="text-gray-600 hover:text-green-600 transition"
           >
