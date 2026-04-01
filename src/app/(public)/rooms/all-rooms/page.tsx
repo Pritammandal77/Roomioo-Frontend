@@ -14,7 +14,7 @@ function Page() {
       try {
         const res = await fetchAllListings();
         setAllListingsData(res.data);
-        console.log(res.data)
+        console.log(res.data);
       } catch (error) {
         toast.error("Something went wrong");
       } finally {
@@ -27,7 +27,6 @@ function Page() {
 
   return (
     <div className="min-h-screen pt-20 xl:px-30 bg-linear-to-br from-green-50 via-white to-green-100 px-6 py-10">
-
       {/* HEADER */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">
@@ -50,7 +49,7 @@ function Page() {
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3  gap-6">
           {allListingsData.map((listing) => (
-            <ListingCard key={listing._id} listing={listing} />
+            <ListingCard key={listing._id} id={listing._id} listing={listing} />
           ))}
         </div>
       )}

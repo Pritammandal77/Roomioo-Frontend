@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 import { MapPin, IndianRupee } from "lucide-react";
+import Link from "next/link";
 
-export default function ListingCard({ listing, index }: any) {
+export default function ListingCard({ listing, id, index }: any) {
   const { rent, location, pictures, amenities } = listing;
 
   return (
@@ -35,7 +36,6 @@ export default function ListingCard({ listing, index }: any) {
 
       {/* CONTENT */}
       <div className="p-5">
-        
         {/* TITLE */}
         <h3 className="text-lg font-semibold text-gray-800">
           {amenities?.roomType} in {location?.area}
@@ -54,9 +54,11 @@ export default function ListingCard({ listing, index }: any) {
         </p>
 
         {/* CTA */}
-        <button className="mt-4 w-full py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition">
-          View Details
-        </button>
+        <Link href={`/rooms/${id}`}>
+          <button className="mt-4 w-full py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition">
+            View Details
+          </button>
+        </Link>
       </div>
     </motion.div>
   );

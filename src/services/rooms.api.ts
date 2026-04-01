@@ -12,3 +12,8 @@ export const fetchAllListings = async () => {
     const res = await axiosInstance.get("/api/rooms/all-listings")
     return res.data
 }
+
+export const fetchPropertyData = async (id: any) => {
+    const res = await axiosInstance.get(`/api/rooms/listing/${id}`)
+    return res;
+}

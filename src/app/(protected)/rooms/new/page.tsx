@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import axios from "axios";
 import { axiosInstance } from "@/lib/axiosInstance";
-import { listNewRoom } from "@/services/rooms.api";
 import {
   IndianRupee,
   MapPin,
