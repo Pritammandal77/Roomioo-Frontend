@@ -5,8 +5,8 @@ import { MapPin, IndianRupee } from "lucide-react";
 import Link from "next/link";
 
 export default function ListingCard({ listing, id, index }: any) {
-  const { rent, location, pictures, amenities } = listing;
-
+  const { rent, location, pictures, amenities, matchPercentage } = listing;
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -29,9 +29,9 @@ export default function ListingCard({ listing, id, index }: any) {
         </div>
 
         {/* OPTIONAL: MATCH BADGE (future use) */}
-        {/* <div className="absolute top-3 right-3 bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow">
-          92% Match
-        </div> */}
+        <div className={`absolute top-3 right-3 ${matchPercentage > 50 ? "bg-green-600" : "bg-orange-400"}  text-white text-sm px-3 py-1 rounded-full shadow`}>
+          {matchPercentage}% Match
+        </div>
       </div>
 
       {/* CONTENT */}
