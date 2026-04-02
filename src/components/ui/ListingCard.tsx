@@ -28,10 +28,13 @@ export default function ListingCard({ listing, id, index }: any) {
           {amenities?.roomType}
         </div>
 
-        {/* OPTIONAL: MATCH BADGE (future use) */}
-        <div className={`absolute top-3 right-3 ${matchPercentage > 50 ? "bg-green-600" : "bg-orange-400"}  text-white text-sm px-3 py-1 rounded-full shadow`}>
-          {matchPercentage}% Match
-        </div>
+        {matchPercentage && (
+          <div
+            className={`absolute top-3 right-3 ${matchPercentage > 50 ? "bg-green-600" : "bg-orange-400"}  text-white text-sm px-3 py-1 rounded-full shadow`}
+          >
+            {matchPercentage}% Match
+          </div>
+        )}
       </div>
 
       {/* CONTENT */}

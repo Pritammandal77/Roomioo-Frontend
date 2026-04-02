@@ -56,19 +56,13 @@ export default function Navbar() {
               href="/rooms/new"
               className="text-gray-600 hover:text-green-600"
             >
-              List room
+              List Property
             </Link>
             <Link
               href="/rooms/all-rooms"
               className="text-gray-600 hover:text-green-600"
             >
-              all room
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-600 hover:text-green-600"
-            >
-              Contact
+              Explore
             </Link>
           </nav>
 
@@ -124,7 +118,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               className="block text-gray-600"
             >
-              Rooms
+              Explore
             </Link>
             {user && (
               <Link
@@ -136,10 +130,21 @@ export default function Navbar() {
               </Link>
             )}
 
+            <Link
+              href="/rooms/new"
+              className="block text-gray-600"
+              onClick={() => setIsOpen(false)}
+            >
+              List Property
+            </Link>
+
             {!user && (
               <div className="w-full items-center gap-4">
                 <Link href="/signup">
-                  <button className="px-4 py-2 w-full rounded-xl bg-green-600 text-white hover:bg-green-700">
+                  <button
+                    className="px-4 py-2 w-full rounded-xl bg-green-600 text-white hover:bg-green-700"
+                    onClick={() => setIsOpen(false)}
+                  >
                     Get Started
                   </button>
                 </Link>
