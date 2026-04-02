@@ -37,6 +37,7 @@ export default function Page() {
     foodPreference: "veg",
     pets: false,
     preferredGender: "male",
+    occupation: "student",
     workStyle: "WFO",
     roomType: "",
     AC: false,
@@ -251,7 +252,6 @@ export default function Page() {
                   onClick={() => {
                     setLocationMode("auto");
                     getLocation();
-                    setForm((prev) => ({ ...prev, city: "", area: "" }));
                   }}
                   className={`btn-toggle ${locationMode === "auto" && "active"} w-full`}
                 >
@@ -363,7 +363,24 @@ export default function Page() {
               </select>
             </div>
 
-            <div className="md:col-span-2">
+            <div className="">
+              <label className="label">
+                <Briefcase size={16} className="icon" />
+                Occupation
+              </label>
+              <select
+                name="occupation"
+                onChange={handleChange}
+                className="input"
+              >
+                <option value="">Select</option>
+                <option value="student">Student</option>
+                <option value="working professional">Workng Professional</option>
+                <option value="others">Others</option>
+              </select>
+            </div>
+
+            <div className="">
               <label className="label">
                 <Briefcase size={16} className="icon" />
                 Work Style
@@ -580,11 +597,6 @@ export default function Page() {
         }
       `}</style>
     </div>
-
-
-
-
-
 
     // <div className="min-h-screen py-20 bg-linear-to-br from-green-50 via-white to-green-100 flex items-center justify-center p-6">
     //   <form

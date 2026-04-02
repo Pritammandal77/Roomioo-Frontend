@@ -13,6 +13,7 @@ interface RoomForm {
   foodPreference: "veg" | "non-veg";
   pets: boolean;
   preferredGender: "male" | "female" | "others";
+  occupation : "student" | "working professional" | "others"
   workStyle: "WFO" | "WFH" | "Hybrid";
   roomType: string;
   AC: boolean,

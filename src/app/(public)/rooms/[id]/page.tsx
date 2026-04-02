@@ -27,7 +27,6 @@ import AmenityCard from "@/components/ui/AmenityCard";
 function Page() {
   const { id } = useParams();
   const [propertyData, setPropertyData] = useState<any>(null);
-  const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
     if (!id) return;
@@ -36,7 +35,6 @@ function Page() {
       try {
         const res = await fetchPropertyData(id);
         setPropertyData(res.data.data);
-        console.log(res.data.data);
       } catch (error) {
         toast.error("Error fetching data");
       }
@@ -71,14 +69,13 @@ function Page() {
   return (
     <div className="min-h-screen bg-gray-50 py-20">
       <div className="max-w-6xl mx-auto">
+        
+        {/* Image slider component */}
         <ImageSlider images={pictures} />
 
-        {/* INFO SECTION */}
         <div className="grid md:grid-cols-3 gap-6 mt-6">
-          {/* LEFT MAIN */}
           <div className="md:col-span-2 space-y-6">
-            {/* TITLE */}
-
+            
             <div className="bg-white rounded-2xl shadow-sm flex flex-col md:flex-row">
               <div className="flex flex-col w-full md:w-[70%] p-5">
                 <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
