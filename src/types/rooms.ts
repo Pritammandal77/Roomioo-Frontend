@@ -1,6 +1,6 @@
 
 
-interface RoomForm {
+export interface RoomForm {
   rent: number | "";
   description: string,
   city: string;
@@ -22,3 +22,41 @@ interface RoomForm {
   furnishedLevel: string,
   isPersonalRoomAvailable: boolean,
 }
+
+export type FiltersType = {
+  minRent: string;
+  maxRent: string;
+
+  city: string;
+  area: string;
+
+  roomType: string[];
+
+  AC?: boolean;
+  parking?: boolean;
+  refrigerator?: boolean;
+
+  furnishedLevel: string;
+  isPersonalRoomAvailable?: boolean;
+
+  // preferences
+  smoking?: boolean;
+  drinking?: boolean;
+  pets?: boolean;
+
+  sleepSchedule: string;
+  foodPreference: string;
+  preferredGender: string;
+  occupation: string;
+  workStyle: string;
+};
+
+export type FilterPanelProps = {
+  filters: FiltersType;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  handleRoomType: (type: string) => void;
+  applyFilters: () => void;
+  handleClearFilters: () => void;
+};

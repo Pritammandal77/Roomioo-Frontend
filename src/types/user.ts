@@ -16,30 +16,3 @@ export interface User {
     updatedAt: string;
 }
 
-export type FiltersType = {
-  minRent: string;
-  maxRent: string;
-
-  city: string;
-  area: string;
-
-  roomType: string[];
-
-  AC?: boolean;
-  parking?: boolean;
-  refrigerator?: boolean;
-
-  furnishedLevel: string;
-  isPersonalRoomAvailable?: boolean;
-
-  // preferences
-  smoking?: boolean;
-  drinking?: boolean;
-  pets?: boolean;
-
-  sleepSchedule: string;
-  foodPreference: string;
-  preferredGender: string;
-  occupation: string;
-  workStyle: string;
-};

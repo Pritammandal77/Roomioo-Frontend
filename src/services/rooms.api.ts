@@ -1,4 +1,5 @@
 import { axiosInstance } from "@/lib/axiosInstance";
+import { RoomForm } from "@/types/rooms";
 
 export const listNewRoom = async (form: RoomForm) => {
     const res = await axiosInstance.post("/api/rooms/list-new-room", form, {
