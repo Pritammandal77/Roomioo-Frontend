@@ -9,8 +9,8 @@ function FilterPanel({
   handleClearFilters,
 }: FilterPanelProps) {
   return (
-    <div className="flex flex-col gap-3">
-      <h2 className="text-xl font-semibold">Filters</h2>
+    <div className="flex flex-col gap-3 px-4 xl:px-0 bg-white z-10">
+      <h2 className="text-xl font-semibold hidden xl:inline">Filters</h2>
 
       {/* RENT */}
       <div>
@@ -166,7 +166,7 @@ function FilterPanel({
       </div>
 
       {/* 🚀 BUTTONS */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 sticky bottom-0 bg-white p-3 shadow-md xl:static xl:shadow-none xl:p-0">
         <button
           onClick={applyFilters}
           className="w-full bg-green-600 text-white p-2 rounded-lg"
