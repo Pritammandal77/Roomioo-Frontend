@@ -17,3 +17,8 @@ export const fetchPropertyData = async (id: any) => {
     const res = await axiosInstance.get(`/api/rooms/listing/${id}`)
     return res;
 }
+
+export const filterListings = async (filter: any) => {
+    const res = await axiosInstance.post("/api/rooms/filter", filter)
+    return res.data;
+}

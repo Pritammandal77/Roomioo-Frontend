@@ -16,7 +16,6 @@ export const logOutUser = async () => {
     return res.data
 }
 
-
 export const logInUser = async (data: any) => {
   const res = await axiosInstance.post("/api/user/login", data);
   return res.data;
