@@ -132,7 +132,7 @@ function Page() {
   };
 
   return (
-    <div className="min-h-screen pt-20 xl:px-15 bg-linear-to-br from-green-50 via-white to-green-100 px-6 py-10 relative">
+    <div className="min-h-screen pt-20 xl:px-15 bg-linear-to-br from-green-50 via-white to-green-100 px-3 py-10 relative">
       {/* <div className="mb-8 ">
         <h1 className="text-3xl font-bold text-gray-800">
           Find Your Perfect Room
@@ -141,7 +141,7 @@ function Page() {
 
       <div className="w-full flex flex-col xl:flex-row gap-6">
         {/* filters for xl screens */}
-        <div className="hidden xl:block xl:w-[25%]">
+        <div className="hidden xl:block xl:w-[20%]">
           <div className="custom-scrollbar fixed top-20 left-10 w-[25%] h-[calc(100vh-80px)] overflow-y-auto bg-white rounded-xl shadow-sm p-4">
             <FilterPanel
               filters={filters}
@@ -167,7 +167,7 @@ function Page() {
         </div>
 
         {/* LISTINGS */}
-        <div className="xl:w-[75%]">
+        <div className="xl:w-[75%] xl:ml-[7%]">
           {loading ? (
             <p>Loading...</p>
           ) : allListingsData.length === 0 ? (

@@ -18,6 +18,7 @@ import {
   PawPrint,
   Text,
 } from "lucide-react";
+import { RoomForm } from "@/types/rooms";
 
 export default function Page() {
   const [locationMode, setLocationMode] = useState<"auto" | "manual" | null>(

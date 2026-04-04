@@ -4,7 +4,7 @@ import { setUser } from "@/lib/rtk/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/rtk/hooks";
 import { getCurrentUser, logOutUser } from "@/services/auth.api";
 import { User } from "@/types/user";
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProfileDropdown from "../ui/ProfileDropdown";
@@ -91,7 +91,7 @@ export default function Navbar() {
             className="md:hidden text-gray-700"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <MenuIcon />
+            {isOpen ? <X /> : <MenuIcon />}
           </button>
         </div>
 
