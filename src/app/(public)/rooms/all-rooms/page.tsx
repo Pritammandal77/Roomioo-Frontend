@@ -141,14 +141,16 @@ function Page() {
 
       <div className="w-full flex flex-col xl:flex-row gap-6">
         {/* filters for xl screens */}
-        <div className="hidden xl:inline xl:w-[25%] bg-white">
-          <FilterPanel
-            filters={filters}
-            handleChange={handleChange}
-            handleRoomType={handleRoomType}
-            applyFilters={applyFilters}
-            handleClearFilters={handleClearFilters}
-          />
+        <div className="hidden xl:block xl:w-[25%]">
+          <div className="custom-scrollbar fixed top-20 left-10 w-[25%] h-[calc(100vh-80px)] overflow-y-auto bg-white rounded-xl shadow-sm p-4">
+            <FilterPanel
+              filters={filters}
+              handleChange={handleChange}
+              handleRoomType={handleRoomType}
+              applyFilters={applyFilters}
+              handleClearFilters={handleClearFilters}
+            />
+          </div>
         </div>
 
         {/* menu for sm to md screens */}
@@ -184,25 +186,24 @@ function Page() {
         </div>
       </div>
 
-    {/* for showing filter panel on mobile & tablet screens */}
-        <div
-          className={`xl:hidden w-full h-screen flex flex-col bg-white fixed top-0 right-0 pt-16 overflow-y-scroll
+      {/* for showing filter panel on mobile & tablet screens */}
+      <div
+        className={`xl:hidden w-full h-screen flex flex-col bg-white fixed top-0 right-0 pt-16 overflow-y-scroll
         transform transition-transform duration-300 ease-in-out
   ${isShowFiltersPanel ? "translate-x-0" : "-translate-x-full"}`}
-        >
-          <div className="flex items-center justify-between p-3 pb-6">
-            <p className="font-semibold">Filters</p>
-            <X onClick={() => setIsShowFiltersPanel((prev) => !prev)} />
-          </div>
-          <FilterPanel
-            filters={filters}
-            handleChange={handleChange}
-            handleRoomType={handleRoomType}
-            applyFilters={applyFilters}
-            handleClearFilters={handleClearFilters}
-          />
+      >
+        <div className="flex items-center justify-between p-3 pb-6">
+          <p className="font-semibold">Filters</p>
+          <X onClick={() => setIsShowFiltersPanel((prev) => !prev)} />
         </div>
-      
+        <FilterPanel
+          filters={filters}
+          handleChange={handleChange}
+          handleRoomType={handleRoomType}
+          applyFilters={applyFilters}
+          handleClearFilters={handleClearFilters}
+        />
+      </div>
     </div>
   );
 }
