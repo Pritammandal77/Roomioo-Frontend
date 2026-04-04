@@ -61,7 +61,7 @@ export default function WhyChooseUs() {
         </div>
 
         {/* BOTTOM GRID */}
-        <div className="mt-16 grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="hidden  mt-16 xl:grid sm:grid-cols-2 md:grid-cols-3 gap-6">
           <MiniCard icon={SlidersHorizontal} title="Smart Filters" />
           <MiniCard icon={Zap} title="Quick Process" />
           <MiniCard icon={Users} title="Community Driven" />
