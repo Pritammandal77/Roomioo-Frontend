@@ -57,7 +57,7 @@ export default function ListingCard({ listing, id, index }: any) {
         </p>
 
         {/* CTA */}
-        <Link href={`/rooms/${id}`}>
+        <Link href={`/listings/${id}`}>
           <button className="mt-4 w-full py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition">
             View Details
           </button>

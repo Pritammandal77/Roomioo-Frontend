@@ -59,7 +59,7 @@ export default function Navbar() {
               List Property
             </Link>
             <Link
-              href="/rooms/all-rooms"
+              href="/listings/all"
               className="text-gray-600 hover:text-green-600"
             >
               Explore
@@ -114,7 +114,7 @@ export default function Navbar() {
               Home
             </Link>
             <Link
-              href="/rooms/all-rooms"
+              href="/listings/all"
               onClick={() => setIsOpen(false)}
               className="block text-gray-600"
             >

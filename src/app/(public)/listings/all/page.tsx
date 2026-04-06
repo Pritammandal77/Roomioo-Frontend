@@ -1,5 +1,6 @@
 "use client";
 
+import ListingCardSkeleton from "@/components/loaders/ListingCardSkeleton";
 import FilterPanel from "@/components/ui/FilterPanel";
 import ListingCard from "@/components/ui/ListingCard";
 import { fetchAllListings, filterListings } from "@/services/rooms.api";
@@ -167,18 +168,24 @@ function Page() {
         </div>
 
         {/* LISTINGS */}
-        <div className="xl:w-[75%] xl:ml-[7%]">
+        {/* LISTINGS */}
+        <div className="xl:w-[75%] xl:ml-[7%] w-full">
           {loading ? (
-            <p>Loading...</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {[...Array(6)].map((_, i) => (
+                <ListingCardSkeleton key={i} />
+              ))}
+            </div>
           ) : allListingsData.length === 0 ? (
             <p>No rooms found</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {allListingsData.map((listing) => (
+              {allListingsData.map((listing, index) => (
                 <ListingCard
                   key={listing._id}
                   id={listing._id}
                   listing={listing}
+                  index={index}
                 />
               ))}
             </div>

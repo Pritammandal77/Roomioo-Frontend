@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
+import Link from "next/link";
 
 const listings = [
   {
@@ -10,8 +11,7 @@ const listings = [
     location: "Pune",
     rent: "₹8,500 / month",
     match: "92%",
-    image:
-      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800",
+    image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800",
   },
   {
     id: 2,
@@ -19,8 +19,7 @@ const listings = [
     location: "Mumbai",
     rent: "₹12,000 / month",
     match: "87%",
-    image:
-      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800",
+    image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800",
   },
   {
     id: 3,
@@ -28,8 +27,7 @@ const listings = [
     location: "Bangalore",
     rent: "₹6,500 / month",
     match: "90%",
-    image:
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
   },
 ];
 
@@ -37,7 +35,6 @@ export default function FeaturedListings() {
   return (
     <section className="w-full py-24 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
-        
         {/* Heading */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
           <div>
@@ -49,10 +46,12 @@ export default function FeaturedListings() {
             </p>
           </div>
 
-          {/* View All Button */}
-          <button className="mt-6 md:mt-0 px-6 py-3 rounded-xl border border-green-600 text-green-600 hover:bg-green-50 transition">
-            View All
-          </button>
+          <Link href="/listings/all">
+            {/* View All Button */}
+            <button className="mt-6 md:mt-0 px-6 py-3 rounded-xl border border-green-600 text-green-600 hover:bg-green-50 transition">
+              View All
+            </button>
+          </Link>
         </div>
 
         {/* Listings Grid */}
@@ -65,7 +64,6 @@ export default function FeaturedListings() {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               className="group rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl transition"
             >
-              
               {/* Image */}
               <div className="relative h-52 overflow-hidden">
                 <img
@@ -93,9 +91,7 @@ export default function FeaturedListings() {
                 </div>
 
                 {/* Rent */}
-                <p className="mt-4 text-green-600 font-semibold">
-                  {item.rent}
-                </p>
+                <p className="mt-4 text-green-600 font-semibold">{item.rent}</p>
 
                 {/* CTA */}
                 <button className="mt-4 w-full py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition">
