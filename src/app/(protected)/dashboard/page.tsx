@@ -3,11 +3,14 @@ import { fetchInterests } from "@/services/interest.api";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import InterestsCard from "@/components/ui/InterestsCard";
 
 function Page() {
   const [outGoingInterests, setOutGoingInterests] = useState([]);
   const [inComingInterests, setInComingInterests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("incoming");
 
   useEffect(() => {
     const fetchInterestsData = async () => {
@@ -15,6 +18,7 @@ function Page() {
         const res = await fetchInterests();
         setOutGoingInterests(res.data.outgoing || []);
         setInComingInterests(res.data.incoming || []);
+        console.log(res);
       } catch (error) {
         toast.error("Something went wrong while fetching interests");
       } finally {
@@ -25,50 +29,6 @@ function Page() {
     fetchInterestsData();
   }, []);
 
-  const Card = ({ item, type }: any) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.03 }}
-      className="bg-white/70 backdrop-blur-lg border border-green-100 shadow-md rounded-2xl p-4 flex flex-col gap-2"
-    >
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-gray-800">
-          {item?.propertyLister?.name || "User"}
-        </h3>
-        <span
-          className={`text-xs px-2 py-1 rounded-full ${
-            type === "incoming"
-              ? "bg-green-100 text-green-700"
-              : "bg-yellow-100 text-yellow-700"
-          }`}
-        >
-          {type === "incoming" ? "Incoming" : "Outgoing"}
-        </span>
-      </div>
-
-      <p className="text-sm text-gray-500 line-clamp-2">
-        {item?.message || "No message provided"}
-      </p>
-
-      <div className="flex justify-between items-center mt-2">
-        <span className="text-xs text-gray-400">
-          Property ID: {item?.propertyId || "N/A"}
-        </span>
-
-        {type === "incoming" && (
-          <div className="flex gap-2">
-            <button className="px-3 py-1 text-xs bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-              Accept
-            </button>
-            <button className="px-3 py-1 text-xs bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-              Reject
-            </button>
-          </div>
-        )}
-      </div>
-    </motion.div>
-  );
 
   return (
     <div className="min-h-screen pt-20 px-4 md:px-10 bg-linear-to-br from-green-50 via-white to-green-100">
@@ -80,46 +40,70 @@ function Page() {
         {loading ? (
           <div className="text-center text-gray-500">Loading...</div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="max-w-5xl mx-auto">
+            {/* Tabs */}
+            <div className="flex gap-3 mb-6 bg-green-50 p-2 rounded-xl w-fit">
+              <button
+                onClick={() => setActiveTab("incoming")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                  activeTab === "incoming"
+                    ? "bg-green-600 text-white shadow"
+                    : "text-green-700"
+                }`}
+              >
+                Incoming
+              </button>
 
-            {/* Incoming */}
-            <div>
-              <h2 className="text-xl font-semibold text-green-700 mb-4">
-                Incoming Requests
-              </h2>
-
-              <div className="flex flex-col gap-4">
-                {inComingInterests.length > 0 ? (
-                  inComingInterests.map((item, index) => (
-                    <Card key={index} item={item} type="incoming" />
-                  ))
-                ) : (
-                  <p className="text-gray-400 text-sm">
-                    No incoming requests
-                  </p>
-                )}
-              </div>
+              <button
+                onClick={() => setActiveTab("outgoing")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                  activeTab === "outgoing"
+                    ? "bg-green-600 text-white shadow"
+                    : "text-green-700"
+                }`}
+              >
+                Outgoing
+              </button>
             </div>
 
-            {/* Outgoing */}
-            <div>
-              <h2 className="text-xl font-semibold text-green-700 mb-4">
-                Outgoing Requests
-              </h2>
+            {/* Content */}
+            <div className="space-y-4">
+              {activeTab === "incoming" && (
+                <>
+                  <h2 className="text-xl font-semibold text-green-700">
+                    Incoming Requests
+                  </h2>
 
-              <div className="flex flex-col gap-4">
-                {outGoingInterests.length > 0 ? (
-                  outGoingInterests.map((item, index) => (
-                    <Card key={index} item={item} type="outgoing" />
-                  ))
-                ) : (
-                  <p className="text-gray-400 text-sm">
-                    No outgoing requests
-                  </p>
-                )}
-              </div>
+                  {inComingInterests.length > 0 ? (
+                    inComingInterests.map((item, index) => (
+                      <InterestsCard key={index} item={item} type="incoming" />
+                    ))
+                  ) : (
+                    <p className="text-gray-400 text-sm">
+                      No incoming requests
+                    </p>
+                  )}
+                </>
+              )}
+
+              {activeTab === "outgoing" && (
+                <>
+                  <h2 className="text-xl font-semibold text-green-700">
+                    Outgoing Requests
+                  </h2>
+
+                  {outGoingInterests.length > 0 ? (
+                    outGoingInterests.map((item, index) => (
+                      <InterestsCard key={index} item={item} type="outgoing" />
+                    ))
+                  ) : (
+                    <p className="text-gray-400 text-sm">
+                      No outgoing requests
+                    </p>
+                  )}
+                </>
+              )}
             </div>
-
           </div>
         )}
       </div>
