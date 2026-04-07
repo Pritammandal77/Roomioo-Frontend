@@ -168,7 +168,6 @@ function Page() {
         </div>
 
         {/* LISTINGS */}
-        {/* LISTINGS */}
         <div className="xl:w-[75%] xl:ml-[7%] w-full">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
