@@ -1,14 +1,56 @@
-import { useRouter } from 'next/navigation';
-import React from 'react';
+"use client";
+
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { updateStatus } from "@/services/interest.api";
+import { useState } from "react";
+import UpdateInterestStatus from "./UpdateInterestStatus";
 
 function InterestsCard({ item, type }: any) {
-    const router = useRouter();
+  const router = useRouter();
 
-    const user =
-      type === "incoming" ? item?.interestedUser : item?.propertyLister;
+  const user =
+    type === "incoming" ? item?.interestedUser : item?.propertyLister;
 
-    return (
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<
+    "accepted" | "rejected" | null
+  >(null);
+  const [loading, setLoading] = useState(false);
+
+  // ✅ Only open modal (NO API CALL HERE)
+  const handleStatusChange = (status: "accepted" | "rejected") => {
+    setSelectedStatus(status);
+    setOpenModal(true);
+  };
+
+  // ✅ API call only here
+  const confirmStatusChange = async () => {
+    if (!selectedStatus) return;
+
+    try {
+      setLoading(true);
+
+      await updateStatus({
+        interestId: item._id,
+        updatedStatus: selectedStatus,
+      });
+
+      setOpenModal(false);
+      setSelectedStatus(null);
+
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isAccept = selectedStatus === "accepted";
+
+  return (
+    <>
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -73,7 +115,6 @@ function InterestsCard({ item, type }: any) {
           </span>
 
           <div className="flex items-center gap-2">
-            {/* Profile Button */}
             <button
               onClick={() => router.push(`/profile/${user?._id}`)}
               className="text-xs text-green-600 hover:underline"
@@ -81,13 +122,19 @@ function InterestsCard({ item, type }: any) {
               Profile
             </button>
 
-            {/* Actions */}
             {type === "incoming" && item?.status === "pending" && (
               <>
-                <button className="text-xs bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 transition">
+                <button
+                  onClick={() => handleStatusChange("accepted")}
+                  className="text-xs bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 transition"
+                >
                   Accept
                 </button>
-                <button className="text-xs bg-gray-200 px-3 py-1 rounded-md hover:bg-gray-300 transition">
+
+                <button
+                  onClick={() => handleStatusChange("rejected")}
+                  className="text-xs bg-gray-200 px-3 py-1 rounded-md hover:bg-gray-300 transition"
+                >
                   Reject
                 </button>
               </>
@@ -95,7 +142,22 @@ function InterestsCard({ item, type }: any) {
           </div>
         </div>
       </motion.div>
-    );
-  };
+
+      {/* MODAL */}
+      {openModal && (
+        <UpdateInterestStatus
+          open={openModal}
+          status={selectedStatus}
+          loading={loading}
+          onClose={() => {
+            setOpenModal(false);
+            setSelectedStatus(null);
+          }}
+          onConfirm={confirmStatusChange}
+        />
+      )}
+    </>
+  );
+}
 
 export default InterestsCard;
