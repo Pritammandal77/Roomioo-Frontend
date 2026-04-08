@@ -18,13 +18,12 @@ function InterestsCard({ item, type }: any) {
   >(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Only open modal (NO API CALL HERE)
+  // Only open modal (NO API CALL HERE)
   const handleStatusChange = (status: "accepted" | "rejected") => {
     setSelectedStatus(status);
     setOpenModal(true);
   };
 
-  // ✅ API call only here
   const confirmStatusChange = async () => {
     if (!selectedStatus) return;
 

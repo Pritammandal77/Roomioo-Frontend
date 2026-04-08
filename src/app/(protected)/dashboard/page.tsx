@@ -42,7 +42,7 @@ function Page() {
           </div>
 
           {/* STATS */}
-          <div className="flex gap-3">
+          <div className="hidden md:flex gap-3">
             <div className="bg-white shadow-sm border rounded-xl px-4 py-2 text-sm">
               <p className="text-gray-500">Incoming</p>
               <p className="font-semibold text-green-600">
@@ -77,6 +77,9 @@ function Page() {
             }`}
           >
             Incoming
+            <span className="pl-2">
+             ({inComingInterests.length})
+            </span>
           </button>
 
           <button
@@ -86,6 +89,9 @@ function Page() {
             }`}
           >
             Outgoing
+              <span className="pl-2">
+             ({outGoingInterests.length})
+            </span>
           </button>
         </div>
 
