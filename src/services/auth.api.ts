@@ -11,12 +11,17 @@ export const getCurrentUser = async () => {
     return res.data;
 };
 
+export const getUserById = async (id: any) => {
+    const res = await axiosInstance.get(`/api/user/${id}`)
+    return res;
+}
+
 export const logOutUser = async () => {
     const res = await axiosInstance.post("api/user/logout")
     return res.data
 }
 
 export const logInUser = async (data: any) => {
-  const res = await axiosInstance.post("/api/user/login", data);
-  return res.data;
+    const res = await axiosInstance.post("/api/user/login", data);
+    return res.data;
 };

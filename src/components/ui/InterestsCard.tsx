@@ -73,7 +73,7 @@ function InterestsCard({ item, type }: any) {
           </div>
 
           <span
-            className={`text-[10px] px-2 py-1 rounded-full font-medium ${
+            className={`text-[12px] px-2 py-1 rounded-full font-medium ${
               item?.status === "pending"
                 ? "bg-yellow-100 text-yellow-700"
                 : item?.status === "accepted"
@@ -98,9 +98,9 @@ function InterestsCard({ item, type }: any) {
 
           <button
             onClick={() => router.push(`/listings/${item?.property?._id}`)}
-            className="text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition"
+            className="text-xs bg-green-600 cursor-pointer text-white px-3 py-1.5 rounded-lg hover:bg-green-700 transition"
           >
-            View
+            View Property Details
           </button>
         </div>
 
@@ -116,9 +116,9 @@ function InterestsCard({ item, type }: any) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => router.push(`/profile/${user?._id}`)}
-              className="text-xs text-green-600 hover:underline"
+              className="text-md text-green-600 hover:underline cursor-pointer"
             >
-              Profile
+              Visit Profile
             </button>
 
             {type === "incoming" && item?.status === "pending" && (
