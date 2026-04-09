@@ -25,6 +25,7 @@ import PrefCard from "@/components/ui/PrefCard";
 import AmenityCard from "@/components/ui/AmenityCard";
 import { addInterest } from "@/services/interest.api";
 import AddInterestModal from "@/components/ui/AddInterestModal";
+import Link from "next/link";
 
 function Page() {
   const { id } = useParams();
@@ -258,7 +259,7 @@ function Page() {
             {/* RIGHT SIDEBAR */}
             <div className="space-y-6">
               {/* OWNER */}
-              <div className="bg-white p-5 rounded-2xl shadow-sm">
+              <div className="bg-white p-5 rounded-2xl shadow-sm relative">
                 <h2 className="font-semibold mb-3 flex items-center gap-2">
                   <User size={18} /> Posted By
                 </h2>
@@ -273,6 +274,12 @@ function Page() {
                     <p className="text-xs text-gray-500">{postedBy.email}</p>
                   </div>
                 </div>
+
+                <Link href={`/profile/${postedBy._id}`}>
+                  <button className="bg-green-200 text-green-800 cursor-pointer rounded-xl px-3 py-1 text-md absolute bottom-2 right-2">
+                    Visit profile
+                  </button>
+                </Link>
               </div>
 
               {/* CTA */}

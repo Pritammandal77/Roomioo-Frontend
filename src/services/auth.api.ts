@@ -13,7 +13,7 @@ export const getCurrentUser = async () => {
 
 export const getUserById = async (id: any) => {
     const res = await axiosInstance.get(`/api/user/${id}`)
-    return res;
+    return res.data;
 }
 
 export const logOutUser = async () => {

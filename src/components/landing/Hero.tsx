@@ -1,10 +1,14 @@
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
+import { FlipWords } from "../ui/FlipWords";
+import { useSelector } from "react-redux";
 import { useAppSelector } from "@/lib/rtk/hooks";
+import Link from "next/link";
 
 function Hero() {
   const user = useAppSelector((state) => state.user.userData);
+
+  let words = ["Room", "Flat"];
 
   return (
     <section className="w-full min-h-screen flex items-center justify-center bg-green-50 px-6 pt-17 ">
@@ -17,8 +21,10 @@ function Hero() {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight"
           >
-            Find Your Perfect <span className="text-green-600">Roommate</span>{" "}
-            Based on <span className="text-green-600">Lifestyle</span>
+            Find Your Perfect <br />
+            <FlipWords words={words} />
+            Mate Based <br className="hidden xl:inline" /> on{" "}
+            <span className="text-green-600">Lifestyle</span>
           </motion.h1>
 
           <motion.p
@@ -36,15 +42,28 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9 }}
-            className="flex gap-4 flex-wrap"
           >
-            <button className="px-6 py-3 rounded-2xl bg-green-600 text-white font-medium shadow-md hover:bg-green-700 transition">
-              Find Roommate
-            </button>
-
-            <button className="px-6 py-3 rounded-2xl border border-green-600 text-green-600 font-medium hover:bg-green-50 transition">
-              Post a Room
-            </button>
+            {user ? (
+              <div className="flex gap-4 flex-wrap">
+                <Link href="/listings/all">
+                  <button className="px-6 py-3 cursor-pointer rounded-2xl bg-green-600 text-white font-medium shadow-md hover:bg-green-700 transition">
+                    Find Roommate
+                  </button>
+                </Link>
+                <Link href="/rooms/new">
+                  <button className="px-6 py-3 cursor-pointer rounded-2xl border border-green-600 text-green-600 font-medium hover:bg-green-50 transition">
+                    Post a Room
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              <Link
+                href="/signup"
+                className="px-6 py-4 cursor-pointer rounded-xl bg-green-600 text-white hover:bg-green-700"
+              >
+                Get Started
+              </Link>
+            )}
           </motion.div>
 
           {/* Small trust text */}

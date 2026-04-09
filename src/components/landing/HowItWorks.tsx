@@ -1,7 +1,9 @@
 "use client";
 
+import { useAppSelector } from "@/lib/rtk/hooks";
 import { motion } from "framer-motion";
 import { Home, Search, MessageCircle } from "lucide-react";
+import Link from "next/link";
 
 const steps = [
   {
@@ -25,14 +27,16 @@ const steps = [
 ];
 
 export default function HowItWorks() {
+
+    const user = useAppSelector((state) => state.user.userData);
+
+
   return (
     <section className="w-full py-24 bg-linear-to-b from-white to-green-50 px-6 relative overflow-hidden">
-      
       {/* Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-125 bg-green-200/30 blur-3xl rounded-full"></div>
 
       <div className="max-w-7xl mx-auto text-center relative z-10">
-        
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
@@ -49,7 +53,6 @@ export default function HowItWorks() {
 
         {/* Steps */}
         <div className="mt-20 grid md:grid-cols-3 gap-10 relative">
-          
           {/* Connector Line (Desktop only) */}
           <div className="hidden md:block absolute top-16 left-0 w-full h-0.5 bg-linear-to-r from-transparent via-green-200 to-transparent"></div>
 
@@ -66,7 +69,6 @@ export default function HowItWorks() {
               >
                 {/* Glass Card */}
                 <div className="p-8 rounded-3xl bg-white/70 backdrop-blur-xl border border-white/40 shadow-lg hover:shadow-2xl transition duration-300 hover:-translate-y-2">
-                  
                   {/* Icon */}
                   <div className="w-16 h-16 mx-auto flex items-center justify-center rounded-2xl bg-linear-to-br from-green-500 to-green-400 text-white shadow-md">
                     <Icon size={28} />
@@ -93,14 +95,29 @@ export default function HowItWorks() {
         </div>
 
         {/* CTA */}
-        <motion.button
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mt-16 px-8 py-4 rounded-2xl bg-green-600 text-white font-semibold shadow-lg hover:bg-green-700 hover:shadow-xl transition"
+          className="mt-16 transition flex justify-center"
         >
-          Get Started
-        </motion.button>
+          {user ? (
+            <div className="flex gap-4 flex-wrap">
+              <Link href="/listings/all">
+                <button className="px-8 py-3 text-lg cursor-pointer rounded-2xl bg-green-600 text-white font-medium shadow-md hover:bg-green-700 transition">
+                  Explore
+                </button>
+              </Link>
+            </div>
+          ) : (
+            <Link
+              href="/signup"
+              className="px-6 py-4 cursor-pointer rounded-xl bg-green-600 text-white hover:bg-green-700"
+            >
+              Get Started
+            </Link>
+          )}
+        </motion.div>
       </div>
     </section>
   );
