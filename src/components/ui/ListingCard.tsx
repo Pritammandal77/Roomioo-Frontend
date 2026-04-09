@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function ListingCard({ listing, id, index }: any) {
   const { rent, location, pictures, amenities, matchPercentage } = listing;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -55,6 +55,12 @@ export default function ListingCard({ listing, id, index }: any) {
           <IndianRupee size={16} />
           {rent} / month
         </p>
+
+        {listing.distanceInKm && (
+          <p className="text-xs text-green-600 font-medium">
+            📍 {listing.distanceInKm} km away
+          </p>
+        )}
 
         {/* CTA */}
         <Link href={`/listings/${id}`}>

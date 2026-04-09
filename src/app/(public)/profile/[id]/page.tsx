@@ -39,7 +39,7 @@ function page() {
     });
 
   return (
-    <div className="min-h-screen pt-20 bg-linear-to-br from-green-100 via-[#c7f9c6] to-emerald-100 text-gray-800">
+    <div className="min-h-screen pt-20 xl:pt-30 bg-linear-to-br from-green-100 via-[#c7f9c6] to-emerald-100 text-gray-800">
       <div className="max-w-7xl mx-auto p-3 space-y-3 md:space-y-6">
         {/* TOP PROFILE STRIP */}
         <div className="bg-white/70 backdrop-blur-xl border border-gray-200 rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">

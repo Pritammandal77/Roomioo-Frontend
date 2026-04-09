@@ -1,5 +1,6 @@
 "use client";
 import { FilterPanelProps, FiltersType } from "@/types/rooms";
+import { useState } from "react";
 
 function FilterPanel({
   filters,
@@ -8,9 +9,42 @@ function FilterPanel({
   applyFilters,
   handleClearFilters,
 }: FilterPanelProps) {
+  const [locationStatus, setLocationStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+
+  const handleLocation = () => {
+    setLocationStatus("loading");
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        handleChange({
+          target: {
+            name: "lat",
+            value: pos.coords.latitude.toString(),
+          },
+        } as any);
+
+        handleChange({
+          target: {
+            name: "lng",
+            value: pos.coords.longitude.toString(),
+          },
+        } as any);
+
+        setLocationStatus("success");
+      },
+      () => {
+        setLocationStatus("error");
+      },
+    );
+  };
+
   return (
     <div className="flex flex-col gap-3 px-4 xl:px-0 bg-white text-gray-600 z-10">
-      <h2 className="text-xl font-semibold hidden xl:inline text-black">Filters</h2>
+      <h2 className="text-xl font-semibold hidden xl:inline text-black">
+        Filters
+      </h2>
 
       {/* RENT */}
       <div>
@@ -54,7 +88,80 @@ function FilterPanel({
         />
       </div>
 
-      {/* 🏠 ROOM TYPE */}
+      {/* NEARBY FILTER */}
+      <div className="bg-green-50 p-3 rounded-xl border border-green-100">
+      
+        <p className="text-sm font-medium mb-2">
+          Nearby :
+          <span className="text-green-700 font-semibold pl-1">
+            {filters.radius || 5} km
+          </span>
+        </p>
+
+        {/* Location Button */}
+        <button
+          type="button"
+          onClick={handleLocation}
+          className={`w-full text-sm font-medium py-2 rounded-lg transition ${
+            locationStatus === "success"
+              ? "bg-green-600 text-white"
+              : locationStatus === "error"
+                ? "bg-red-500 text-white"
+                : "bg-green-100 text-green-700 hover:bg-green-200"
+          }`}
+        >
+          {locationStatus === "loading"
+            ? "Detecting location..."
+            : locationStatus === "success"
+              ? "Location detected"
+              : locationStatus === "error"
+                ? "Permission denied"
+                : "Use my current location"}
+        </button>
+
+        {/* Slider */}
+        <div className="mt-3">
+          <input
+            type="range"
+            min="1"
+            max="20"
+            step="1"
+            value={filters.radius || 5}
+            onChange={(e) =>
+              handleChange({
+                target: {
+                  name: "radius",
+                  value: e.target.value,
+                },
+              } as any)
+            }
+            className="w-full accent-green-600 cursor-pointer"
+          />
+
+          <div className="flex justify-between text-xs text-gray-400 mt-1">
+            <span>1km</span>
+            <span>5km</span>
+            <span>10km</span>
+            <span>15km</span>
+            <span>20km</span>
+          </div>
+        </div>
+
+        {/* Status Message */}
+        {locationStatus === "success" && (
+          <p className="text-xs text-green-600 mt-2">
+            Showing rooms near your location
+          </p>
+        )}
+
+        {locationStatus === "error" && (
+          <p className="text-xs text-red-500 mt-2">
+            Please allow location access in browser
+          </p>
+        )}
+      </div>
+
+      {/* ROOM TYPE */}
       <div>
         <p className="text-sm font-medium mb-2">Room Type</p>
         {["1 BHK", "2 BHK", "Single room", "PG"].map((type) => (

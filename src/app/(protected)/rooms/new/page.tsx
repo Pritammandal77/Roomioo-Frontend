@@ -189,7 +189,7 @@ export default function Page() {
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold text-green-700">
-            List Your Room 🏡
+            List Your Space
           </h1>
           <p className="text-gray-500 text-sm mt-1">
             Add details to find the perfect roommate faster

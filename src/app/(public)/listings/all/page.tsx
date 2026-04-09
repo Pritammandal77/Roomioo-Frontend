@@ -35,6 +35,11 @@ function Page() {
     drinking: undefined,
     pets: undefined,
 
+    // location
+    lat: "",
+    lng: "",
+    radius: "",
+
     sleepSchedule: "",
     foodPreference: "",
     preferredGender: "",
@@ -58,6 +63,26 @@ function Page() {
     fetchListings();
   }, []);
 
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  // ) => {
+  //   const { name, value, type } = e.target;
+
+  //   if (type === "checkbox") {
+  //     const checked = (e.target as HTMLInputElement).checked;
+
+  //     setFilters((prev) => ({
+  //       ...prev,
+  //       [name]: checked ? true : undefined,
+  //     }));
+  //   } else {
+  //     setFilters((prev) => ({
+  //       ...prev,
+  //       [name]: value,
+  //     }));
+  //   }
+  // };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -73,7 +98,12 @@ function Page() {
     } else {
       setFilters((prev) => ({
         ...prev,
-        [name]: value,
+        [name]:
+          value === ""
+            ? ""
+            : ["minRent", "maxRent", "lat", "lng", "radius"].includes(name)
+              ? Number(value)
+              : value,
       }));
     }
   };
@@ -91,13 +121,37 @@ function Page() {
     });
   };
 
+  // const applyFilters = async () => {
+  //   try {
+  //     setLoading(true);
+
+  //     const res = await filterListings(filters);
+
+  //     console.log("FILTER RES:", res);
+
+  //     setAllListingsData(res.data || []);
+  //   } catch (error) {
+  //     toast.error("Filter failed");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const applyFilters = async () => {
     try {
       setLoading(true);
 
-      const res = await filterListings(filters);
+      // ❌ empty fields remove kar
+      const cleanedFilters = Object.fromEntries(
+        Object.entries(filters).filter(
+          ([_, value]) =>
+            value !== "" &&
+            value !== undefined &&
+            !(Array.isArray(value) && value.length === 0),
+        ),
+      );
 
-      console.log("FILTER RES:", res);
+      const res = await filterListings(cleanedFilters);
 
       setAllListingsData(res.data || []);
     } catch (error) {
@@ -127,6 +181,9 @@ function Page() {
       preferredGender: "",
       occupation: "",
       workStyle: "",
+      lat: "",
+      lng: "",
+      radius: "",
     });
 
     await fetchListings();
