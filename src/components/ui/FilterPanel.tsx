@@ -8,6 +8,8 @@ function FilterPanel({
   handleRoomType,
   applyFilters,
   handleClearFilters,
+  listedCities,
+  setIsShowFiltersPanel,
 }: FilterPanelProps) {
   const [locationStatus, setLocationStatus] = useState<
     "idle" | "loading" | "success" | "error"
@@ -72,13 +74,20 @@ function FilterPanel({
       {/* 📍 LOCATION */}
       <div>
         <p className="text-sm font-medium mb-2">Location</p>
-        <input
+        <select
           name="city"
-          placeholder="City"
           value={filters.city}
           onChange={handleChange}
-          className="w-full border p-2 mb-2 rounded-lg"
-        />
+          className="w-full border p-2 mb-2 rounded-lg bg-white"
+        >
+          <option value="">Select City ({listedCities.length})</option>
+
+          {listedCities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
         <input
           name="area"
           placeholder="Area"
@@ -90,7 +99,6 @@ function FilterPanel({
 
       {/* NEARBY FILTER */}
       <div className="bg-green-50 p-3 rounded-xl border border-green-100">
-      
         <p className="text-sm font-medium mb-2">
           Nearby :
           <span className="text-green-700 font-semibold pl-1">
@@ -275,7 +283,10 @@ function FilterPanel({
       {/* 🚀 BUTTONS */}
       <div className="flex gap-2 sticky bottom-0 bg-white p-3 shadow-md xl:static xl:shadow-none xl:p-0">
         <button
-          onClick={applyFilters}
+          onClick={() => {
+            applyFilters();
+            setIsShowFiltersPanel((prev) => !prev);
+          }}
           className="w-full bg-green-600 text-white p-2 rounded-lg"
         >
           Apply

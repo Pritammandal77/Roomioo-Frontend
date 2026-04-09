@@ -2,7 +2,7 @@
 
 import { setUser } from "@/lib/rtk/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/rtk/hooks";
-import { getCurrentUser, logOutUser } from "@/services/auth.api";
+import { getCurrentUser } from "@/services/auth.api";
 import { User } from "@/types/user";
 import { MenuIcon, X } from "lucide-react";
 import Link from "next/link";
@@ -32,14 +32,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* 🔥 BODY BLUR OVERLAY */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
       <header className="w-full fixed h-17 top-0 left-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* LOGO */}
@@ -153,6 +145,14 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+
+      {/* BODY BLUR OVERLAY */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
     </>
   );
 }

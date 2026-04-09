@@ -3,7 +3,11 @@
 import ListingCardSkeleton from "@/components/loaders/ListingCardSkeleton";
 import FilterPanel from "@/components/ui/FilterPanel";
 import ListingCard from "@/components/ui/ListingCard";
-import { fetchAllListings, filterListings } from "@/services/rooms.api";
+import {
+  fetchAllListings,
+  fetchListedCities,
+  filterListings,
+} from "@/services/rooms.api";
 import { FiltersType } from "@/types/rooms";
 import { FilterIcon, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -13,6 +17,7 @@ function Page() {
   const [allListingsData, setAllListingsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isShowFiltersPanel, setIsShowFiltersPanel] = useState<boolean>(false);
+  const [listedCities, setListedCities] = useState<string[]>([]);
 
   const [filters, setFilters] = useState<FiltersType>({
     minRent: "",
@@ -59,29 +64,24 @@ function Page() {
     }
   };
 
+  const fetchCities = async () => {
+    try {
+      const res = await fetchListedCities();
+
+      const sorted = (res.data || []).sort((a: string, b: string) =>
+        a.localeCompare(b),
+      );
+
+      setListedCities(sorted);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
   useEffect(() => {
     fetchListings();
+    fetchCities();
   }, []);
-
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  // ) => {
-  //   const { name, value, type } = e.target;
-
-  //   if (type === "checkbox") {
-  //     const checked = (e.target as HTMLInputElement).checked;
-
-  //     setFilters((prev) => ({
-  //       ...prev,
-  //       [name]: checked ? true : undefined,
-  //     }));
-  //   } else {
-  //     setFilters((prev) => ({
-  //       ...prev,
-  //       [name]: value,
-  //     }));
-  //   }
-  // };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -121,27 +121,11 @@ function Page() {
     });
   };
 
-  // const applyFilters = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     const res = await filterListings(filters);
-
-  //     console.log("FILTER RES:", res);
-
-  //     setAllListingsData(res.data || []);
-  //   } catch (error) {
-  //     toast.error("Filter failed");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const applyFilters = async () => {
     try {
       setLoading(true);
 
-      // ❌ empty fields remove kar
+      // empty fields remove kar
       const cleanedFilters = Object.fromEntries(
         Object.entries(filters).filter(
           ([_, value]) =>
@@ -152,7 +136,7 @@ function Page() {
       );
 
       const res = await filterListings(cleanedFilters);
-
+      console.log(res);
       setAllListingsData(res.data || []);
     } catch (error) {
       toast.error("Filter failed");
@@ -191,11 +175,6 @@ function Page() {
 
   return (
     <div className="min-h-screen pt-20 xl:px-15 bg-linear-to-br from-green-50 via-white to-green-100 px-3 py-10 relative">
-      {/* <div className="mb-8 ">
-        <h1 className="text-3xl font-bold text-gray-800">
-          Find Your Perfect Room
-        </h1>
-      </div> */}
 
       <div className="w-full flex flex-col xl:flex-row gap-6">
         {/* filters for xl screens */}
@@ -207,6 +186,8 @@ function Page() {
               handleRoomType={handleRoomType}
               applyFilters={applyFilters}
               handleClearFilters={handleClearFilters}
+              listedCities={listedCities}
+              setIsShowFiltersPanel={setIsShowFiltersPanel}
             />
           </div>
         </div>
@@ -265,6 +246,8 @@ function Page() {
           handleRoomType={handleRoomType}
           applyFilters={applyFilters}
           handleClearFilters={handleClearFilters}
+          listedCities={listedCities}
+          setIsShowFiltersPanel={setIsShowFiltersPanel}
         />
       </div>
     </div>
@@ -272,6 +255,20 @@ function Page() {
 }
 
 export default Page;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // old working code, without filters feature
 // "use client";

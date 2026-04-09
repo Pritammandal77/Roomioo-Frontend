@@ -1,5 +1,4 @@
 
-
 export interface RoomForm {
   rent: number | "";
   description: string,
@@ -64,4 +63,6 @@ export type FilterPanelProps = {
   handleRoomType: (type: string) => void;
   applyFilters: () => void;
   handleClearFilters: () => void;
+  listedCities: string[];
+  setIsShowFiltersPanel: React.Dispatch<React.SetStateAction<boolean>>;
 };

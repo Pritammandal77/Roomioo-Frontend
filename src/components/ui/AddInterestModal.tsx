@@ -21,9 +21,12 @@ function AddInterestModal({
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl p-6 w-[90%] max-w-md shadow-xl animate-in fade-in zoom-in-95">
-
+    <div
+      className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50"
+      style={{ animation: "fadeIn 0.3s ease-out" }}
+    >
+      <div className="bg-white rounded-2xl p-6 w-[90%] max-w-md shadow-xl"
+       style={{ animation: "modalPop 0.3s ease-out" }}>
         <h2 className="text-lg font-semibold mb-4 text-gray-800">
           Send Interest
         </h2>
