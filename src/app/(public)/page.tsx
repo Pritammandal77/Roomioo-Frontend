@@ -4,6 +4,7 @@ import FinalCTA from "@/components/landing/FinalCTA";
 import Hero from "@/components/landing/Hero";
 import HowItWorks from "@/components/landing/HowItWorks";
 import ProblemSolution from "@/components/landing/ProblemSolution";
+import Testimonials from "@/components/landing/Testimonials";
 import WhyChooseUs from "@/components/landing/WhyChooseUs";
 import Footer from "@/components/shared/Footer";
 
@@ -11,13 +12,14 @@ export default function HomePage() {
   return (
     <main>
       <Hero />
-      <HowItWorks />
-      <WhyChooseUs />
-      {/* <ProblemSolution /> */}
-      <FeaturedListings />
-      <FinalCTA />
-      <FAQ />
-      <Footer/>
+      {/* <ProblemSolution />  */}
+      <HowItWorks /> 
+      <WhyChooseUs /> 
+      <Testimonials /> 
+      <FeaturedListings /> 
+      <FAQ /> 
+      <FinalCTA /> 
+      <Footer />
     </main>
   );
 }
