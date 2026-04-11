@@ -29,3 +29,9 @@ export const fetchListedCities = async () => {
     const res = await axiosInstance.get("/api/rooms/cities")
     return res.data;
 }
+
+
+export const fetchCurrUserListings = async() => {
+    const res = await axiosInstance.get("/api/rooms/listings/me")
+    return res.data
+}

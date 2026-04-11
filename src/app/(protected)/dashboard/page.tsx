@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import InterestsCard from "@/components/ui/InterestsCard";
+import { fetchCurrUserListings } from "@/services/rooms.api";
 
 function Page() {
   const [outGoingInterests, setOutGoingInterests] = useState([]);
@@ -26,7 +27,19 @@ function Page() {
       }
     };
 
+    const fetchUserListings = async () => {
+      try {
+        const res = await fetchCurrUserListings();
+        console.log(res);
+      } catch (error) {
+        toast.error("Something went wrong while fetching listings");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchInterestsData();
+    fetchUserListings();
   }, []);
 
   return (
@@ -77,9 +90,7 @@ function Page() {
             }`}
           >
             Incoming
-            <span className="pl-2">
-             ({inComingInterests.length})
-            </span>
+            <span className="pl-2">({inComingInterests.length})</span>
           </button>
 
           <button
@@ -89,9 +100,7 @@ function Page() {
             }`}
           >
             Outgoing
-              <span className="pl-2">
-             ({outGoingInterests.length})
-            </span>
+            <span className="pl-2">({outGoingInterests.length})</span>
           </button>
         </div>
 

@@ -480,7 +480,7 @@ export default function Page() {
 
           {/* ================= AMENITIES ================= */}
           <div className="space-y-4">
-            <h2 className="section-title">🏠 Amenities</h2>
+            <h2 className="section-title">Amenities</h2>
 
             <div className="grid md:grid-cols-2 gap-4">
               {/* Room Type */}
