@@ -6,12 +6,15 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import InterestsCard from "@/components/ui/InterestsCard";
 import { fetchCurrUserListings } from "@/services/rooms.api";
+import ListingCard from "@/components/ui/ListingCard";
 
 function Page() {
   const [outGoingInterests, setOutGoingInterests] = useState([]);
   const [inComingInterests, setInComingInterests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("incoming");
+  const [mainTab, setMainTab] = useState("requests");
+  const [listings, setListings] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchInterestsData = async () => {
@@ -30,7 +33,8 @@ function Page() {
     const fetchUserListings = async () => {
       try {
         const res = await fetchCurrUserListings();
-        console.log(res);
+        console.log(res.data);
+        setListings(res.data);
       } catch (error) {
         toast.error("Something went wrong while fetching listings");
       } finally {
@@ -46,93 +50,157 @@ function Page() {
     <div className="min-h-screen pt-20 px-4 md:px-10 bg-linear-to-br from-green-50 via-white to-green-100">
       <div className="max-w-5xl mx-auto space-y-8">
         {/* HEADER */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">Your Requests</h1>
-            <p className="text-gray-500 text-sm">
-              Manage your incoming and outgoing interests
-            </p>
-          </div>
-
-          {/* STATS */}
-          <div className="hidden md:flex gap-3">
-            <div className="bg-white shadow-sm border rounded-xl px-4 py-2 text-sm">
-              <p className="text-gray-500">Incoming</p>
-              <p className="font-semibold text-green-600">
-                {inComingInterests.length}
-              </p>
-            </div>
-
-            <div className="bg-white shadow-sm border rounded-xl px-4 py-2 text-sm">
-              <p className="text-gray-500">Outgoing</p>
-              <p className="font-semibold text-green-600">
-                {outGoingInterests.length}
-              </p>
-            </div>
-          </div>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 tracking-tight">
+            {mainTab === "requests" ? "Manage Requests" : "Your Listings"}
+          </h1>
+          <p className="text-gray-500 text-sm md:text-base">
+            {mainTab === "requests"
+              ? "Handle incoming and outgoing roommate interests"
+              : "View and manage your posted rooms"}
+          </p>
         </div>
 
-        {/* TAB SWITCHER */}
-        <div className="relative flex bg-white border shadow-sm rounded-xl p-1 w-fit">
+        {/* MAIN TABS */}
+        <div className="relative flex bg-white/80 backdrop-blur border shadow-sm rounded-xl p-1 w-fit">
           <motion.div
             layout
             className="absolute top-1 bottom-1 w-1/2 bg-green-600 rounded-lg"
             animate={{
-              x: activeTab === "incoming" ? "0%" : "90%",
+              x: mainTab === "requests" ? "0%" : "90%",
             }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
 
           <button
-            onClick={() => setActiveTab("incoming")}
+            onClick={() => setMainTab("requests")}
             className={`relative z-10 px-6 py-2 text-sm font-medium rounded-lg transition ${
-              activeTab === "incoming" ? "text-white" : "text-gray-600"
+              mainTab === "requests" ? "text-white" : "text-gray-600"
             }`}
           >
-            Incoming
-            <span className="pl-2">({inComingInterests.length})</span>
+            Requests
           </button>
 
           <button
-            onClick={() => setActiveTab("outgoing")}
+            onClick={() => setMainTab("listings")}
             className={`relative z-10 px-6 py-2 text-sm font-medium rounded-lg transition ${
-              activeTab === "outgoing" ? "text-white" : "text-gray-600"
+              mainTab === "listings" ? "text-white" : "text-gray-600"
             }`}
           >
-            Outgoing
-            <span className="pl-2">({outGoingInterests.length})</span>
+            My Listings
           </button>
         </div>
 
         {/* CONTENT */}
         {loading ? (
-          <div className="text-center text-gray-500 py-10">
-            Loading requests...
+          <div className="text-center text-gray-500 py-16 animate-pulse">
+            Loading dashboard...
           </div>
         ) : (
           <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 15 }}
+            key={mainTab}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid gap-5"
+            transition={{ duration: 0.3 }}
           >
-            {(activeTab === "incoming" ? inComingInterests : outGoingInterests)
-              .length > 0 ? (
-              (activeTab === "incoming"
-                ? inComingInterests
-                : outGoingInterests
-              ).map((item, index) => (
-                <InterestsCard key={index} item={item} type={activeTab} />
-              ))
-            ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                  📭
+            {mainTab === "requests" ? (
+              <>
+                {/* SUB TABS */}
+                <div className="relative flex bg-white border shadow-sm rounded-xl p-1 w-fit mt-2">
+                  <motion.div
+                    layout
+                    className="absolute top-1 bottom-1 w-1/2 bg-green-600 rounded-lg"
+                    animate={{
+                      x: activeTab === "incoming" ? "0%" : "90%",
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+
+                  <button
+                    onClick={() => setActiveTab("incoming")}
+                    className={`relative z-10 px-5 py-2 text-sm font-medium transition ${
+                      activeTab === "incoming"
+                        ? "text-white"
+                        : "text-gray-600 hover:text-gray-800"
+                    }`}
+                  >
+                    Incoming
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab("outgoing")}
+                    className={`relative z-10 px-5 py-2 text-sm font-medium transition ${
+                      activeTab === "outgoing"
+                        ? "text-white"
+                        : "text-gray-600 hover:text-gray-800"
+                    }`}
+                  >
+                    Outgoing
+                  </button>
                 </div>
-                <p className="text-gray-500 text-sm">
-                  No {activeTab} requests yet
-                </p>
-              </div>
+
+                {/* REQUEST LIST */}
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid gap-5 mt-5"
+                >
+                  {(activeTab === "incoming"
+                    ? inComingInterests
+                    : outGoingInterests
+                  ).length > 0 ? (
+                    (activeTab === "incoming"
+                      ? inComingInterests
+                      : outGoingInterests
+                    ).map((item, index) => (
+                      <InterestsCard key={index} item={item} type={activeTab} />
+                    ))
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-20 text-center bg-white border rounded-2xl shadow-sm">
+                      <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4 text-xl">
+                        📭
+                      </div>
+                      <p className="text-gray-600 font-medium">
+                        No {activeTab} requests yet
+                      </p>
+                      <p className="text-gray-400 text-sm mt-1">
+                        You’ll see them here when someone shows interest
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              </>
+            ) : (
+              /* LISTINGS */
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-5"
+              >
+                {listings.length > 0 ? (
+                  listings.map((listing, index) => (
+                    <ListingCard
+                      key={listing._id}
+                      listing={listing}
+                      id={listing._id}
+                      index={index}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full flex flex-col items-center justify-center py-20 bg-white border rounded-2xl shadow-sm text-center">
+                    <div className="text-3xl mb-3">🏠</div>
+                    <p className="text-gray-600 font-medium">No listings yet</p>
+                    <p className="text-gray-400 text-sm mt-1">
+                      Start by posting your first room
+                    </p>
+
+                    <button className="mt-4 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                      + Create Listing
+                    </button>
+                  </div>
+                )}
+              </motion.div>
             )}
           </motion.div>
         )}
