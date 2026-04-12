@@ -26,6 +26,7 @@ import AmenityCard from "@/components/ui/AmenityCard";
 import { addInterest } from "@/services/interest.api";
 import AddInterestModal from "@/components/ui/AddInterestModal";
 import Link from "next/link";
+import ListingDetailsSkeleton from "@/components/loaders/ListingDetailsSkeleton";
 
 function Page() {
   const { id } = useParams();
@@ -52,7 +53,7 @@ function Page() {
   }, [id]);
 
   if (!propertyData) {
-    return <p className="text-center mt-20">Loading...</p>;
+    return <ListingDetailsSkeleton />;
   }
 
   const {

@@ -644,14 +644,7 @@ export default function Page() {
         `}</style>
       </div>
 
-      {loading && (
-        <RoomioLoader
-          isAddBg={true}
-          textContent={
-            "Uploading..."
-          }
-        />
-      )}
+      {loading && <RoomioLoader isAddBg={true} textContent={"Uploading..."} />}
     </>
   );
 }

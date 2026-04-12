@@ -8,6 +8,7 @@ import { MenuIcon, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProfileDropdown from "../ui/ProfileDropdown";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +36,17 @@ export default function Navbar() {
       <header className="w-full fixed h-17 top-0 left-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* LOGO */}
-          <Link href="/" className="text-2xl font-bold text-green-600">
+          <Link
+            href="/"
+            className="text-2xl font-bold text-green-600 flex items-center justify-center gap-3"
+          >
+            <Image
+              src={"/RoomioLogo.jpeg"}
+              height={50}
+              width={50}
+              alt="Roomio Logo"
+              className="rounded-full"
+            />
             Roomio
           </Link>
 
@@ -44,12 +55,15 @@ export default function Navbar() {
             <Link href="/" className="text-gray-600 hover:text-green-600">
               Home
             </Link>
-            <Link
-              href="/rooms/new"
-              className="text-gray-600 hover:text-green-600"
-            >
-              List Property
-            </Link>
+
+            {user && (
+              <Link
+                href="/rooms/new"
+                className="text-gray-600 hover:text-green-600"
+              >
+                List Property
+              </Link>
+            )}
             <Link
               href="/listings/all"
               className="text-gray-600 hover:text-green-600"
