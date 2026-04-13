@@ -24,13 +24,24 @@ export default function SignUp() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // try {
+    //   const res = await logInUser(formData);
+    //   console.log(res);
+    //   toast.success("login succcessfull");
+    //   router.push("/");
+    // } catch (error) {
+    //   toast.error("Something went wrong");
+    // }
+
     try {
       const res = await logInUser(formData);
-      console.log(res);
-      toast.success("login succcessfull");
+      // success case
+      toast.success(res.message); // "User loggedIn successfully"
       router.push("/");
-    } catch (error) {
-      toast.error("Something went wrong");
+    } catch (error: any) {
+      const message = error?.response?.data?.message || error?.message;
+
+      toast.error(message);
     }
   };
 

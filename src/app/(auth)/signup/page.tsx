@@ -238,7 +238,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Mail,
   Lock,
@@ -266,8 +266,9 @@ export default function SignUp() {
 
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(0);
+  const [otpArray, setOtpArray] = useState(Array(6).fill(""));
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
@@ -281,8 +282,8 @@ export default function SignUp() {
     if (name === "email") {
       setIsOtpSent(false);
       setIsVerified(false);
-      setOtp("");
       setTimer(0);
+      setOtpArray(Array(6).fill(""));
     }
 
     setFormData({ ...formData, [name]: value });
@@ -334,17 +335,19 @@ export default function SignUp() {
 
   // VERIFY OTP
   const handleVerifyOtp = async () => {
-    if (!otp) {
-      toast.error("Enter OTP");
+    const otp = otpArray.join("");
+
+    if (otp.length !== 6) {
+      toast.error("Enter complete OTP");
       return;
     }
 
     try {
-      const res = await verifyOtp({
+      await verifyOtp({
         email: formData.email,
         otp,
       });
-      console.log("verify", res);
+
       toast.success("Email verified ✅");
       setIsVerified(true);
     } catch (err: any) {
@@ -378,6 +381,53 @@ export default function SignUp() {
       toast.success("Account created successfully 🎉");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  const handleOtpChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const value = e.target.value.replace(/[^0-9]/g, "");
+
+    const newOtp = [...otpArray];
+    newOtp[index] = value;
+    setOtpArray(newOtp);
+
+    // move forward
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    if (e.key === "Backspace") {
+      const newOtp = [...otpArray];
+
+      if (otpArray[index]) {
+        newOtp[index] = "";
+        setOtpArray(newOtp);
+      } else if (index > 0) {
+        inputRefs.current[index - 1]?.focus();
+      }
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasteData = e.clipboardData.getData("text").slice(0, 6);
+
+    if (!/^\d+$/.test(pasteData)) return;
+
+    const newOtp = pasteData.split("");
+    setOtpArray([...newOtp, ...Array(6 - newOtp.length).fill("")]);
+
+    // focus last filled input
+    const lastIndex = newOtp.length - 1;
+    if (lastIndex >= 0) {
+      inputRefs.current[lastIndex]?.focus();
     }
   };
 
@@ -426,50 +476,73 @@ export default function SignUp() {
             />
 
             {/* EMAIL + OTP */}
-            <div className="relative">
-              <Input
-                icon={Mail}
-                name="email"
-                type="email"
-                placeholder="Email"
-                onChange={handleChange}
-              />
-
-              <button
-                type="button"
-                onClick={handleSendOtp}
-                disabled={isOtpSent && timer > 0}
-                className="absolute right-2 top-2 text-sm bg-green-600 text-white px-3 py-1 rounded disabled:bg-gray-400"
-              >
-                {isOtpSent ? "Sent" : "Verify"}
-              </button>
-            </div>
-
-            {isOtpSent && !isVerified && (
-              <div className="space-y-2">
-                <input
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  placeholder="Enter OTP"
-                  className="w-full border p-3 rounded text-center tracking-widest"
-                />
-
-                <div className="flex justify-between text-sm">
-                  <button
-                    type="button"
-                    onClick={handleVerifyOtp}
-                    className="text-green-600"
-                  >
-                    Verify OTP
-                  </button>
-
-                  <span>
-                    {Math.floor(timer / 60)}:
-                    {(timer % 60).toString().padStart(2, "0")}
-                  </span>
+            <div className="space-y-4">
+              {/* EMAIL FIELD */}
+              <div className="relative flex gap-3">
+                <div className="flex-1">
+                  <Input
+                    icon={Mail}
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    onChange={handleChange}
+                  />
                 </div>
+
+                <button
+                  type="button"
+                  onClick={handleSendOtp}
+                  disabled={timer > 0}
+                  className="px-4 py-2 rounded-xl bg-green-600 text-white text-sm font-medium shadow hover:bg-green-700 disabled:bg-gray-400 transition"
+                >
+                  {timer > 0
+                    ? `Resend in ${Math.floor(timer / 60)}:${(timer % 60)
+                        .toString()
+                        .padStart(2, "0")}`
+                    : "Send OTP"}
+                </button>
               </div>
-            )}
+
+              {/* OTP SECTION */}
+              {isOtpSent && !isVerified && (
+                <div className="space-y-4 flex flex-col">
+                  {/* 6 OTP BOXES */}
+                  <div className="flex justify-between gap-1">
+                    {otpArray.map((digit, index) => (
+                      <input
+                        key={index}
+                        ref={(el) => {
+                          if (el) inputRefs.current[index] = el;
+                        }}
+                        type="text"
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleOtpChange(e, index)}
+                        onKeyDown={(e) => handleKeyDown(e, index)}
+                        onPaste={handlePaste}
+                        className="w-12 h-12 text-center text-lg font-semibold border rounded-xl focus:ring-2 focus:ring-green-500 outline-none"
+                      />
+                    ))}
+
+                    <button
+                      type="button"
+                      onClick={handleVerifyOtp}
+                      className="px-5 py-2 rounded-xl bg-black text-white text-sm font-medium hover:bg-gray-800 transition"
+                    >
+                      Verify OTP
+                    </button>
+                  </div>
+
+                  {/* VERIFY + TIMER */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">
+                      {Math.floor(timer / 60)}:
+                      {(timer % 60).toString().padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <Input
               icon={Lock}
@@ -491,27 +564,27 @@ export default function SignUp() {
                 type="date"
                 name="dob"
                 onChange={handleChange}
-                className="w-full border p-3 rounded"
+                className="w-full border border-gray-400 p-3 rounded"
               />
-              <Input
-                icon={PhoneCallIcon}
-                name="mobileNumber"
-                type="number"
-                placeholder="Mobile"
+              <select
+                name="gender"
                 onChange={handleChange}
-              />
+                className="w-full border border-gray-400 p-3 rounded"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="others">Others</option>
+              </select>
             </div>
 
-            <select
-              name="gender"
+            <Input
+              icon={PhoneCallIcon}
+              name="mobileNumber"
+              type="number"
+              placeholder="Mobile"
               onChange={handleChange}
-              className="w-full border p-3 rounded"
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="others">Others</option>
-            </select>
+            />
 
             <button
               type="submit"
@@ -536,8 +609,11 @@ export default function SignUp() {
 function Input({ icon: Icon, ...props }: any) {
   return (
     <div className="relative">
-      <Icon className="absolute left-3 top-3 text-green-600" size={18} />
-      <input {...props} className="w-full pl-10 pr-4 py-3 border rounded" />
+      <Icon className="absolute left-3 top-3 text-green-600 " size={18} />
+      <input
+        {...props}
+        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-400"
+      />
     </div>
   );
 }
