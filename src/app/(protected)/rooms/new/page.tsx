@@ -216,12 +216,13 @@ export default function Page() {
         >
           {/* Header */}
           <div>
-            <h1 className="text-3xl font-bold text-green-700">
-              List Your Space
+            <h1 className="text-3xl font-bold">
+              List Your <span className="text-green-700">Space</span>
             </h1>
             <p className="text-gray-500 text-sm mt-1">
               Add details to find the perfect roommate faster
             </p>
+            <div className="mt-4 h-1 w-20 bg-green-500 rounded-full"></div>
           </div>
 
           {/* ================= BASIC INFO ================= */}

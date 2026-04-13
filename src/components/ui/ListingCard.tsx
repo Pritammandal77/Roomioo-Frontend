@@ -3,9 +3,15 @@
 import { motion } from "framer-motion";
 import { MapPin, IndianRupee } from "lucide-react";
 import Link from "next/link";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 export default function ListingCard({ listing, id, index }: any) {
-  const { rent, location, pictures, amenities, matchPercentage } = listing;
+  const { rent, location, pictures, amenities, matchPercentage, createdAt } =
+    listing;
+
+  dayjs.extend(relativeTime);
+  console.log(createdAt);
 
   return (
     <motion.div
@@ -50,11 +56,15 @@ export default function ListingCard({ listing, id, index }: any) {
           {location?.city}
         </div>
 
-        {/* RENT */}
-        <p className="mt-4 text-green-600 font-semibold flex items-center gap-1">
-          <IndianRupee size={16} />
-          {rent} / month
-        </p>
+        <div className="flex items-end justify-between mt-4">
+          {/* RENT */}
+          <p className="text-green-600 font-semibold flex items-center gap-1">
+            <IndianRupee size={16} />
+            {rent} / month
+          </p>
+
+          <p className="text-xs text-gray-500">{dayjs(createdAt).fromNow()}</p>
+        </div>
 
         {listing.distanceInKm && (
           <p className="text-xs text-green-600 font-medium">

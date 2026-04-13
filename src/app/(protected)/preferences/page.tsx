@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getPreference, upsertPreference } from "@/services/preference.api";
 import { toast } from "sonner";
+import PreferencesPageSkeleton from "@/components/loaders/PreferencesPageSkeleton";
 
 export default function Page() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function Page() {
     workStyle: "",
   });
 
-  // ✅ safer state update
+  // safer state update
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
 
@@ -43,7 +44,7 @@ export default function Page() {
     }));
   };
 
-  // ✅ fetch existing preference
+  // fetch existing preference
   useEffect(() => {
     const fetchPreference = async () => {
       try {
@@ -122,7 +123,7 @@ export default function Page() {
       gender: formData.gender,
     };
 
-    // ✅ only add if valid
+    // only add if valid
     if (["WFO", "WFH", "Hybrid"].includes(formData.workStyle)) {
       payload.workStyle = formData.workStyle;
     }
@@ -132,8 +133,8 @@ export default function Page() {
 
       toast.success(
         isEdit
-          ? "Preferences updated successfully ✅"
-          : "Preferences saved successfully ✅",
+          ? "Preferences updated successfully"
+          : "Preferences saved successfully",
       );
 
       router.push("/profile");
@@ -149,13 +150,9 @@ export default function Page() {
         : "bg-white text-gray-600 border-gray-300 hover:bg-green-100"
     }`;
 
-  // ✅ loading state
+  // loading state
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading preferences...</p>
-      </div>
-    );
+    return <PreferencesPageSkeleton />;
   }
 
   return (
@@ -163,15 +160,15 @@ export default function Page() {
       <div className="w-full max-w-4xl mt-20 mb-10 bg-white/80 backdrop-blur-xl shadow-xl rounded-3xl p-8">
         {/* HEADER */}
         <div className="mb-10">
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl font-bold">
             {isEdit ? (
               <>
-                Edit Your <span className="text-green-600">Preferences</span> ✏️
+                Edit Your <span className="text-green-600">Preferences</span>
               </>
             ) : (
               <>
-                Setup Your <span className="text-green-600">Preferences</span>{" "}
-                🌿
+                Setup Your{" "}
+                <span className="text-green-600">Preferences</span>{" "}
               </>
             )}
           </h1>

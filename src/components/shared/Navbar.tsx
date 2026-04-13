@@ -161,19 +161,21 @@ export default function Navbar() {
             )}
           </div>
 
-          <div className="absolute right-0 bottom-0">
-            {/* Logout */}
-            <button
-              onClick={() => {
-                setShowConfirmLogoutPopup(true);
-                setIsOpen(false);
-              }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm  text-gray-700 active:text-red-500 active:bg-red-50 transition-all duration-150"
-            >
-              <LogOutIcon size={20} className="text-gray-500" />
-              Logout
-            </button>
-          </div>
+          {userData && (
+            <div className="absolute right-0 bottom-0">
+              {/* Logout */}
+              <button
+                onClick={() => {
+                  setShowConfirmLogoutPopup(true);
+                  setIsOpen(false);
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm  text-gray-700 active:text-red-500 active:bg-red-50 transition-all duration-150"
+              >
+                <LogOutIcon size={20} className="text-gray-500" />
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </header>
 

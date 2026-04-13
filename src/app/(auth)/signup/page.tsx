@@ -252,6 +252,7 @@ import Link from "next/link";
 import { registerUser } from "@/services/auth.api";
 import { toast } from "sonner";
 import { sendOtp, verifyOtp } from "@/services/otp.api";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -263,6 +264,8 @@ export default function SignUp() {
     mobileNumber: "",
     gender: "",
   });
+
+  const router = useRouter();
 
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -379,8 +382,11 @@ export default function SignUp() {
     try {
       await registerUser(data);
       toast.success("Account created successfully");
+      router.push("/");
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Something went wrong");
+      const message = error?.response?.data?.message || error?.message;
+
+      toast.error(message);
     }
   };
 
@@ -527,7 +533,7 @@ export default function SignUp() {
                     <button
                       type="button"
                       onClick={handleVerifyOtp}
-                      className="px-5 py-2 rounded-xl bg-black text-white text-sm font-medium hover:bg-gray-800 transition"
+                      className="hidden xl:inline px-5 py-2 rounded-xl bg-black text-white text-sm font-medium hover:bg-gray-800 transition"
                     >
                       Verify OTP
                     </button>
@@ -539,6 +545,14 @@ export default function SignUp() {
                       {Math.floor(timer / 60)}:
                       {(timer % 60).toString().padStart(2, "0")}
                     </span>
+
+                    <button
+                      type="button"
+                      onClick={handleVerifyOtp}
+                      className="xl:hidden px-5 py-2 rounded-xl bg-black text-white text-sm font-medium hover:bg-gray-800 transition"
+                    >
+                      Verify OTP
+                    </button>
                   </div>
                 </div>
               )}
