@@ -378,7 +378,7 @@ export default function SignUp() {
 
     try {
       await registerUser(data);
-      toast.success("Account created successfully 🎉");
+      toast.success("Account created successfully");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Something went wrong");
     }
