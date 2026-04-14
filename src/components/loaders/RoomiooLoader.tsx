@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
-interface RoomioPropsType {
+interface RoomiooPropsType {
   isAddBg: boolean;
   textContent: string;
 }
 
-export default function RoomioLoader({ isAddBg, textContent }: RoomioPropsType) {
+export default function RoomiooLoader({ isAddBg, textContent }: RoomiooPropsType) {
   return (
     <div
       className={`w-screen h-screen flex flex-col items-center justify-center fixed top-0 right-0 ${

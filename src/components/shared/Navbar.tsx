@@ -41,18 +41,12 @@ export default function Navbar() {
           {/* LOGO */}
           <Link
             href="/"
-            className="text-2xl font-bold text-green-600 flex items-center justify-center gap-3"
+            className="text-2xl font-semibold flex items-center tracking-wide"
+            style={{ fontFamily: "var(--font-poppins)" }}
           >
-            <Image
-              src={"/RoomioLogo.jpeg"}
-              height={50}
-              width={50}
-              alt="Roomio Logo"
-              className="rounded-full"
-            />
-            Roomio
+            <span className="text-gray-900">Roomi</span>
+            <span className="text-green-700">oo</span>
           </Link>
-
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center gap-8">
             <Link href="/" className="text-gray-600 hover:text-green-600">

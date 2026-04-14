@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
         {/* BRAND */}
         <div>
-          <h2 className="text-2xl font-bold text-green-600">Roomio</h2>
+          <h2 className="text-2xl font-bold text-green-600">Roomioo</h2>
           <p className="mt-4 text-gray-600 text-sm leading-relaxed">
             Find your perfect housemate based on lifestyle, habits, and vibe.
             Making shared living simple, safe, and smarter.
@@ -78,7 +78,7 @@ export default function Footer() {
           <div className="mt-4 space-y-4 text-gray-600 text-sm">
             <div className="flex items-center gap-2">
               <Mail size={16} />
-              <span>support@roomio.com</span>
+              <span>support@Roomioo.com</span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -96,7 +96,7 @@ export default function Footer() {
 
       {/* BOTTOM BAR */}
       <div className="mt-12 border-t border-gray-200 pt-6 flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
-        <p>© {new Date().getFullYear()} Roomio. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Roomioo. All rights reserved.</p>
 
         <div className="flex gap-6 mt-4 md:mt-0">
           <Link href="/" className="hover:text-green-600 transition">

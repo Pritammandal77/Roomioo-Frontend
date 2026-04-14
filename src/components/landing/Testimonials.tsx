@@ -92,7 +92,7 @@ const testimonials: Testimonial[] = [
     name: "Ananya Gupta",
     role: "Lister",
     rating: 5,
-    review: "Roomio made listing and managing tenants super simple.",
+    review: "Roomioo made listing and managing tenants super simple.",
     img: "https://randomuser.me/api/portraits/women/55.jpg",
   },
 ];
@@ -170,7 +170,7 @@ export default function Testimonials() {
       {/* Heading */}
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
-          What People Say About Roomio
+          What People Say About Roomioo
         </h2>
         <p className="text-gray-500 mt-3 text-sm md:text-base">
           Real experiences from seekers & listers

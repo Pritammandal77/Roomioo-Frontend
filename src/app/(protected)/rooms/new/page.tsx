@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { RoomForm } from "@/types/rooms";
 import { toast } from "sonner";
-import RoomioLoader from "@/components/loaders/RoomioLoader";
+import RoomiooLoader from "@/components/loaders/RoomiooLoader";
 
 export default function Page() {
   const [locationMode, setLocationMode] = useState<"auto" | "manual" | null>(
@@ -645,7 +645,7 @@ export default function Page() {
         `}</style>
       </div>
 
-      {loading && <RoomioLoader isAddBg={true} textContent={"Uploading..."} />}
+      {loading && <RoomiooLoader isAddBg={true} textContent={"Uploading..."} />}
     </>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from 'next/font/google';
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import ReduxProvider from "@/lib/rtk/providers/ReduxProvider";
@@ -15,13 +16,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['600', '700'],
+  variable: '--font-poppins',
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "Roomio – Find Your Perfect Roommate",
-    template: "%s | Roomio",
+    default: "Roomioo – Find Your Perfect Roommate/Flatmate",
+    template: "%s | Roomioo",
   },
   description:
-    "Roomio helps you find the perfect roommate/flatmate based on lifestyle, preferences, and compatibility. Discover shared living made smarter.",
+    "Roomioo helps you find the perfect roommate/flatmate based on lifestyle, preferences, and compatibility. Discover shared living made smarter.",
 
   keywords: [
     "roommate finder",
@@ -30,26 +37,26 @@ export const metadata: Metadata = {
     "flatmate finder",
     "shared living",
     "roommate app India",
-    "Roomio",
+    "Roomioo",
   ],
 
-  authors: [{ name: "Roomio Team" }],
-  creator: "Roomio",
+  authors: [{ name: "Roomioo" }],
+  creator: "Roomioo",
 
-  metadataBase: new URL("https://roomio.vercel.app"), // change after domain
+  metadataBase: new URL("https://Roomioo.vercel.app"), // change after domain
 
   openGraph: {
-    title: "Roomio – Smart Roommate Finder",
+    title: "Roomioo – Smart Roommate Finder",
     description:
-      "Find compatible roommates easily with Roomio. Smart matching based on lifestyle.",
-    url: "https://roomio.vercel.app",
-    siteName: "Roomio",
+      "Find compatible roommates easily with Roomioo. Smart matching based on lifestyle.",
+    url: "https://Roomioo.vercel.app",
+    siteName: "Roomioo",
     images: [
       {
-        url: "/RoomioLogo.jpeg", // add later
+        url: "/RoomiooLogo.jpeg", // add later
         width: 1200,
         height: 630,
-        alt: "Roomio App Preview",
+        alt: "Roomioo App Preview",
       },
     ],
     locale: "en_IN",
@@ -58,15 +65,14 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Roomio – Find Your Perfect Roommate",
-    description:
-      "Smart roommate matching platform for better shared living.",
-    images: ["/RoomioLogo.jpeg"],
+    title: "Roomioo – Find Your Perfect Roommate",
+    description: "Smart roommate matching platform for better shared living.",
+    images: ["/RoomiooLogo.jpeg"],
   },
 
   icons: {
     // icon: "/favicon.ico",
-     icon: "/RoomioLogo.jpeg",
+    icon: "/RoomiooLogo.jpeg",
   },
 
   robots: {
@@ -83,7 +89,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ReduxProvider>

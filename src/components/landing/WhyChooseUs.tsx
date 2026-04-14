@@ -22,7 +22,7 @@ export default function WhyChooseUs() {
             whileInView={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-bold text-gray-900"
           >
-            Why Choose <span className="text-green-600">Roomio</span>?
+            Why Choose <span className="text-green-600">Roomioo</span>?
           </motion.h2>
 
           <p className="mt-5 text-gray-600 max-w-2xl mx-auto text-lg">

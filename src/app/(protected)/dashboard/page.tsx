@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import InterestsCard from "@/components/ui/InterestsCard";
 import { fetchCurrUserListings } from "@/services/rooms.api";
 import ListingCard from "@/components/ui/ListingCard";
+import { HomeIcon, InfoIcon } from "lucide-react";
+import Link from "next/link";
 
 function Page() {
   const [outGoingInterests, setOutGoingInterests] = useState([]);
@@ -47,7 +49,7 @@ function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-20 px-4 md:px-10 bg-linear-to-br from-green-50 via-white to-green-100">
+    <div className="min-h-screen pt-20 px-4 md:px-10 bg-linear-to-br from-green-50 via-white to-green-50">
       <div className="max-w-5xl mx-auto space-y-8">
         {/* HEADER */}
         <div className="flex flex-col gap-2">
@@ -158,8 +160,8 @@ function Page() {
                     ))
                   ) : (
                     <div className="flex flex-col items-center justify-center py-20 text-center bg-white border rounded-2xl shadow-sm">
-                      <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4 text-xl">
-                        📭
+                      <div className="w-14 h-14 bg-green-200 rounded-full flex items-center justify-center mb-4 text-xl">
+                        <InfoIcon />
                       </div>
                       <p className="text-gray-600 font-medium">
                         No {activeTab} requests yet
@@ -189,15 +191,18 @@ function Page() {
                   ))
                 ) : (
                   <div className="col-span-full flex flex-col items-center justify-center py-20 bg-white border rounded-2xl shadow-sm text-center">
-                    <div className="text-3xl mb-3">🏠</div>
+                    <div className="text-3xl mb-3 bg-green-200 p-3 rounded-full">
+                      <HomeIcon />
+                    </div>
                     <p className="text-gray-600 font-medium">No listings yet</p>
                     <p className="text-gray-400 text-sm mt-1">
                       Start by posting your first room
                     </p>
-
-                    <button className="mt-4 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                      + Create Listing
-                    </button>
+                    <Link href="/rooms/new">
+                      <button className="mt-4 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                        + Create Listing
+                      </button>
+                    </Link>
                   </div>
                 )}
               </motion.div>

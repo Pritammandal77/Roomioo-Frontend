@@ -6,14 +6,14 @@ import { Plus, Minus } from "lucide-react";
 
 const faqs = [
   {
-    question: "Is Roomio free to use?",
+    question: "Is Roomioo free to use?",
     answer:
-      "Yes, Roomio is completely free for users. You can browse listings, connect with people, and find your perfect housemate without any brokerage.",
+      "Yes, Roomioo is completely free for users. You can browse listings, connect with people, and find your perfect housemate without any brokerage.",
   },
   {
     question: "How does matching work?",
     answer:
-      "Roomio matches you with people based on lifestyle, habits, and preferences like cleanliness, sleep schedule, and more.",
+      "Roomioo matches you with people based on lifestyle, habits, and preferences like cleanliness, sleep schedule, and more.",
   },
   {
     question: "Are profiles verified?",
@@ -33,7 +33,7 @@ const faqs = [
   {
     question: "Is there any brokerage or hidden charges?",
     answer:
-      "No, Roomio has zero brokerage. You connect directly with people without any middlemen or hidden fees.",
+      "No, Roomioo has zero brokerage. You connect directly with people without any middlemen or hidden fees.",
   },
   {
     question: "How do I list my room or flat?",
@@ -58,7 +58,7 @@ export default function FAQ() {
             Frequently Asked <span className="text-green-600">Questions</span>
           </h2>
           <p className="mt-4 text-gray-600">
-            Everything you need to know about Roomio.
+            Everything you need to know about Roomioo.
           </p>
         </div>
 

@@ -27,7 +27,7 @@ export default function ProblemSolution() {
             className="group p-8 rounded-3xl bg-red-100 border border-red-100 shadow-sm hover:shadow-xl transition"
           >
             <h3 className="text-2xl font-semibold text-red-500 mb-6">
-              ❌ Without Roomio
+              ❌ Without Roomioo
             </h3>
 
             <ul className="space-y-4">
@@ -51,7 +51,7 @@ export default function ProblemSolution() {
             whileInView={{ opacity: 1, x: 0 }}
             className="group p-8 rounded-3xl bg-green-200 text-black shadow-xl hover:shadow-2xl transition"
           >
-            <h3 className="text-2xl font-semibold mb-6">✅ With Roomio</h3>
+            <h3 className="text-2xl font-semibold mb-6">✅ With Roomioo</h3>
 
             <ul className="space-y-4">
               {[
