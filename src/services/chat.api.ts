@@ -19,6 +19,11 @@ export const sendNewMessage = async (data: sendMessagePayload) => {
 }
 
 export const fetchAllMessages = async (chatId: string) => {
-    const res = await axiosInstance.get(`/api/message/messages/all/${chatId}`)
+    const res = await axiosInstance.get(`/api/chats/messages/all/${chatId}`)
+    return res.data
+}
+
+export const markMessagesAsSeen = async (chatId: string) => {
+    const res = await axiosInstance.patch(`/api/chats/messages/seen/${chatId}`)
     return res.data
 }

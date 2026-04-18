@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { User } from "../../../../types/user";
 import { MessageCircleCode } from "lucide-react";
-
+import { createOrFetchChat } from "@/services/chat.api";
 
 function page() {
   const { id } = useParams();
@@ -37,6 +37,15 @@ function page() {
       month: "short",
       day: "numeric",
     });
+
+  const handleCreateOrFetchChat = async (id: string) => {
+    try {
+      const res = await createOrFetchChat(id);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-h-screen pt-20 xl:pt-30 bg-linear-to-br from-green-100 via-[#c7f9c6] to-emerald-100 text-gray-800">
@@ -79,8 +88,11 @@ function page() {
               <Info label="Mobile" value={userData?.mobileNumber} />
             </div>
 
-            <button className="bg-green-500 font-semibold flex items-center justify-center gap-3 w-full py-3 rounded-xl">
-             <MessageCircleCode size={18}/> Start Chat
+            <button
+              className="bg-green-500 font-semibold flex items-center justify-center gap-3 w-full py-3 rounded-xl"
+              onClick={() => handleCreateOrFetchChat(id as string)}
+            >
+              <MessageCircleCode size={18} /> Start Chat
             </button>
           </div>
 
