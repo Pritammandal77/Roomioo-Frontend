@@ -1,284 +1,3 @@
-// "use client";
-// import { useEffect, useRef, useState, useCallback } from "react";
-// import { useParams, useRouter } from "next/navigation";
-// import { useSocket } from "@/hooks/useSocket";
-// import { fetchAllMessages, sendNewMessage } from "@/services/chat.api";
-
-// interface ChatUser {
-//   _id: string;
-//   fullName: string;
-//   profilePicture?: string;
-// }
-
-// interface Message {
-//   _id: string;
-//   content: string;
-//   sender: ChatUser;
-//   chat: { _id: string } | string;
-//   seenBy: string[];
-//   createdAt: string;
-//   messageType: "text" | "image" | "file";
-//   pending?: boolean; // optimistic UI flag
-// }
-
-// // Replace with your actual auth hook/store
-// const useCurrentUser = () => {
-//   return {
-//     _id: "currentUserId",
-//     fullName: "You",
-//     profilePicture: undefined as string | undefined,
-//   };
-// };
-
-// export default function ChatMessagesPage() {
-//   const { chatId } = useParams<{ chatId: string }>();
-//   const router = useRouter();
-//   const currentUser = useCurrentUser();
-//   const socket = useSocket(currentUser?._id);
-
-//   const [messages, setMessages] = useState<Message[]>([]);
-//   const [input, setInput] = useState("");
-//   const [loading, setLoading] = useState(true);
-//   const [sending, setSending] = useState(false);
-//   const [isTyping, setIsTyping] = useState(false);
-//   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
-//   const [otherUser, setOtherUser] = useState<ChatUser | null>(null);
-
-//   const bottomRef = useRef<HTMLDivElement>(null);
-//   const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-//   const inputRef = useRef<HTMLTextAreaElement>(null);
-
-//   // ── Load messages ─────────────────────────────────────────────────────────
-//   useEffect(() => {
-//     if (!chatId) return;
-//     const load = async () => {
-//       try {
-//         const data = await fetchAllMessages(chatId);
-//         setMessages(data.data ?? []);
-//         // derive other user from first message not from currentUser
-//         const firstOther = data.data?.find(
-//           (m: Message) => m.sender._id !== currentUser._id,
-//         )?.sender;
-//         if (firstOther) setOtherUser(firstOther);
-//       } catch (err) {
-//         console.error("Failed to load messages", err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     load();
-//   }, [chatId]);
-
-//   // ── Socket setup ─────────────────────────────────────────────────────────
-//   useEffect(() => {
-//     if (!socket || !chatId) return;
-
-//     socket.emit("join-chat", chatId);
-
-//     socket.on("message-received", (msg: Message) => {
-//       setMessages((prev) => [...prev, msg]);
-//       // mark seen
-//       socket.emit("mark-seen", { chatId, userId: currentUser._id });
-//     });
-
-//     socket.on("typing", () => setIsTyping(true));
-//     socket.on("stop-typing", () => setIsTyping(false));
-//     socket.on("online-users", (users: string[]) => setOnlineUsers(users));
-
-//     return () => {
-//       socket.emit("leave-chat", chatId);
-//       socket.off("message-received");
-//       socket.off("typing");
-//       socket.off("stop-typing");
-//       socket.off("online-users");
-//     };
-//   }, [socket, chatId]);
-
-//   // ── Auto scroll ──────────────────────────────────────────────────────────
-//   useEffect(() => {
-//     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-//   }, [messages, isTyping]);
-
-//   // ── Typing events ────────────────────────────────────────────────────────
-//   const handleTyping = useCallback(() => {
-//     if (!socket) return;
-//     socket.emit("typing", chatId);
-//     if (typingTimeout.current) clearTimeout(typingTimeout.current);
-//     typingTimeout.current = setTimeout(() => {
-//       socket.emit("stop-typing", chatId);
-//     }, 2000);
-//   }, [socket, chatId]);
-
-//   // ── Send message ─────────────────────────────────────────────────────────
-//   const handleSend = async () => {
-//     const trimmed = input.trim();
-//     if (!trimmed || sending) return;
-
-//     // Optimistic UI
-//     const optimistic: Message = {
-//       _id: `temp-${Date.now()}`,
-//       content: trimmed,
-//       sender: currentUser as ChatUser,
-//       chat: chatId,
-//       seenBy: [currentUser._id],
-//       createdAt: new Date().toISOString(),
-//       messageType: "text",
-//       pending: true,
-//     };
-//     setMessages((prev) => [...prev, optimistic]);
-//     setInput("");
-//     if (socket) socket.emit("stop-typing", chatId);
-
-//     try {
-//       setSending(true);
-//       const data = await sendNewMessage({ chatId, message: trimmed });
-//       const saved: Message = data.data;
-
-//       // Replace optimistic with real message
-//       setMessages((prev) =>
-//         prev.map((m) => (m._id === optimistic._id ? saved : m)),
-//       );
-
-//       // Broadcast via socket so other user gets it instantly
-//       if (socket) socket.emit("new-message", saved);
-//     } catch (err) {
-//       console.error("Failed to send message", err);
-//       // Remove optimistic on failure
-//       setMessages((prev) => prev.filter((m) => m._id !== optimistic._id));
-//     } finally {
-//       setSending(false);
-//       inputRef.current?.focus();
-//     }
-//   };
-
-//   const handleKeyDown = (e: React.KeyboardEvent) => {
-//     if (e.key === "Enter" && !e.shiftKey) {
-//       e.preventDefault();
-//       handleSend();
-//     }
-//   };
-
-//   const isOnline = otherUser ? onlineUsers.includes(otherUser._id) : false;
-
-//   const formatTime = (iso: string) =>
-//     new Date(iso).toLocaleTimeString([], {
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     });
-
-//   const isSameDay = (a: string, b: string) =>
-//     new Date(a).toDateString() === new Date(b).toDateString();
-
-//   const formatDateLabel = (iso: string) => {
-//     const d = new Date(iso);
-//     const today = new Date();
-//     const yesterday = new Date(today);
-//     yesterday.setDate(today.getDate() - 1);
-//     if (d.toDateString() === today.toDateString()) return "Today";
-//     if (d.toDateString() === yesterday.toDateString()) return "Yesterday";
-//     return d.toLocaleDateString([], {
-//       weekday: "long",
-//       month: "short",
-//       day: "numeric",
-//     });
-//   };
-
-//   return (
-//     <div className="flex flex-col h-screen max-w-3xl mx-auto bg-gradient-to-br from-green-50 to-emerald-50">
-//       {/* HEADER */}
-//       <div className="flex items-center gap-3 px-4 py-3 bg-white/80 backdrop-blur border-b sticky top-0 z-10">
-//         <button
-//           onClick={() => router.push("/chats")}
-//           className="p-2 hover:bg-gray-100 rounded-lg"
-//         >
-//           ←
-//         </button>
-
-//         <div className="relative">
-//           <img
-//             src={otherUser?.profilePicture || "/avatar.png"}
-//             className="w-10 h-10 rounded-full object-cover"
-//           />
-//           {isOnline && (
-//             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white" />
-//           )}
-//         </div>
-
-//         <div>
-//           <h2 className="text-sm font-semibold">{otherUser?.fullName}</h2>
-//           <p className="text-xs text-gray-400">
-//             {isOnline ? "Online" : "Offline"}
-//           </p>
-//         </div>
-//       </div>
-
-//       {/* MESSAGES */}
-//       <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2">
-//         {messages.map((msg) => {
-//           const isMine = msg.sender._id === currentUser._id;
-
-//           return (
-//             <div
-//               key={msg._id}
-//               className={`flex ${isMine ? "justify-end" : "justify-start"}`}
-//             >
-//               <div
-//                 className={`max-w-[70%] px-4 py-2 rounded-2xl text-sm shadow-sm
-//               ${
-//                 isMine
-//                   ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white"
-//                   : "bg-white border"
-//               }
-//             `}
-//               >
-//                 <p>{msg.content}</p>
-
-//                 <div className="text-[10px] mt-1 flex justify-end gap-1 opacity-70">
-//                   <span>{formatTime(msg.createdAt)}</span>
-//                   {isMine && <span>✓</span>}
-//                 </div>
-//               </div>
-//             </div>
-//           );
-//         })}
-
-//         {/* Typing */}
-//         {isTyping && (
-//           <div className="flex gap-2">
-//             <div className="bg-white px-4 py-2 rounded-2xl shadow-sm flex gap-1">
-//               <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce"></span>
-//               <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-100"></span>
-//               <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-200"></span>
-//             </div>
-//           </div>
-//         )}
-
-//         <div ref={bottomRef} />
-//       </div>
-
-//       {/* INPUT */}
-//       <div className="p-3 bg-white border-t">
-//         <div className="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2">
-//           <input
-//             value={input}
-//             onChange={(e) => setInput(e.target.value)}
-//             placeholder="Type a message..."
-//             className="flex-1 bg-transparent outline-none text-sm"
-//           />
-
-//           <button
-//             onClick={handleSend}
-//             disabled={!input.trim()}
-//             className="bg-green-500 text-white p-2 rounded-full disabled:opacity-40"
-//           >
-//             ➤
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -478,7 +197,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen bg-green-50 font-sans">
+    <div className="pt-17 flex flex-col w-full h-screen bg-green-50 font-sans">
       {/* ── HEADER ── */}
       <div className="flex items-center gap-3 px-4 py-3 bg-white border-b border-green-100 shadow-sm">
         <button
@@ -509,7 +228,7 @@ export default function ChatPage() {
               className="w-10 h-10 rounded-full object-cover border-2 border-green-100"
             />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 text-white font-bold text-base flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-green-400 to-green-600 text-white font-bold text-base flex items-center justify-center">
               {otherUser?.fullName?.charAt(0).toUpperCase() ?? "?"}
             </div>
           )}
@@ -526,7 +245,7 @@ export default function ChatPage() {
       </div>
 
       {/* ── MESSAGES ── */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+      <div className="flex-1 overflow-y-auto px-5 xl:px-20 py-4 space-y-1">
         {/* Loading state */}
         {loading && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-green-400">
@@ -573,7 +292,7 @@ export default function ChatPage() {
                 >
                   {/* Other user avatar */}
                   {!isMine && (
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400 to-green-600 text-white text-xs font-bold flex items-center justify-center mr-2 self-end shrink-0">
+                    <div className="w-7 h-7 rounded-full bg-linear-to-br from-green-400 to-green-600 text-white text-xs font-bold flex items-center justify-center mr-2 self-end shrink-0">
                       {msg.sender.fullName?.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -584,7 +303,7 @@ export default function ChatPage() {
                       ${msg.pending ? "opacity-60" : "opacity-100"}
                       ${
                         isMine
-                          ? "bg-gradient-to-br from-green-400 to-green-600 text-white rounded-br-sm"
+                          ? "bg-linear-to-br from-green-400 to-green-600 text-white rounded-br-sm"
                           : "bg-white border border-green-100 text-green-950 rounded-bl-sm"
                       }
                     `}
@@ -613,7 +332,7 @@ export default function ChatPage() {
         {/* Typing indicator */}
         {isTyping && (
           <div className="flex justify-start mb-1">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400 to-green-600 text-white text-xs font-bold flex items-center justify-center mr-2 self-end shrink-0">
+            <div className="w-7 h-7 rounded-full bg-linear-to-br from-green-400 to-green-600 text-white text-xs font-bold flex items-center justify-center mr-2 self-end shrink-0">
               {otherUser?.fullName?.charAt(0).toUpperCase() ?? "?"}
             </div>
             <div className="bg-white border border-green-100 px-4 py-3 rounded-2xl rounded-bl-sm flex gap-1.5 items-center">
@@ -658,7 +377,7 @@ export default function ChatPage() {
               w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-all
               ${
                 input.trim()
-                  ? "bg-gradient-to-br from-green-400 to-green-600 text-white hover:scale-105"
+                  ? "bg-linear-to-br from-green-400 to-green-600 text-white hover:scale-105"
                   : "bg-green-100 text-green-300 cursor-not-allowed"
               }
             `}

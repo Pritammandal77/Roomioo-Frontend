@@ -1,194 +1,68 @@
-// "use client";
-// import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
-// import { useSocket } from "@/hooks/useSocket";
-// import { fetchAllChatsList } from "@/services/chat.api";
-// import { formatDistanceToNow } from "date-fns";
-// import { useAppSelector } from "@/lib/rtk/hooks";
-
-// interface ChatUser {
-//   _id: string;
-//   fullName: string;
-//   profilePicture?: string;
-// }
-
-// interface LatestMessage {
-//   _id: string;
-//   content: string;
-//   sender: ChatUser;
-//   createdAt: string;
-//   chat: { _id: string };
-// }
-
-// interface Chat {
-//   _id: string;
-//   users: ChatUser[];
-//   latestMessage?: LatestMessage;
-//   updatedAt: string;
-// }
-
-// export default function ChatsPage() {
-//   const router = useRouter();
-
-//   // ✅ Redux selector inside the component (not outside!)
-//   const user = useAppSelector((state: any) => state.user.userData);
-//   const socket = useSocket(user?._id);
-
-//   const [chats, setChats] = useState<Chat[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
-//   const [searchQuery, setSearchQuery] = useState("");
-
-//   // ── Load chats ──────────────────────────────────────────────────────────────
-//   useEffect(() => {
-//     const load = async () => {
-//       try {
-//         const data = await fetchAllChatsList();
-//         setChats(data.data);
-//       } catch (err) {
-//         console.error("Failed to load chats", err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     load();
-//   }, []);
-
-//   // ── Socket events ───────────────────────────────────────────────────────────
-//   useEffect(() => {
-//     if (!socket) return;
-
-//     socket.on("online-users", (users: string[]) => setOnlineUsers(users));
-
-//     socket.on("message-received", (message: LatestMessage) => {
-//       const incomingChatId = message.chat?._id || message.chat;
-//       setChats((prev) =>
-//         prev
-//           .map((chat) =>
-//             chat._id === incomingChatId
-//               ? {
-//                   ...chat,
-//                   latestMessage: message,
-//                   updatedAt: message.createdAt,
-//                 }
-//               : chat,
-//           )
-//           .sort(
-//             (a, b) =>
-//               new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-//           ),
-//       );
-//     });
-
-//     return () => {
-//       socket.off("online-users");
-//       socket.off("message-received");
-//     };
-//   }, [socket]);
-
-//   // ── Helpers ─────────────────────────────────────────────────────────────────
-//   const getOtherUser = (chat: Chat): ChatUser =>
-//     chat.users.find((u) => u._id !== user?._id) ?? chat.users[0];
-
-//   const filteredChats = chats.filter((chat) => {
-//     const other = getOtherUser(chat);
-//     return other.fullName.toLowerCase().includes(searchQuery.toLowerCase());
-//   });
-
-//   return (
-//     <div className="flex h-screen bg-gradient-to-br from-[#e6f7ee] via-[#f0fff7] to-[#ecfdf5]">
-//       {/* ── Sidebar ── */}
-//       <aside className="w-[360px] bg-white/70 backdrop-blur-xl border-r border-green-100 flex flex-col shadow-xl">
-//         {/* Header */}
-//         <div className="px-6 pt-6 pb-4 border-b border-green-100">
-//           <div className="flex items-center gap-3">
-//             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold shadow-md">
-//               🏠
-//             </div>
-//             <div>
-//               <h1 className="text-lg font-bold text-gray-800">Roomio</h1>
-//               <p className="text-xs text-gray-400">Your conversations</p>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Search */}
-//         <div className="p-4">
-//           <div className="relative">
-//             <input
-//               className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-gray-200 text-sm outline-none focus:ring-2 focus:ring-green-400 transition"
-//               placeholder="Search chats..."
-//               value={searchQuery}
-//               onChange={(e) => setSearchQuery(e.target.value)}
-//             />
-//             <span className="absolute left-3 top-2.5 text-gray-400">🔍</span>
-//           </div>
-//         </div>
-
-//         {/* Chat List */}
-//         <div className="flex-1 overflow-y-auto px-2 space-y-1">
-//           {filteredChats.map((chat) => {
-//             const other = getOtherUser(chat);
-//             const isOnline = onlineUsers.includes(other._id);
-//             const isMe = chat.latestMessage?.sender?._id === user?._id;
-
-//             return (
-//               <button
-//                 key={chat._id}
-//                 onClick={() => router.push(`/chats/${chat._id}`)}
-//                 className="flex items-center gap-3 w-full px-3 py-3 rounded-xl hover:bg-green-50 transition-all group"
-//               >
-//                 {/* Avatar */}
-//                 <div className="relative">
-//                   <img
-//                     src={other.profilePicture || "/avatar.png"}
-//                     className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
-//                   />
-//                   {isOnline && (
-//                     <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white animate-pulse" />
-//                   )}
-//                 </div>
-
-//                 {/* Info */}
-//                 <div className="flex-1 min-w-0">
-//                   <div className="flex justify-between">
-//                     <h2 className="text-sm font-semibold text-gray-800 truncate">
-//                       {other.fullName}
-//                     </h2>
-//                     <span className="text-[11px] text-gray-400">
-//                       {formatDistanceToNow(new Date(chat.updatedAt))}
-//                     </span>
-//                   </div>
-
-//                   <p className="text-xs text-gray-500 truncate">
-//                     {chat.latestMessage
-//                       ? `${isMe ? "You: " : ""}${chat.latestMessage.content}`
-//                       : "Start conversation..."}
-//                   </p>
-//                 </div>
-//               </button>
-//             );
-//           })}
-//         </div>
-//       </aside>
-
-//       {/* Empty state */}
-//       <main className="flex-1 hidden md:flex items-center justify-center">
-//         <div className="text-center text-gray-400">
-//           <div className="text-6xl mb-4">💬</div>
-//           <h2 className="text-xl font-bold text-gray-700">Select a chat</h2>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
-
+import { ArrowLeft } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="hidden md:flex flex-1 items-center justify-center">
-      <div className="text-gray-400 text-center">
-        <h2 className="text-xl font-bold">Select a chat</h2>
+    <div className="hidden md:flex flex-1 items-center justify-center relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-emerald-50">
+
+      {/* 🌿 Soft background glow */}
+      <div className="absolute w-[400px] h-[400px] bg-green-200/30 blur-3xl rounded-full top-10 left-10" />
+      <div className="absolute w-[300px] h-[300px] bg-emerald-300/20 blur-3xl rounded-full bottom-10 right-10" />
+
+      {/* ✨ Main Card */}
+      <div className="
+        relative z-10
+        flex flex-col items-center text-center
+        px-10 py-12 rounded-3xl
+        bg-white/70 backdrop-blur-xl
+        border border-green-100
+        shadow-[0_10px_40px_rgba(0,0,0,0.08)]
+        max-w-md
+      ">
+
+        {/* 💬 Icon */}
+        <div className="mb-6 relative">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-lg">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              className="w-9 h-9"
+            >
+              <path
+                d="M21 15a4 4 0 01-4 4H7l-4 4V5a4 4 0 014-4h10a4 4 0 014 4z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+
+          {/* Glow ring */}
+          <div className="absolute inset-0 rounded-full bg-green-400 opacity-20 blur-xl animate-pulse" />
+        </div>
+
+        {/* 🧠 Heading */}
+        <h2 className="text-2xl font-semibold text-green-950 tracking-tight">
+          Select a chat
+        </h2>
+
+        {/* ✍️ Subtext */}
+        <p className="text-sm text-green-600 mt-2 leading-relaxed max-w-xs">
+          Choose a conversation from the sidebar to start messaging and stay connected.
+        </p>
+
+        {/* ⚡ Action hint */}
+        <div className="mt-6 text-xs text-green-500 flex items-center gap-1">
+          <span><ArrowLeft size={15}/></span>
+          <span>Pick a chat to begin</span>
+        </div>
+
+        {/* ✨ Decorative dots */}
+        <div className="flex gap-2 mt-6">
+          <span className="w-2 h-2 bg-green-300 rounded-full animate-bounce" />
+          <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-150" />
+          <span className="w-2 h-2 bg-green-500 rounded-full animate-bounce delay-300" />
+        </div>
       </div>
     </div>
   );

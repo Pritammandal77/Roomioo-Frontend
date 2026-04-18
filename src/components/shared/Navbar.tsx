@@ -67,6 +67,12 @@ export default function Navbar() {
             >
               Explore
             </Link>
+            <Link
+              href="/chats"
+              className="text-gray-600 hover:text-green-600"
+            >
+              Chats
+            </Link>
           </nav>
 
           {user ? (
@@ -139,6 +145,14 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
             >
               List Property
+            </Link>
+
+            <Link
+              href="/chats"
+              className="block text-gray-600"
+              onClick={() => setIsOpen(false)}
+            >
+              Chats
             </Link>
 
             {!user && (

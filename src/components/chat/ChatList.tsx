@@ -28,8 +28,8 @@ export default function ChatList() {
         prev.map((chat) =>
           chat._id === message.chat._id
             ? { ...chat, latestMessage: message, updatedAt: message.createdAt }
-            : chat
-        )
+            : chat,
+        ),
       );
     });
 
@@ -43,11 +43,16 @@ export default function ChatList() {
     chat.users.find((u: any) => u._id !== user._id);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col pt-18 bg-linear-to-br from-green-50 via-white to-emerald-50">
+      {/* HEADER */}
+      <div className="px-5 py-4 backdrop-blur bg-white/70 border-b border-green-100 shadow-sm sticky top-0 z-10">
+        <h1 className="text-xl font-semibold text-green-900 tracking-tight">
+          Chats
+        </h1>
+      </div>
 
-      <div className="p-4 font-bold text-lg border-b">Chats</div>
-
-      <div className="flex-1 overflow-y-auto">
+      {/* CHAT LIST */}
+      <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1">
         {chats.map((chat) => {
           const other = getOther(chat);
           const isOnline = onlineUsers.includes(other._id);
@@ -57,31 +62,79 @@ export default function ChatList() {
             <div
               key={chat._id}
               onClick={() => router.push(`/chats/${chat._id}`)}
-              className="flex gap-3 p-3 hover:bg-gray-100 cursor-pointer"
+              className="
+            group flex items-center gap-3 px-3 py-3 rounded-2xl cursor-pointer
+            hover:bg-white hover:shadow-md transition-all duration-200
+            active:scale-[0.98]
+          "
             >
-              <div className="relative">
+              {/* AVATAR */}
+              <div className="relative shrink-0">
                 <img
                   src={other.profilePicture || "/avatar.png"}
-                  className="w-12 h-12 rounded-full"
+                  className="
+                w-12 h-12 rounded-full object-cover
+                ring-2 ring-green-100 group-hover:ring-green-300 transition
+              "
                 />
+
+                {/* ONLINE DOT */}
                 {isOnline && (
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white">
+                    <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-70"></span>
+                  </span>
                 )}
               </div>
 
-              <div className="flex-1">
-                <div className="flex justify-between">
-                  <span className="font-semibold">{other.fullName}</span>
-                  <span className="text-xs text-gray-400">
-                    {formatDistanceToNow(new Date(chat.updatedAt))}
+              {/* TEXT */}
+              <div className="flex-1 min-w-0">
+                {/* NAME + TIME */}
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-green-950 truncate">
+                    {other.fullName}
+                  </span>
+
+                  <span className="text-[11px] text-green-400 shrink-0 ml-2">
+                    {formatDistanceToNow(new Date(chat.updatedAt), {
+                      addSuffix: false,
+                    })}
                   </span>
                 </div>
 
-                <p className="text-sm text-gray-500 truncate">
-                  {chat.latestMessage
-                    ? `${isMe ? "You: " : ""}${chat.latestMessage.content}`
-                    : "Start chatting"}
+                {/* LAST MESSAGE */}
+                <p className="text-sm text-green-600 truncate mt-0.5 flex items-center gap-1">
+                  {chat.latestMessage ? (
+                    <>
+                      {isMe && (
+                        <span className="text-green-400 font-medium">You:</span>
+                      )}
+                      <span className="truncate">
+                        {chat.latestMessage.content}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="italic text-green-300">
+                      Start chatting
+                    </span>
+                  )}
                 </p>
+              </div>
+
+              {/* OPTIONAL RIGHT ICON (HOVER EFFECT) */}
+              <div className="opacity-0 group-hover:opacity-100 transition">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-4 h-4 text-green-400"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    d="M9 18l6-6-6-6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
             </div>
           );

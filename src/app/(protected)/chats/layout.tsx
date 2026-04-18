@@ -12,7 +12,7 @@ export default function ChatsLayout({ children }: any) {
       {/* SIDEBAR */}
       <div
         className={`
-          w-full md:w-[360px] border-r bg-white
+          w-full md:w-95 border-r border-gray-300 bg-white
           ${isChatOpen ? "hidden md:block" : "block"}
         `}
       >
