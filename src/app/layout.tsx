@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Poppins } from 'next/font/google';
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import ReduxProvider from "@/lib/rtk/providers/ReduxProvider";
@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['600', '700'],
-  variable: '--font-poppins',
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -93,7 +93,6 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ReduxProvider>
-          <Navbar />
           {children}
           <Toaster position="top-center" richColors closeButton />
         </ReduxProvider>

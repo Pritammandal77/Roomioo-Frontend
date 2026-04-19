@@ -14,7 +14,3 @@ export const resendOtp = (data: any) => {
     const res = axiosInstance.post("/api/otp/resend", data);
     return res;
 }
-
-export const hello = () => {
-    return "Hello"
-}
