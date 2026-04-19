@@ -2,13 +2,13 @@ import { ArrowLeft } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="hidden md:flex flex-1 items-center justify-center relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-emerald-50">
+    <div className="hidden md:flex flex-1 items-center justify-center relative overflow-hidden bg-linear-to-br from-green-50 via-white to-emerald-50">
 
       {/* 🌿 Soft background glow */}
-      <div className="absolute w-[400px] h-[400px] bg-green-200/30 blur-3xl rounded-full top-10 left-10" />
-      <div className="absolute w-[300px] h-[300px] bg-emerald-300/20 blur-3xl rounded-full bottom-10 right-10" />
+      <div className="absolute w-100 h-100 bg-green-200/30 blur-3xl rounded-full top-10 left-10" />
+      <div className="absolute w-75 h-75 bg-emerald-300/20 blur-3xl rounded-full bottom-10 right-10" />
 
-      {/* ✨ Main Card */}
+      {/* Main Card */}
       <div className="
         relative z-10
         flex flex-col items-center text-center
@@ -19,9 +19,9 @@ export default function Page() {
         max-w-md
       ">
 
-        {/* 💬 Icon */}
+        {/* Icon */}
         <div className="mb-6 relative">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-lg">
+          <div className="w-20 h-20 rounded-full bg-linear-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-lg">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -41,23 +41,23 @@ export default function Page() {
           <div className="absolute inset-0 rounded-full bg-green-400 opacity-20 blur-xl animate-pulse" />
         </div>
 
-        {/* 🧠 Heading */}
+        {/* Heading */}
         <h2 className="text-2xl font-semibold text-green-950 tracking-tight">
           Select a chat
         </h2>
 
-        {/* ✍️ Subtext */}
+        {/* Subtext */}
         <p className="text-sm text-green-600 mt-2 leading-relaxed max-w-xs">
           Choose a conversation from the sidebar to start messaging and stay connected.
         </p>
 
-        {/* ⚡ Action hint */}
+        {/* Action hint */}
         <div className="mt-6 text-xs text-green-500 flex items-center gap-1">
           <span><ArrowLeft size={15}/></span>
           <span>Pick a chat to begin</span>
         </div>
 
-        {/* ✨ Decorative dots */}
+        {/* Decorative dots */}
         <div className="flex gap-2 mt-6">
           <span className="w-2 h-2 bg-green-300 rounded-full animate-bounce" />
           <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce delay-150" />
