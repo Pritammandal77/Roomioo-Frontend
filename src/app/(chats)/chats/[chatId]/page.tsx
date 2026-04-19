@@ -8,6 +8,8 @@ import {
   markMessagesAsSeen,
 } from "@/services/chat.api";
 import { useAppSelector } from "@/lib/rtk/hooks";
+import Image from "next/image";
+import { SendHorizonalIcon } from "lucide-react";
 
 interface ChatUser {
   _id: string;
@@ -48,8 +50,9 @@ export default function ChatPage() {
     if (!chatId || !user?._id) return;
 
     setLoading(true);
-    fetchAllMessages(chatId)
+    const res = fetchAllMessages(chatId)
       .then((res) => {
+        console.log("messages", res);
         setMessages(res.data || []);
         const other = res.data?.find((m: Message) => m.sender._id !== user._id);
         if (other) setOtherUser(other.sender);
@@ -57,7 +60,7 @@ export default function ChatPage() {
       .catch((err) => console.error("Failed to fetch messages", err))
       .finally(() => setLoading(false));
   }, [chatId, user?._id]);
-  
+
   useEffect(() => {
     if (!socket || !chatId || !user?._id || loading) return;
     socket.emit("mark-seen", { chatId, userId: user._id }); // real-time
@@ -120,7 +123,7 @@ export default function ChatPage() {
     const trimmed = input.trim();
     if (!trimmed || sending || !socket) return;
 
-    // ✅ Optimistic message — appears instantly
+    // Optimistic message — appears instantly
     const optimistic: Message = {
       _id: `temp-${Date.now()}`,
       content: trimmed,
@@ -144,16 +147,16 @@ export default function ChatPage() {
       const res = await sendNewMessage({ chatId, message: trimmed });
       const saved: Message = res.data;
 
-      // ✅ Replace optimistic with real saved message
+      // Replace optimistic with real saved message
       setMessages((prev) =>
         prev.map((m) => (m._id === optimistic._id ? saved : m)),
       );
 
-      // ✅ Broadcast to other user via socket
+      // Broadcast to other user via socket
       socket.emit("new-message", saved);
     } catch (err) {
       console.error("Failed to send message", err);
-      // ✅ Remove failed optimistic message
+      // Remove failed optimistic message
       setMessages((prev) => prev.filter((m) => m._id !== optimistic._id));
     } finally {
       setSending(false);
@@ -161,7 +164,7 @@ export default function ChatPage() {
     }
   };
 
-  // ✅ Enter key support
+  // Enter key support
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -169,7 +172,7 @@ export default function ChatPage() {
     }
   };
 
-  // ✅ Fixed seen check — seenBy can be array of objects OR strings
+  // Fixed seen check — seenBy can be array of objects OR strings
   const isSeen = (msg: Message) =>
     msg.seenBy?.some(
       (id) => (typeof id === "object" ? id._id : id) === otherUser?._id,
@@ -197,7 +200,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="pt-17 flex flex-col w-full h-screen bg-green-50 font-sans">
+    <div className="flex flex-col w-full h-screen bg-green-50 font-sans">
       {/* ── HEADER ── */}
       <div className="flex items-center gap-3 px-4 py-3 bg-white border-b border-green-100 shadow-sm">
         <button
@@ -291,11 +294,14 @@ export default function ChatPage() {
                   className={`flex ${isMine ? "justify-end" : "justify-start"} mb-1`}
                 >
                   {/* Other user avatar */}
-                  {!isMine && (
-                    <div className="w-7 h-7 rounded-full bg-linear-to-br from-green-400 to-green-600 text-white text-xs font-bold flex items-center justify-center mr-2 self-end shrink-0">
-                      {msg.sender.fullName?.charAt(0).toUpperCase()}
-                    </div>
-                  )}
+                  {/* {!isMine && (
+                    <Image
+                     src={msg.sender.profilePicture || ""}
+                      alt="Image"
+                      height={20}
+                      width={20}
+                      />
+                  )} */}
 
                   <div
                     className={`
@@ -367,7 +373,7 @@ export default function ChatPage() {
               handleTyping();
             }}
             onKeyDown={handleKeyDown} // ✅ Enter to send
-            className="flex-1 bg-transparent outline-none text-sm text-green-950 placeholder:text-green-300"
+            className="flex-1 bg-transparent outline-none text-sm text-green-950 placeholder:text-gray-500"
             placeholder="Type a message…"
           />
           <button
@@ -378,17 +384,11 @@ export default function ChatPage() {
               ${
                 input.trim()
                   ? "bg-linear-to-br from-green-400 to-green-600 text-white hover:scale-105"
-                  : "bg-green-100 text-green-300 cursor-not-allowed"
+                  : "bg-green-200 text-green-700 cursor-not-allowed"
               }
             `}
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-4 h-4 translate-x-px"
-            >
-              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-            </svg>
+            <SendHorizonalIcon/>
           </button>
         </div>
       </div>

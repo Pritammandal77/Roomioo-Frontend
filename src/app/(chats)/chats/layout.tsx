@@ -1,14 +1,21 @@
 "use client";
 import ChatList from "@/components/chat/ChatList";
+import { useAppSelector } from "@/lib/rtk/hooks";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function ChatsLayout({ children }: any) {
   const pathname = usePathname();
   const isChatOpen = pathname !== "/chats";
 
+  const router = useRouter();
+  const user = useAppSelector((state: any) => state.user.userData);
+
+  if(user == null){
+    router.push("/")
+  }
+
   return (
     <div className="flex h-screen overflow-hidden">
-
       {/* SIDEBAR */}
       <div
         className={`
