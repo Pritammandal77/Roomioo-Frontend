@@ -9,6 +9,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import RoomiooLoader from "../loaders/RoomiooLoader";
+import ChatItemSkeleton from "../loaders/ChatItemSkeletion";
 
 export default function ChatList() {
   const router = useRouter();
@@ -168,11 +169,11 @@ export default function ChatList() {
           })}
         </div>
 
-        {!isChatsLoading && (
-          <div className="flex xl:hidden w-full md:w-95 h-screen">
-            <RoomiooLoader textContent="Chats loading..." isAddBg={false} />
-
-            <div>Loading Chats</div>
+        {isChatsLoading && (
+          <div className="w-full md:w-95 px-3 pt-0 h-screen">
+            {[...Array(10)].map((_, i) => (
+              <ChatItemSkeleton key={i} />
+            ))}
           </div>
         )}
       </div>
