@@ -33,7 +33,7 @@ function Hero() {
             transition={{ duration: 0.7 }}
             className="text-gray-600 text-lg"
           >
-            No more random roommates. Match with people who share your habits,
+            No more random roommates or flatmates. Match with people who share your habits,
             vibe, and daily routine.
           </motion.p>
 
@@ -68,7 +68,7 @@ function Hero() {
 
           {/* Small trust text */}
           <p className="text-sm text-gray-400">
-            Trusted by students & professionals across India 🇮🇳
+            Trusted by students & professionals across India
           </p>
         </div>
 

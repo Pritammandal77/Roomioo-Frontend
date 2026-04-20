@@ -9,7 +9,7 @@ import {
 } from "@/services/chat.api";
 import { useAppSelector } from "@/lib/rtk/hooks";
 import Image from "next/image";
-import { SendHorizonalIcon } from "lucide-react";
+import { Clock, SendHorizonalIcon } from "lucide-react";
 
 interface ChatUser {
   _id: string;
@@ -39,7 +39,7 @@ export default function ChatPage() {
   const [otherUser, setOtherUser] = useState<ChatUser | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [sending, setSending] = useState(false); // ✅ prevent double-send
+  const [sending, setSending] = useState(false); // prevent double-send
 
   const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -284,7 +284,7 @@ export default function ChatPage() {
                 {/* Date divider */}
                 {showDate && (
                   <div className="flex justify-center my-4">
-                    <span className="text-[11px] font-semibold text-green-400 bg-green-100 px-3 py-1 rounded-full">
+                    <span className="text-[11px] font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">
                       {formatDateLabel(msg.createdAt)}
                     </span>
                   </div>
@@ -318,14 +318,14 @@ export default function ChatPage() {
 
                     {/* Time + seen receipt */}
                     <div
-                      className={`flex items-center justify-end gap-1 mt-1 ${isMine ? "text-green-100" : "text-green-300"}`}
+                      className={`flex items-center justify-end gap-1 mt-1 ${isMine ? "text-green-100" : "text-green-600"}`}
                     >
                       <span className="text-[10px]">
                         {formatTime(msg.createdAt)}
                       </span>
                       {isMine && (
                         <span className="text-[11px]">
-                          {msg.pending ? "⏳" : seen ? "✓✓" : "✓"}
+                          {msg.pending ? <Clock size={13} className="text-black font-bold"/> : seen ? "✓✓" : "✓"}
                         </span>
                       )}
                     </div>

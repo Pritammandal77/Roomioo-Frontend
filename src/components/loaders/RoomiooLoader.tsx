@@ -8,7 +8,7 @@ interface RoomiooPropsType {
 export default function RoomiooLoader({ isAddBg, textContent }: RoomiooPropsType) {
   return (
     <div
-      className={`w-screen h-screen flex flex-col items-center justify-center fixed top-0 right-0 ${
+      className={`w-screen h-screen flex flex-col items-center justify-center fixed top-0 right-0 z-999 ${
         isAddBg && "bg-green-50"
       }`}
     >

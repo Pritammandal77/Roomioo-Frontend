@@ -61,7 +61,7 @@ export default function ChatList() {
 
   return (
     <>
-      <div className="h-full flex flex-col bg-linear-to-br from-green-50 via-white to-emerald-50">
+      <div className="h-full flex flex-col bg-linear-to-br from-green-50 via-white to-emerald-50 relative">
         {/* HEADER */}
         <div className="px-5 py-4 backdrop-blur flex items-center justify-between bg-white/70 border-b border-green-100 shadow-sm sticky top-0 z-10">
           <Link href={"/"}>
@@ -167,11 +167,15 @@ export default function ChatList() {
             );
           })}
         </div>
-      </div>
 
-      {isChatsLoading && (
-        <RoomiooLoader textContent="Chats loading..." isAddBg={true} />
-      )}
+        {!isChatsLoading && (
+          <div className="flex xl:hidden w-full md:w-95 h-screen">
+            <RoomiooLoader textContent="Chats loading..." isAddBg={false} />
+
+            <div>Loading Chats</div>
+          </div>
+        )}
+      </div>
     </>
   );
 }
