@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { updateStatus } from "@/services/interest.api";
 import { useState } from "react";
 import UpdateInterestStatus from "./UpdateInterestStatus";
+import { createOrFetchChat } from "@/services/chat.api";
 
 function InterestsCard({ item, type }: any) {
   const router = useRouter();
@@ -48,6 +49,14 @@ function InterestsCard({ item, type }: any) {
 
   const isAccept = selectedStatus === "accepted";
 
+  const handleCreateOrFetchChat = async (id: string) => {
+    try {
+      const res = await createOrFetchChat(id);
+      router.push(`/chats/${res.data._id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <motion.div
@@ -114,12 +123,20 @@ function InterestsCard({ item, type }: any) {
           </span>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => router.push(`/profile/${user?._id}`)}
-              className="text-md text-green-600 hover:underline cursor-pointer"
-            >
-              Visit Profile
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleCreateOrFetchChat(user._id)}
+                className="text-md text-green-800 bg-green-200 rounded-xl px-3 py-1 hover:underline cursor-pointer"
+              >
+                Chat
+              </button>
+              <button
+                onClick={() => router.push(`/profile/${user?._id}`)}
+                className="text-md text-blue-800 bg-blue-200 rounded-xl px-3 py-1 hover:underline cursor-pointer"
+              >
+                Visit Profile
+              </button>
+            </div>
 
             {type === "incoming" && item?.status === "pending" && (
               <>

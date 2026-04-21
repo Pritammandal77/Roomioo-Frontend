@@ -1,7 +1,7 @@
 "use client";
 import { getUserById } from "@/services/auth.api";
 import { PreferenceData } from "@/types/preference";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { User } from "../../../../types/user";
@@ -15,6 +15,8 @@ function page() {
   const [userPreference, setUserPreference] = useState<PreferenceData | null>(
     null,
   );
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,7 +43,7 @@ function page() {
   const handleCreateOrFetchChat = async (id: string) => {
     try {
       const res = await createOrFetchChat(id);
-      console.log(res);
+      router.push(`/chats/${res.data._id}`)
     } catch (error) {
       console.log(error);
     }

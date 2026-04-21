@@ -58,7 +58,7 @@ export default function ChatList() {
   }, [socket]);
 
   const getOther = (chat: any) =>
-    chat.users.find((u: any) => u._id !== user._id);
+    chat?.users.find((u: any) => u._id !== user._id);
 
   return (
     <>
@@ -78,7 +78,7 @@ export default function ChatList() {
         </div>
 
         {/* CHAT LIST */}
-        <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1">
+        <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1 md:px-20 xl:px-0">
           {chats?.map((chat) => {
             const other = getOther(chat);
             const isOnline = onlineUsers.includes(other._id);
@@ -170,7 +170,7 @@ export default function ChatList() {
         </div>
 
         {isChatsLoading && (
-          <div className="w-full md:w-95 px-3 pt-0 h-screen">
+          <div className="w-full xl:w-95 px-3 pt-0 h-screen">
             {[...Array(10)].map((_, i) => (
               <ChatItemSkeleton key={i} />
             ))}

@@ -1,3 +1,5 @@
+import { removeUserData } from "@/lib/rtk/features/userSlice";
+import { useAppDispatch } from "@/lib/rtk/hooks";
 import { logOutUser } from "@/services/auth.api";
 import { LucideBadgeQuestionMark } from "lucide-react";
 import React from "react";
@@ -8,11 +10,15 @@ interface Props {
 }
 
 function ConfirmLogOutModal({ setShowConfirmLogoutPopup }: Props) {
+
+  const dispatch = useAppDispatch();
+
   const handleLogOut = async () => {
     try {
       const res = await logOutUser();
       toast.success("Logged out successfully");
       setShowConfirmLogoutPopup(false);
+      dispatch(removeUserData())
     } catch (error) {
       toast.error("something went wrong while log out");
     }

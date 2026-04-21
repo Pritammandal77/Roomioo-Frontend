@@ -9,7 +9,7 @@ import {
 } from "@/services/chat.api";
 import { useAppSelector } from "@/lib/rtk/hooks";
 import Image from "next/image";
-import { Clock, SendHorizonalIcon } from "lucide-react";
+import { Clock, MessageCircleCheck, SendHorizonalIcon } from "lucide-react";
 
 interface ChatUser {
   _id: string;
@@ -53,9 +53,18 @@ export default function ChatPage() {
     const res = fetchAllMessages(chatId)
       .then((res) => {
         console.log("messages", res);
-        setMessages(res.data || []);
-        const other = res.data?.find((m: Message) => m.sender._id !== user._id);
-        if (other) setOtherUser(other.sender);
+
+        const msgs = res.data || [];
+        setMessages(msgs);
+
+        // get users from chat (first message is enough)
+        const users = msgs[0]?.chat?.users || [];
+
+        const other = users.find((u: ChatUser) => u._id !== user._id);
+
+        console.log("other user", other);
+
+        if (other) setOtherUser(other);
       })
       .catch((err) => console.error("Failed to fetch messages", err))
       .finally(() => setLoading(false));
@@ -199,6 +208,8 @@ export default function ChatPage() {
     });
   };
 
+  console.log("other user", otherUser && otherUser);
+
   return (
     <div className="flex flex-col w-full h-screen bg-green-50 font-sans">
       {/* ── HEADER ── */}
@@ -224,17 +235,11 @@ export default function ChatPage() {
 
         {/* Avatar */}
         <div className="relative shrink-0">
-          {otherUser?.profilePicture ? (
             <img
-              src={otherUser.profilePicture}
-              alt={otherUser.fullName}
+              src={otherUser?.profilePicture || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+              alt={otherUser?.fullName}
               className="w-10 h-10 rounded-full object-cover border-2 border-green-100"
             />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-linear-to-br from-green-400 to-green-600 text-white font-bold text-base flex items-center justify-center">
-              {otherUser?.fullName?.charAt(0).toUpperCase() ?? "?"}
-            </div>
-          )}
         </div>
 
         <div className="flex flex-col">
@@ -248,7 +253,7 @@ export default function ChatPage() {
       </div>
 
       {/* ── MESSAGES ── */}
-      <div className="flex-1 overflow-y-auto px-5 xl:px-20 py-4 space-y-1">
+      <div className="flex-1 overflow-y-auto px-5 md:px-20 py-4 space-y-1">
         {/* Loading state */}
         {loading && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-green-400">
@@ -260,11 +265,13 @@ export default function ChatPage() {
         {/* Empty state */}
         {!loading && messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-green-400">
-            <span className="text-4xl">👋</span>
-            <p className="text-sm font-medium text-green-700">
+            <span>
+              <MessageCircleCheck size={30} />
+            </span>
+            <p className="text-2xl font-medium text-green-700">
               No messages yet
             </p>
-            <p className="text-xs text-green-300">
+            <p className="text-xs text-green-600">
               Say hi to your potential flatmate!
             </p>
           </div>
@@ -325,7 +332,13 @@ export default function ChatPage() {
                       </span>
                       {isMine && (
                         <span className="text-[11px]">
-                          {msg.pending ? <Clock size={13} className="text-black font-bold"/> : seen ? "✓✓" : "✓"}
+                          {msg.pending ? (
+                            <Clock size={13} className="text-black font-bold" />
+                          ) : seen ? (
+                            "✓✓"
+                          ) : (
+                            "✓"
+                          )}
                         </span>
                       )}
                     </div>
@@ -388,12 +401,12 @@ export default function ChatPage() {
               }
             `}
           >
-            <SendHorizonalIcon/>
+            <SendHorizonalIcon />
           </button>
         </div>
       </div>
 
-      {/* ✅ Bounce keyframe for typing dots */}
+      {/* Bounce keyframe for typing dots */}
       <style>{`
         @keyframes bounce {
           0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
