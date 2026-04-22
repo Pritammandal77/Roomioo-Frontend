@@ -15,7 +15,7 @@ function page() {
   const [userPreference, setUserPreference] = useState<PreferenceData | null>(
     null,
   );
-
+  
   const router = useRouter();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function page() {
         const res = await getUserById(id);
         setUserData(res.data?.user);
         setUserPreference(res.data?.preference);
-        console.log(res.data);
+        console.log("user data", res);
       } catch (error) {
         console.log(error);
       }

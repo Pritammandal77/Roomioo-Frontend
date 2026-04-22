@@ -8,13 +8,6 @@ export default async function ProtectedLayout({
 }: {
   children: ReactNode;
 }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("access_token")?.value;
-  
-  if (!token) {
-    redirect("/signin");
-  }
-
   return (
     <div>
       <Navbar />

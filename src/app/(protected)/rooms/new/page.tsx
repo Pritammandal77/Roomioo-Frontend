@@ -209,7 +209,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="min-h-screen py-20 bg-linear-to-br from-green-50 via-white to-green-100 flex items-center justify-center p-6">
+      <div className="min-h-screen py-20 bg-linear-to-br from-green-50 via-white to-green-100 flex items-center justify-center px-3 p-6">
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-3xl bg-white border border-green-100 shadow-xl rounded-3xl p-8 space-y-8"
