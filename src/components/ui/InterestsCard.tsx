@@ -179,7 +179,6 @@
 
 // export default InterestsCard;
 
-
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -195,7 +194,7 @@ function InterestsCard({ item, type }: any) {
   const user =
     type === "incoming" ? item?.interestedUser : item?.propertyLister;
 
-  console.log("interests", user);
+  console.log("interests", item);
   const [openModal, setOpenModal] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<
     "accepted" | "rejected" | null
@@ -311,7 +310,7 @@ function InterestsCard({ item, type }: any) {
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <p>
-                  {}
+                  {item.property.amenities?.roomType} in {item.property.location?.city}
                 </p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-[11px] text-emerald-600 font-medium">
