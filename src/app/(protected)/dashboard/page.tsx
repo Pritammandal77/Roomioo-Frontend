@@ -24,7 +24,7 @@ function Page() {
         const res = await fetchInterests();
         setOutGoingInterests(res.data.outgoing || []);
         setInComingInterests(res.data.incoming || []);
-        console.log(res?.data);
+        console.log("interests data : ", res?.data);
       } catch (error) {
         toast.error("Something went wrong while fetching interests");
       } finally {
