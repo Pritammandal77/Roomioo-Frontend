@@ -68,20 +68,20 @@ export default function FeaturedListings() {
             <div className="flex gap-2">
               <button
                 onClick={() => scroll("left")}
-                className="p-3 rounded-full border border-gray-200 hover:bg-gray-100 active:scale-95 transition shadow-sm bg-white"
+                className="p-3 cursor-pointer rounded-full border border-gray-200 hover:bg-gray-100 active:scale-95 transition shadow-sm bg-white"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-700" />
               </button>
               <button
                 onClick={() => scroll("right")}
-                className="p-3 rounded-full border border-gray-200 hover:bg-gray-100 active:scale-95 transition shadow-sm bg-white"
+                className="p-3 cursor-pointer rounded-full border border-gray-200 hover:bg-gray-100 active:scale-95 transition shadow-sm bg-white"
               >
                 <ArrowRight className="w-5 h-5 text-gray-700" />
               </button>
             </div>
 
             <Link href="/listings/all">
-              <button className="px-6 py-3 rounded-xl border border-green-600 text-green-600 hover:bg-green-50 transition font-medium">
+              <button className="px-6 py-3 cursor-pointer rounded-xl border border-green-600 text-green-600 hover:bg-green-50 transition font-medium">
                 View All
               </button>
             </Link>
@@ -107,7 +107,7 @@ export default function FeaturedListings() {
               featuredListings.map((listing, index) => (
                 <div
                   key={listing._id}
-                  className="shrink-0 snap-start w-[85vw] sm:w-87.5 md:w-100"
+                  className="shrink-0 snap-start mx-2 md:mx-0 w-[85vw] sm:w-87.5 md:w-90"
                 >
                   <ListingCard
                     id={listing._id}

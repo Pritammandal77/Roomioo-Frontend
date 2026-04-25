@@ -27,10 +27,13 @@ import { addInterest } from "@/services/interest.api";
 import AddInterestModal from "@/components/ui/AddInterestModal";
 import Link from "next/link";
 import ListingDetailsSkeleton from "@/components/loaders/ListingDetailsSkeleton";
+import { useAppSelector } from "@/lib/rtk/hooks";
 
 function Page() {
   const { id } = useParams();
   const [propertyData, setPropertyData] = useState<any>(null);
+
+  const user = useAppSelector((state: any) => state.user.userData);
 
   // for interest modal
   const [showModal, setShowModal] = useState(false);
@@ -125,18 +128,20 @@ function Page() {
                   </p>
                 </div>
 
-                <div className="bg-white px-5 py-3 rounded-2xl shadow-sm md:w-[30%]">
-                  <button
-                    onClick={() => setShowModal(true)}
-                    className="w-full py-3 rounded-xl bg-linear-to-r from-green-500 to-green-600 text-white font-semibold shadow-md hover:scale-[1.02] transition"
-                  >
-                    I'm Interested
-                  </button>
+                {user && (
+                  <div className="bg-white px-5 py-3 rounded-2xl shadow-sm md:w-[30%]">
+                    <button
+                      onClick={() => setShowModal(true)}
+                      className="w-full py-3 rounded-xl bg-linear-to-r from-green-500 to-green-600 text-white font-semibold shadow-md hover:scale-[1.02] transition"
+                    >
+                      I'm Interested
+                    </button>
 
-                  <p className="text-xs text-gray-500 mt-2 text-center">
-                    Owner will be notified instantly
-                  </p>
-                </div>
+                    <p className="text-xs text-gray-500 mt-2 text-center">
+                      Owner will be notified instantly
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* DESCRIPTION */}
@@ -283,19 +288,20 @@ function Page() {
                 </Link>
               </div>
 
-              {/* CTA */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm">
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="w-full py-3 rounded-xl bg-linear-to-r from-green-500 to-green-600 text-white font-semibold shadow-md hover:scale-[1.02] transition"
-                >
-                  I'm Interested
-                </button>
+              {user && (
+                <div className="bg-white p-6 rounded-2xl shadow-sm">
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="w-full py-3 rounded-xl bg-linear-to-r from-green-500 to-green-600 text-white font-semibold shadow-md hover:scale-[1.02] transition"
+                  >
+                    I'm Interested
+                  </button>
 
-                <p className="text-xs text-gray-400 mt-2 text-center">
-                  Owner will be notified instantly
-                </p>
-              </div>
+                  <p className="text-xs text-gray-400 mt-2 text-center">
+                    Owner will be notified instantly
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

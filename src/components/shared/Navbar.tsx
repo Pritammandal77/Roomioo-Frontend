@@ -67,12 +67,14 @@ export default function Navbar() {
             >
               Explore
             </Link>
-            <Link
-              href="/chats"
-              className="text-gray-600 hover:text-green-600"
-            >
-              Chats
-            </Link>
+            {user && (
+              <Link
+                href="/chats"
+                className="text-gray-600 hover:text-green-600"
+              >
+                Chats
+              </Link>
+            )}
           </nav>
 
           {user ? (
@@ -114,7 +116,7 @@ export default function Navbar() {
           }
           `}
         >
-          <div className="space-y-4 pb-10">
+          <div className={`space-y-4 ${user && "pb-10"}`}>
             <Link
               href="/"
               onClick={() => setIsOpen(false)}
@@ -146,14 +148,16 @@ export default function Navbar() {
             >
               List Property
             </Link>
-
-            <Link
-              href="/chats"
-              className="block text-gray-600"
-              onClick={() => setIsOpen(false)}
-            >
-              Chats
-            </Link>
+            
+            {user && (
+              <Link
+                href="/chats"
+                className="block text-gray-600"
+                onClick={() => setIsOpen(false)}
+              >
+                Chats
+              </Link>
+            )}
 
             {!user && (
               <div className="w-full items-center gap-4">
