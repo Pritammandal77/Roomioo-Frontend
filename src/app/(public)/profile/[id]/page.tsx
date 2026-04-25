@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { User } from "../../../../types/user";
-import { MessageCircleCode } from "lucide-react";
+import { LucideBadgeQuestionMark, MessageCircleCode } from "lucide-react";
 import { createOrFetchChat } from "@/services/chat.api";
 
 function page() {
@@ -15,7 +15,7 @@ function page() {
   const [userPreference, setUserPreference] = useState<PreferenceData | null>(
     null,
   );
-  
+
   const router = useRouter();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ function page() {
   const handleCreateOrFetchChat = async (id: string) => {
     try {
       const res = await createOrFetchChat(id);
-      router.push(`/chats/${res.data._id}`)
+      router.push(`/chats/${res.data._id}`);
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +100,7 @@ function page() {
 
           {/* MAIN CONTENT */}
           <div className="lg:col-span-3 space-y-3 md:space-y-6">
-            {userPreference && (
+            {userPreference ? (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -170,6 +170,28 @@ function page() {
                     </GlassCard>
                   </div>
                 </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white/70 backdrop-blur-xl border border-gray-200 rounded-2xl p-10 py-27 shadow-sm flex flex-col items-center justify-center text-center"
+              >
+                {/* Icon */}
+                <div className="w-16 h-16 flex items-center justify-center rounded-full bg-green-100 text-green-600 mb-4">
+                  <LucideBadgeQuestionMark size={28} />
+                </div>
+
+                {/* Title */}
+                <h2 className="text-xl font-semibold text-gray-800">
+                  No Preferences Added
+                </h2>
+
+                {/* Description */}
+                <p className="text-gray-500 text-sm mt-2 max-w-md leading-relaxed">
+                  User haven’t set preferences yet.
+                </p>
+
               </motion.div>
             )}
           </div>

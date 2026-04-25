@@ -244,7 +244,7 @@ export default function Page() {
 }
 
 /* COMPONENTS */
-
+ 
 function Info({ label, value }: any) {
   return (
     <div className="flex justify-between text-sm">

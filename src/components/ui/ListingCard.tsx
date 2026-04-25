@@ -19,7 +19,7 @@ export default function ListingCard({ listing, id, index }: any) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
       viewport={{ once: true }}
-      className="group rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl transition"
+      className="group rounded-3xl overflow-hidden bg-white min-w-90 xl:min-w-70 max-w-90 border border-gray-100 shadow-sm hover:shadow-xl transition"
     >
       {/* IMAGE */}
       <div className="relative h-52 overflow-hidden">
