@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function FinalCTA() {
   return (
@@ -41,15 +42,19 @@ export default function FinalCTA() {
           transition={{ duration: 0.8 }}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          {/* Primary CTA */}
-          <button className="px-8 py-4 rounded-2xl bg-white text-green-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition">
-            Find Your Housemate
-          </button>
+          <Link href="/listings/all">
+            {/* Primary CTA */}
+            <button className="px-8 py-4 rounded-2xl bg-white text-green-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition">
+              Find Your Housemate
+            </button>
+          </Link>
 
-          {/* Secondary CTA */}
-          <button className="px-8 py-4 rounded-2xl border border-green-200  font-semibold hover:bg-white/10 transition">
-            List Your Space
-          </button>
+          <Link href="/rooms/new">
+            {/* Secondary CTA */}
+            <button className="px-8 py-4 rounded-2xl border border-green-200  font-semibold hover:bg-white/10 transition">
+              List Your Space
+            </button>
+          </Link>
         </motion.div>
 
         {/* Small Trust Text */}

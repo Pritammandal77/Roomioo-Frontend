@@ -62,7 +62,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen pt-20 xl:pt-30 bg-linear-to-br from-green-100 via-[#c7f9c6] to-emerald-100 text-gray-800">
-      <div className="max-w-8xl mx-auto p-3 space-y-3 md:space-y-6 md:px-20">
+      <div className="max-w-7xl mx-auto p-3 space-y-3 md:space-y-6 md:px-20">
         {/* TOP PROFILE STRIP */}
         <div className="bg-white/70 backdrop-blur-xl border border-gray-200 rounded-3xl p-6 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-sm">
           <div className="flex items-center gap-5">
