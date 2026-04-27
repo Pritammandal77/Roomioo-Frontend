@@ -6,6 +6,7 @@ import Link from "next/link";
 import { logInUser } from "@/services/auth.api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Input from "@/components/ui/InputField";
 
 export default function SignUp() {
   const router = useRouter();
@@ -110,14 +111,14 @@ export default function SignUp() {
 }
 
 /* Input Component */
-function Input({ icon: Icon, ...props }: any) {
-  return (
-    <div className="relative">
-      <Icon className="absolute left-3 top-3 text-green-600" size={18} />
-      <input
-        {...props}
-        className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 outline-none text-gray-800"
-      />
-    </div>
-  );
-}
+// function Input({ icon: Icon, ...props }: any) {
+//   return (
+//     <div className="relative">
+//       <Icon className="absolute left-3 top-3 text-green-600" size={18} />
+//       <input
+//         {...props}
+//         className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 outline-none text-gray-800"
+//       />
+//     </div>
+//   );
+// }

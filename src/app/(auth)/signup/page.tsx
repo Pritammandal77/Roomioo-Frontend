@@ -15,6 +15,7 @@ import { registerUser } from "@/services/auth.api";
 import { toast } from "sonner";
 import { sendOtp, verifyOtp } from "@/services/otp.api";
 import { useRouter } from "next/navigation";
+import Input from "@/components/ui/InputField";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -200,7 +201,7 @@ export default function SignUp() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center pt-25 pb-10 bg-linear-to-br from-green-50 to-green-100 px-4">
+    <section className="min-h-screen flex items-center justify-center pt-10 pb-10 bg-linear-to-br from-green-50 to-green-100 px-4">
       <div className="w-full max-w-xl">
         <div className="text-center mb-8">
           <h2 className="text-3xl xl:text-4xl font-semibold text-gray-900">
@@ -382,14 +383,15 @@ export default function SignUp() {
   );
 }
 
-function Input({ icon: Icon, ...props }: any) {
-  return (
-    <div className="relative">
-      <Icon className="absolute left-3 top-3 text-green-600 " size={18} />
-      <input
-        {...props}
-        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-400"
-      />
-    </div>
-  );
-}
+// function Input({ icon: Icon, ...props }: any) {
+//   return (
+//     <div className="relative">
+//       <Icon className="absolute left-3 top-3 text-green-600 " size={18} />
+//       <input
+//         {...props}
+//         className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-400"
+//       />
+//     </div>
+//   );
+// }
+
