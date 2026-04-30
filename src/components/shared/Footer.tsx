@@ -57,12 +57,12 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/" className="hover:text-green-600 transition">
+              <Link href="/privacy" className="hover:text-green-600 transition">
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link href="/" className="hover:text-green-600 transition">
+              <Link href="/terms" className="hover:text-green-600 transition">
                 Terms & Conditions
               </Link>
             </li>
@@ -99,10 +99,10 @@ export default function Footer() {
         <p>© {new Date().getFullYear()} Roomioo. All rights reserved.</p>
 
         <div className="flex gap-6 mt-4 md:mt-0">
-          <Link href="/" className="hover:text-green-600 transition">
+          <Link href="/privacy" className="hover:text-green-600 transition">
             Privacy
           </Link>
-          <Link href="/" className="hover:text-green-600 transition">
+          <Link href="/terms" className="hover:text-green-600 transition">
             Terms
           </Link>
         </div>

@@ -9,17 +9,6 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { LucideBadgeQuestionMark } from "lucide-react";
 
-interface User {
-  _id: string;
-  fullName: string;
-  email: string;
-  mobileNumber: string;
-  gender: string;
-  dob: string;
-  profilePicture: string;
-  createdAt: string;
-}
-
 export default function Page() {
   const router = useRouter();
 
