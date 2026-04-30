@@ -49,7 +49,7 @@ export default function FinalCTA() {
             </button>
           </Link>
 
-          <Link href="/rooms/new">
+          <Link href="/listing/new">
             {/* Secondary CTA */}
             <button className="px-8 py-4 rounded-2xl border border-green-200  font-semibold hover:bg-white/10 transition">
               List Your Space

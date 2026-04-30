@@ -23,17 +23,17 @@ export default function Footer() {
           </h3>
           <ul className="mt-4 space-y-3 text-gray-600 text-sm">
             <li>
-              <Link href="/" className="hover:text-green-600 transition">
+              <Link href="/listings/all" className="hover:text-green-600 transition">
                 Find Housemate
               </Link>
             </li>
             <li>
-              <Link href="/" className="hover:text-green-600 transition">
+              <Link href="/listing/new" className="hover:text-green-600 transition">
                 List Your Space
               </Link>
             </li>
             <li>
-              <Link href="/" className="hover:text-green-600 transition">
+              <Link href="#working" className="hover:text-green-600 transition">
                 How it Works
               </Link>
             </li>
@@ -82,13 +82,8 @@ export default function Footer() {
             </Link>
 
             <div className="flex items-center gap-2">
-              <Phone size={16} />
-              <span>+91 98765 43210</span>
-            </div>
-
-            <div className="flex items-center gap-2">
               <MapPin size={16} />
-              <span>Pune, India</span>
+              <span>Chandrapur, Maharashtra</span>
             </div>
           </div>
         </div>

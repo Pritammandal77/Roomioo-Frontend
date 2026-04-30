@@ -50,7 +50,7 @@ function Hero() {
                     Find Roommate
                   </button>
                 </Link>
-                <Link href="/rooms/new">
+                <Link href="/listing/new">
                   <button className="px-6 py-3 cursor-pointer rounded-2xl border border-green-600 text-green-600 font-medium hover:bg-green-50 transition">
                     Post a Room
                   </button>

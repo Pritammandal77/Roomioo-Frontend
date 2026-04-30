@@ -198,7 +198,7 @@ function Page() {
                     <p className="text-gray-400 text-sm mt-1">
                       Start by posting your first room
                     </p>
-                    <Link href="/rooms/new">
+                    <Link href="/listing/new">
                       <button className="mt-4 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
                         + Create Listing
                       </button>

@@ -55,7 +55,7 @@ export default function Navbar() {
 
             {user && (
               <Link
-                href="/rooms/new"
+                href="/listing/new"
                 className="text-gray-600 hover:text-green-600"
               >
                 List Property
@@ -142,7 +142,7 @@ export default function Navbar() {
             )}
 
             <Link
-              href="/rooms/new"
+              href="/listing/new"
               className="block text-gray-600"
               onClick={() => setIsOpen(false)}
             >

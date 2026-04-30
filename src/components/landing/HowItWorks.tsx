@@ -27,12 +27,13 @@ const steps = [
 ];
 
 export default function HowItWorks() {
-
-    const user = useAppSelector((state) => state.user.userData);
-
+  const user = useAppSelector((state) => state.user.userData);
 
   return (
-    <section className="w-full py-24 bg-linear-to-b from-white to-green-50 px-6 relative overflow-hidden">
+    <section
+      className="w-full py-24 bg-linear-to-b from-white to-green-50 px-6 relative overflow-hidden"
+      id="working"
+    >
       {/* Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-125 bg-green-200/30 blur-3xl rounded-full"></div>
 

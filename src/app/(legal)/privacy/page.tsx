@@ -123,7 +123,7 @@ export default function PrivacyPolicy() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 pb-20">
-      <div className="max-w-4xl mx-auto px-6 pt-16">
+      <div className="max-w-4xl mx-auto px-3 md:px-6 pt-10">
         <Link
           href="/"
           className="flex items-center text-green-600 font-medium mb-8 hover:underline"
@@ -131,7 +131,7 @@ export default function PrivacyPolicy() {
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
         </Link>
 
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-3xl p-5 md:p-12 shadow-sm border border-gray-200">
           <header className="border-b border-gray-100 pb-8 mb-12">
             <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
               Privacy Policy
