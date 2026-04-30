@@ -171,7 +171,7 @@ export default function PrivacyPolicy() {
             </h3>
             <div className="bg-green-50 rounded-2xl p-6 border border-green-100 relative overflow-hidden group">
               {/* Subtle decorative circle */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-green-100 rounded-full opacity-50 group-hover:scale-110 transition-transform" />
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-green-100 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-500" />
 
               <div className="relative z-10">
                 <p className="text-gray-700 leading-relaxed">
@@ -189,10 +189,19 @@ export default function PrivacyPolicy() {
                   </Link>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-green-100/50 flex items-center gap-4 text-xs font-bold text-green-700 uppercase tracking-widest">
-                  <span>Pune, India</span>
-                  <span className="w-1 h-1 bg-green-300 rounded-full" />
+                {/* Updated Location Badge */}
+                <div className="mt-8 pt-4 border-t border-green-100/50 flex flex-wrap items-center gap-y-2 gap-x-4 text-[10px] sm:text-xs font-bold text-green-700 uppercase tracking-widest">
+                  <div className="flex items-center gap-2">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span>Chandrapur, Maharashtra</span>
+                  </div>
+                  <span className="hidden sm:block w-1.5 h-1.5 bg-green-200 rounded-full" />
                   <span>Roomioo Support</span>
+                  <span className="hidden sm:block w-1.5 h-1.5 bg-green-200 rounded-full" />
+                  <span>Made in India</span>
                 </div>
               </div>
             </div>
