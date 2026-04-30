@@ -76,10 +76,10 @@ export default function Footer() {
           </h3>
 
           <div className="mt-4 space-y-4 text-gray-600 text-sm">
-            <div className="flex items-center gap-2">
+            <Link href="/contact" className="flex items-center gap-2">
               <Mail size={16} />
-              <span>support@Roomioo.com</span>
-            </div>
+              <span>Contact Us</span>
+            </Link>
 
             <div className="flex items-center gap-2">
               <Phone size={16} />
