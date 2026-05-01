@@ -15,3 +15,13 @@ export interface User {
     updatedAt: string;
 }
 
+
+export interface EditProfile {
+    fullName: string;
+    dob: string;
+    mobileNumber?: string;
+    gender?: "male" | "female" | "others";
+    instagramLink?: string;
+    aboutUser?: string;
+    profilePicture?: File; // Note: This is a File object
+}

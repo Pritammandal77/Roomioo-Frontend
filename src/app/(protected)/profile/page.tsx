@@ -79,7 +79,7 @@ export default function Page() {
               </button>
 
               <button
-                onClick={() => router.push("/edit-profile")}
+                onClick={() => router.push("/profile/edit")}
                 className="w-[50%] md:w-auto px-4 py-2 rounded-xl border border-green-500 text-green-600 hover:bg-green-50 transition"
               >
                 Edit Profile

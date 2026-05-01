@@ -24,8 +24,8 @@ export default function AboutUs() {
       {/* 1. HERO SECTION: Cinematic Impact */}
       <section className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full opacity-[0.03] [mask-image:radial-gradient(50%_50%_at_50%_50%,#000_0%,transparent_100%)]">
-            <div className="h-full w-full bg-[grid] bg-[length:50px_50px]" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full opacity-[0.03] mask-[radial-gradient(50%_50%_at_50%_50%,#000_0%,transparent_100%)]">
+            <div className="h-full w-full bg-[grid] bg-size-[50px_50px]" />
           </div>
         </div>
 
@@ -36,7 +36,7 @@ export default function AboutUs() {
           </div>
           <h1 className="text-6xl md:text-8xl font-black tracking-tight text-gray-900 mb-8 leading-[0.9]">
             Beyond Four Walls. <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-green-500 to-green-700">
+            <span className="text-transparent bg-clip-text bg-linear-to-b from-green-500 to-green-700">
               Beyond Flatmates.
             </span>
           </h1>
@@ -100,7 +100,7 @@ export default function AboutUs() {
                   </p>
                 </div>
               </div>
-              <div className="md:col-span-2 p-8 bg-gradient-to-br from-green-600 to-green-800 rounded-[2.5rem] text-white">
+              <div className="md:col-span-2 p-8 bg-linear-to-br from-green-600 to-green-800 rounded-[2.5rem] text-white">
                 <h4 className="text-2xl font-bold mb-4 italic">
                   "A home is only as good as the people you share it with."
                 </h4>
@@ -172,7 +172,7 @@ export default function AboutUs() {
             <div className="absolute -inset-4 bg-green-500/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
 
             {/* Image Container */}
-            <div className="relative aspect-[4/5] bg-gray-800 rounded-[2.5rem] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/10 shadow-2xl">
+            <div className="relative aspect-4/5 bg-gray-800 rounded-[2.5rem] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/10 shadow-2xl">
               <Image
                 src="/pritamImg.jpg"
                 alt="Pritam Mandal - Founder of Roomioo"
