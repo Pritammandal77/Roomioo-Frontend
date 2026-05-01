@@ -4,36 +4,34 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
     const token = req.cookies.get("access_token")?.value;
     const { pathname } = req.nextUrl;
-    const publicRoutes = ["/", "/signin", "/signup"];
-    const protectedRoutes = ["/profile", "/chats", "/rooms", "/listings"];
 
-    console.log("middleware runned")
+    console.log(`Middleware running on: ${pathname} | Token present: ${!!token}`);
 
-    const isProtected = protectedRoutes.some((route) =>
-        pathname.startsWith(route)
-    );
+    const isAuthPage = pathname === "/signin" || pathname === "/signup";
+    
+    // Define protected prefixes
+    const protectedPrefixes = ["/profile", "/chats", "/listing", "/dashboard"];
+    const isProtectedRoute = protectedPrefixes.some(prefix => pathname.startsWith(prefix));
 
-    if (isProtected && !token) {
+    // 1. If trying to access protected route without token -> Redirect to Sign In
+    if (isProtectedRoute && !token) {
         return NextResponse.redirect(new URL("/signin", req.url));
     }
 
-    if (
-        token &&
-        (pathname === "/signin" || pathname === "/signup")
-    ) {
+    // 2. If trying to access Auth pages with a token -> Redirect to Home
+    if (isAuthPage && token) {
         return NextResponse.redirect(new URL("/", req.url));
     }
 
     return NextResponse.next();
 }
 
-
 export const config = {
   matcher: [
     "/profile/:path*",
     "/chats/:path*",
     "/dashboard",  
-    "/rooms/:path*",
+    "/listing/:path*",
     "/signin",
     "/signup",
   ],
