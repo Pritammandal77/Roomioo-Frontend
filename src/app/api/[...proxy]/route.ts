@@ -20,8 +20,8 @@ async function handler(req: NextRequest) {
 
     const headers = new Headers();
     headers.set("content-type", req.headers.get("content-type") || "application/json");
+    headers.set("accept-encoding", "identity");  // 👈 add this — tells Render: no compression
     const cookies = req.headers.get("cookie");
-    console.log("Forwarding cookies:", cookies); // 👈 check Vercel logs
     if (cookies) {
         headers.set("cookie", cookies);
     }
