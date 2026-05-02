@@ -18,12 +18,10 @@ async function handler(req: NextRequest) {
             ? await req.blob()
             : await req.text();
 
-    const headers = new Headers(req.headers);
-    headers.delete("host");
-    headers.delete("accept-encoding");  // ✅ fix decoding error
-
-    // ✅ forward cookies to Render so auth works
+    const headers = new Headers();
+    headers.set("content-type", req.headers.get("content-type") || "application/json");
     const cookies = req.headers.get("cookie");
+    console.log("Forwarding cookies:", cookies); // 👈 check Vercel logs
     if (cookies) {
         headers.set("cookie", cookies);
     }
