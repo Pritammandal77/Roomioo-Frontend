@@ -7,7 +7,8 @@ async function handler(req: NextRequest) {
     const { pathname, search } = req.nextUrl;
 
     const backendPath = pathname.replace(/^\/api/, "");
-    const url = `${BACKEND_URL}${backendPath}${search}`;
+    // const url = `${BACKEND_URL}${backendPath}${search}`;
+    const url = `${BACKEND_URL}/api${backendPath}${search}`;
 
     const isFormData = req.headers.get("content-type")?.includes("multipart/form-data");
 
