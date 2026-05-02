@@ -5,7 +5,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL; // e.g. https://yourap
 
 async function handler(req: NextRequest) {
     const { pathname, search } = req.nextUrl;
-
+    console.log("PROXY HIT:", pathname); // 👈 add this
     // Strip the /api prefix since your backend already has /api routes
     const backendPath = pathname.replace(/^\/api/, "");
     const url = `${BACKEND_URL}/api${backendPath}${search}`;
