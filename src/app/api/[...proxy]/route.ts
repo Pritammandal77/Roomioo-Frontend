@@ -5,21 +5,27 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL; // e.g. https://yourap
 
 async function handler(req: NextRequest) {
     const { pathname, search } = req.nextUrl;
-    console.log("PROXY HIT:", pathname); // 👈 add this
-    // Strip the /api prefix since your backend already has /api routes
+
     const backendPath = pathname.replace(/^\/api/, "");
-    const url = `${BACKEND_URL}/api${backendPath}${search}`;
+    const url = `${BACKEND_URL}${backendPath}${search}`;
 
     const isFormData = req.headers.get("content-type")?.includes("multipart/form-data");
 
     const body = req.method === "GET" || req.method === "HEAD"
         ? undefined
         : isFormData
-            ? await req.blob()        // preserve FormData as-is
+            ? await req.blob()
             : await req.text();
 
     const headers = new Headers(req.headers);
     headers.delete("host");
+    headers.delete("accept-encoding");  // ✅ fix decoding error
+
+    // ✅ forward cookies to Render so auth works
+    const cookies = req.headers.get("cookie");
+    if (cookies) {
+        headers.set("cookie", cookies);
+    }
 
     const backendRes = await fetch(url, {
         method: req.method,
@@ -33,7 +39,6 @@ async function handler(req: NextRequest) {
         headers: backendRes.headers,
     });
 
-    // 👇 This is the key fix — re-set cookies on Vercel's domain
     const setCookie = backendRes.headers.get("set-cookie");
     if (setCookie) {
         response.headers.set("set-cookie", setCookie);
@@ -41,6 +46,7 @@ async function handler(req: NextRequest) {
 
     return response;
 }
+
 
 export const GET = handler;
 export const POST = handler;
