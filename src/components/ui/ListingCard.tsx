@@ -46,7 +46,10 @@ export default function ListingCard({ listing, id, index }: any) {
       {/* CONTENT */}
       <div className="p-5">
         {/* TITLE */}
-        <h3 className="text-lg font-semibold text-gray-800">
+        <h3
+          className="text-lg font-semibold text-gray-800 truncate"
+          title={`${amenities?.roomType} in ${location?.area}`}
+        >
           {amenities?.roomType} in {location?.area}
         </h3>
 

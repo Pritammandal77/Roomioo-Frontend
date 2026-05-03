@@ -107,7 +107,7 @@ export default function FeaturedListings() {
               featuredListings.map((listing, index) => (
                 <div
                   key={listing._id}
-                  className="shrink-0 snap-start mx-2 md:mx-0 w-[85vw] sm:w-87.5 md:w-90"
+                  className="shrink-0 snap-start mx-2 md:mx-0 w-[85vw] sm:w-87.5 md:w-90 py-3"
                 >
                   <ListingCard
                     id={listing._id}
