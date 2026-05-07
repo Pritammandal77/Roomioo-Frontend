@@ -142,10 +142,10 @@ export default function AboutUs() {
 
             <motion.h1
               variants={springFadeUp}
-              className="text-5xl md:text-8xl font-black tracking-tight text-gray-900 mb-8 leading-[1] md:leading-[0.9]"
+              className="text-5xl md:text-8xl font-black tracking-tight text-gray-900 mb-8 leading-none md:leading-[0.9]"
             >
               Beyond Four Walls. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-green-500 to-green-700">
+              <span className="text-transparent bg-clip-text bg-linear-to-b from-green-500 to-green-700">
                 Beyond Flatmates.
               </span>
             </motion.h1>
@@ -211,7 +211,7 @@ export default function AboutUs() {
                   variants={hoverScale}
                   whileHover="hover"
                   whileTap="tap"
-                  className="p-8 bg-purple-100 rounded-[2rem] md:rounded-[2.5rem] flex flex-col justify-between aspect-square cursor-pointer"
+                  className="p-8 bg-purple-100 rounded-4xl md:rounded-[2.5rem] flex flex-col justify-between aspect-square cursor-pointer"
                 >
                   <Zap className="w-12 h-12 text-purple-500 fill-purple-200" />
                   <div>
@@ -229,7 +229,7 @@ export default function AboutUs() {
                   variants={hoverScale}
                   whileHover="hover"
                   whileTap="tap"
-                  className="p-8 bg-gray-900 text-white rounded-[2rem] md:rounded-[2.5rem] flex flex-col justify-between aspect-square cursor-pointer"
+                  className="p-8 bg-gray-900 text-white rounded-4xl md:rounded-[2.5rem] flex flex-col justify-between aspect-square cursor-pointer"
                 >
                   <ShieldCheck className="w-12 h-12 text-gray-400" />
                   <div>
@@ -245,7 +245,7 @@ export default function AboutUs() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ type: "spring", stiffness: 100 }}
-                  className="md:col-span-2 p-8 bg-gradient-to-br from-green-600 to-green-800 rounded-[2rem] md:rounded-[2.5rem] text-white"
+                  className="md:col-span-2 p-8 bg-linear-to-br from-green-600 to-green-800 rounded-4xl md:rounded-[2.5rem] text-white"
                 >
                   <h4 className="text-xl md:text-2xl font-bold mb-4 italic">
                     "A home is only as good as the people you share it with."
@@ -332,7 +332,7 @@ export default function AboutUs() {
               className="relative group w-full max-w-sm lg:w-1/3"
             >
               <div className="absolute -inset-4 bg-green-500/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative aspect-[4/5] bg-gray-800 rounded-[2.5rem] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/10 shadow-2xl">
+              <div className="relative aspect-4/5 bg-gray-800 rounded-[2.5rem] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/10 shadow-2xl">
                 <Image
                   src="/pritamImg.jpg"
                   alt="Pritam Mandal"

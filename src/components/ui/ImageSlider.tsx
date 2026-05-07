@@ -25,7 +25,6 @@ export default function ImageSlider({ images }: { images: any[] }) {
 
   return (
     <div className="bg-white rounded-3xl p-4 shadow-sm flex flex-col-reverse md:flex-row gap-4">
-      
       {/* LEFT THUMBNAILS */}
       <div className="flex md:flex-col gap-2 md:w-24 overflow-x-auto">
         {images.map((img, i) => (
@@ -42,9 +41,8 @@ export default function ImageSlider({ images }: { images: any[] }) {
 
       {/* RIGHT SLIDER */}
       <div className="relative flex-1 h-80 md:h-105 rounded-2xl overflow-hidden">
-        
         {/* SLIDING CONTAINER */}
-        <div
+        {/* <div
           className="flex h-full transition-transform duration-500 ease-in-out"
           style={{
             transform: `translateX(-${index * 100}%)`,
@@ -56,6 +54,28 @@ export default function ImageSlider({ images }: { images: any[] }) {
               src={img.url}
               className="w-full h-full object-cover shrink-0"
             />
+          ))}
+        </div> */}
+
+        {/* SLIDING CONTAINER */}
+        <div
+          className="flex h-full transition-transform duration-500 ease-in-out"
+          style={{
+            transform: `translateX(-${index * 100}%)`,
+          }}
+        >
+          {images.map((img, i) => (
+            <div
+              key={i}
+              className="w-full h-full shrink-0 bg-gray-100 flex items-center justify-center"
+            >
+              <img
+                src={img.url}
+                alt={`Slide ${i}`}
+                // Changed object-cover to object-contain
+                className="max-w-full max-h-full object-contain"
+              />
+            </div>
           ))}
         </div>
 

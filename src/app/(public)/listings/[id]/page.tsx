@@ -147,7 +147,10 @@ function Page() {
               {/* DESCRIPTION */}
               <div className="bg-white p-6 rounded-2xl shadow-sm">
                 <h2 className="font-semibold text-lg mb-2">Description</h2>
-                <p className="text-gray-600 leading-relaxed">{description}</p>
+                {/* Added 'whitespace-pre-line' so it respects the user's line breaks */}
+                <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+                  {description}
+                </p>
               </div>
 
               {/* AMENITIES */}

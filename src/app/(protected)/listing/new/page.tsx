@@ -21,6 +21,7 @@ import {
 import { RoomForm } from "@/types/rooms";
 import { toast } from "sonner";
 import RoomiooLoader from "@/components/loaders/RoomiooLoader";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [locationMode, setLocationMode] = useState<"auto" | "manual" | null>(
@@ -49,6 +50,8 @@ export default function Page() {
     furnishedLevel: "",
     isPersonalRoomAvailable: false,
   });
+
+  const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [locationSet, setLocationSet] = useState(false);
@@ -200,6 +203,7 @@ export default function Page() {
       );
 
       toast.success("Room listed successfully");
+      router.push("/")
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Error");
     } finally {
@@ -486,7 +490,7 @@ export default function Page() {
             <div className="grid md:grid-cols-2 gap-4">
               {/* Room Type */}
               <div>
-                <label className="label">Room Type</label>
+                <label className="label">Property Type</label>
                 <select
                   name="roomType"
                   value={form.roomType}

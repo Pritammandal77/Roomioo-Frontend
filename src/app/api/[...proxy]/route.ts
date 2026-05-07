@@ -1,13 +1,12 @@
 // app/api/[...proxy]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL; // e.g. https://yourapp.onrender.com
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 async function handler(req: NextRequest) {
     const { pathname, search } = req.nextUrl;
 
     const backendPath = pathname.replace(/^\/api/, "");
-    // const url = `${BACKEND_URL}${backendPath}${search}`;
     const url = `${BACKEND_URL}/api${backendPath}${search}`;
 
     const isFormData = req.headers.get("content-type")?.includes("multipart/form-data");
@@ -20,7 +19,7 @@ async function handler(req: NextRequest) {
 
     const headers = new Headers();
     headers.set("content-type", req.headers.get("content-type") || "application/json");
-    headers.set("accept-encoding", "identity");  // 👈 add this — tells Render: no compression
+    headers.set("accept-encoding", "identity");  // tells Render: no compression
     const cookies = req.headers.get("cookie");
     if (cookies) {
         headers.set("cookie", cookies);
@@ -45,7 +44,6 @@ async function handler(req: NextRequest) {
 
     return response;
 }
-
 
 export const GET = handler;
 export const POST = handler;
