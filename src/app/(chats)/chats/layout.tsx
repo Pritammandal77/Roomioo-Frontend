@@ -6,17 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 export default function ChatsLayout({ children }: any) {
   const pathname = usePathname();
   const isChatOpen = pathname !== "/chats";
-
-  // to redirect user to home page , is user not logged In
-  // const router = useRouter();
-  // const user = useAppSelector((state: any) => state.user.userData);
-
-  // setTimeout(() => {
-  //   if (user == null) {
-  //     router.push("/");
-  //   }
-  // }, 5000);
-
+  
   return (
     <div className="flex h-screen overflow-hidden">
       {/* SIDEBAR */}

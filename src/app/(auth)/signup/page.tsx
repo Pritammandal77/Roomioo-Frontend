@@ -561,7 +561,7 @@ export default function SignUp() {
               icon={PhoneCallIcon}
               name="mobileNumber"
               type="number"
-              placeholder="Mobile"
+              placeholder="Mobile (optional)"
               onChange={handleChange}
             />
 

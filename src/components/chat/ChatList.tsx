@@ -5,7 +5,7 @@ import { fetchAllChatsList } from "@/services/chat.api";
 import { useAppSelector } from "@/lib/rtk/hooks";
 import { useSocket } from "@/hooks/useSocket";
 import { formatDistanceToNow } from "date-fns";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MessageSquareOff } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import RoomiooLoader from "../loaders/RoomiooLoader";
@@ -78,7 +78,7 @@ export default function ChatList() {
         </div>
 
         {/* CHAT LIST */}
-        <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1 md:px-20 xl:px-0">
+        {/* <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1 md:px-20 xl:px-0">
           {chats?.map((chat) => {
             const other = getOther(chat);
             const isOnline = onlineUsers.includes(other._id);
@@ -94,7 +94,6 @@ export default function ChatList() {
             active:scale-[0.98]
           "
               >
-                {/* AVATAR */}
                 <div className="relative shrink-0">
                   <img
                     src={other.profilePicture || "/avatar.png"}
@@ -104,7 +103,6 @@ export default function ChatList() {
               "
                   />
 
-                  {/* ONLINE DOT */}
                   {isOnline && (
                     <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white">
                       <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-70"></span>
@@ -112,9 +110,7 @@ export default function ChatList() {
                   )}
                 </div>
 
-                {/* TEXT */}
                 <div className="flex-1 min-w-0">
-                  {/* NAME + TIME */}
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-green-950 truncate">
                       {other.fullName}
@@ -127,7 +123,6 @@ export default function ChatList() {
                     </span>
                   </div>
 
-                  {/* LAST MESSAGE */}
                   <p className="text-sm text-green-600 truncate mt-0.5 flex items-center gap-1">
                     {chat.latestMessage ? (
                       <>
@@ -148,7 +143,6 @@ export default function ChatList() {
                   </p>
                 </div>
 
-                {/* OPTIONAL RIGHT ICON (HOVER EFFECT) */}
                 <div className="opacity-0 group-hover:opacity-100 transition">
                   <svg
                     viewBox="0 0 24 24"
@@ -167,6 +161,122 @@ export default function ChatList() {
               </div>
             );
           })}
+        </div> */}
+
+        {/* CHAT LIST */}
+        <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1 md:px-20 xl:px-0">
+          {/* 1. Loading State */}
+          {isChatsLoading ? (
+            <div className="w-full xl:w-90 px-3 pt-0">
+              {[...Array(10)].map((_, i) => (
+                <ChatItemSkeleton key={i} />
+              ))}
+            </div>
+          ) : chats.length > 0 ? (
+            // 2. Data State
+            chats.map((chat) => {
+              const other = getOther(chat);
+              const isOnline = onlineUsers.includes(other?._id);
+              const isMe = chat.latestMessage?.sender?._id === user?._id;
+
+              return (
+                <div
+                  key={chat._id}
+                  onClick={() => router.push(`/chats/${chat._id}`)}
+                  className="
+            group flex items-center gap-3 px-3 py-3 rounded-2xl cursor-pointer
+            hover:bg-white hover:shadow-md transition-all duration-200
+            active:scale-[0.98]
+          "
+                >
+                  <div className="relative shrink-0">
+                    <img
+                      src={other.profilePicture || "/avatar.png"}
+                      className="
+                w-12 h-12 rounded-full object-cover
+                ring-2 ring-green-100 group-hover:ring-green-300 transition
+              "
+                    />
+
+                    {isOnline && (
+                      <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white">
+                        <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-70"></span>
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-green-950 truncate">
+                        {other.fullName}
+                      </span>
+
+                      <span className="text-[11px] text-green-400 shrink-0 ml-2">
+                        {formatDistanceToNow(new Date(chat.updatedAt), {
+                          addSuffix: false,
+                        })}
+                      </span>
+                    </div>
+
+                    <p className="text-sm text-green-600 truncate mt-0.5 flex items-center gap-1">
+                      {chat.latestMessage ? (
+                        <>
+                          {isMe && (
+                            <span className="text-green-400 font-medium">
+                              You:
+                            </span>
+                          )}
+                          <span className="truncate">
+                            {chat.latestMessage.content}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="italic text-green-300">
+                          Start chatting
+                        </span>
+                      )}
+                    </p>
+                  </div>
+
+                  <div className="opacity-0 group-hover:opacity-100 transition">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-4 h-4 text-green-400"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path
+                        d="M9 18l6-6-6-6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            // 3. Empty State
+            <div className="flex flex-col items-center justify-center h-full text-center px-6 animate-in fade-in zoom-in duration-300">
+              <div className="bg-green-100 p-6 rounded-full mb-4">
+                <MessageSquareOff
+                  size={28}
+                  className="text-green-600 opacity-80"
+                />
+              </div>
+              <h3 className="text-xl font-bold text-green-950">No chats yet</h3>
+              <p className="text-green-600 mt-2 max-w-62">
+                Start a conversation with potential roommates to see them here!
+              </p>
+              <Link
+                href="/listings/all"
+                className="mt-6 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold shadow-lg shadow-green-200 hover:bg-green-700 transition-all"
+              >
+                Explore Listings
+              </Link>
+            </div>
+          )}
         </div>
 
         {isChatsLoading && (

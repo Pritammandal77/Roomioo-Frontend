@@ -177,7 +177,7 @@ export default function AboutUs() {
                 </h2>
                 <p className="text-lg text-gray-600 leading-relaxed">
                   Most platforms focus on the property. We focus on the people.
-                  Traditional roommate finding is a gamble—a roll of the dice with
+                  Traditional roommate finding is a gamble- a roll of the dice with
                   your peace of mind.
                 </p>
                 <motion.div
@@ -363,8 +363,8 @@ export default function AboutUs() {
               </p>
               <div className="grid grid-cols-2 gap-8 py-8 border-y border-white/10">
                 <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-                  <p className="text-2xl md:text-3xl font-bold text-white">170+</p>
-                  <p className="text-gray-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">LeetCode Solved</p>
+                  <p className="text-2xl md:text-3xl font-bold text-white">3+</p>
+                  <p className="text-gray-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">Products Delivered</p>
                 </motion.div>
                 <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }}>
                   <p className="text-2xl md:text-3xl font-bold text-white">MERN</p>
